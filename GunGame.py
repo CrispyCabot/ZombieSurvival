@@ -1,6 +1,7 @@
 # Shooting game
 import pygame
-from random import randint
+from random import randint, choice
+from Button import Button
 
 pygame.mixer.pre_init(44100, -16, 2, 512)
 pygame.mixer.init()
@@ -8,9 +9,14 @@ pygame.init()
 
 myFont = pygame.font.Font('28DaysLater.ttf', 22) #Score Font
 font = pygame.font.Font('28DaysLater.ttf', 36) #Game Over Font
+plFont = pygame.font.Font('28DaysLater.ttf', 56)
 
 screenWidth = 800
 screenHeight = 500
+
+gameScreen = 'home'
+
+playBtn = Button((screenHeight-200)/2,(screenWidth-500)/2,500,200,[200,20,20], 'Play', plFont, [0,0,0])
 
 win = pygame.display.set_mode((screenWidth, screenHeight), pygame.RESIZABLE)
 
@@ -26,6 +32,7 @@ def loadShit():
     global walkLeft
     global walkRight
     global sounds
+    global songs
     background = pygame.image.load('images/background.jpg')
     background = pygame.transform.scale(background, (screenWidth, screenHeight))
     bulletImg = pygame.image.load('images/bullet.png')
@@ -41,8 +48,12 @@ def loadShit():
                  pygame.image.load('char/r4.png'), pygame.image.load('char/r5.png'),
                  pygame.image.load('char/r6.png')]
 
+    songs = ['songs/cant-go-to-hell.mp3', 'songs/highway-to-hell.mp3', 'songs/bloodwater.mp3']
+
     sounds = {'shot': pygame.mixer.Sound('sounds/bullet.wav'),
               'hit': pygame.mixer.Sound('sounds/hit.wav')}
+    sounds['hit'].set_volume(0.1)
+    sounds['shot'].set_volume(0.5)
 
 #TO DO: ADD LOADING SCREEN
 def loadZombies():
@@ -1447,26 +1458,37 @@ loadZombies()
 
 
 def redraw():
+    global gameScreen
     screenWidth, screenHeight = pygame.display.get_surface().get_size()
-    if playing:
-        win.blit(background, (0, 0))
-        for zombie in zombies:
-            if zombie.draw(win):
-                zombies.remove(zombie)
-        for i in bullets:
-            if i.draw(win):
-                bullets.remove(i)
-        man.draw(win)
+    if gameScreen == 'play':
+        if not pygame.mixer.music.get_busy():
+            pygame.mixer.music.load(songs[randint(0,len(songs)-1)])
+            pygame.mixer.music.set_volume(0.3)
+            pygame.mixer.music.play()
+        if playing:
+            win.blit(background, (0, 0))
+            for zombie in zombies:
+                if zombie.draw(win):
+                    zombies.remove(zombie)
+            for i in bullets:
+                if i.draw(win):
+                    bullets.remove(i)
+            man.draw(win)
 
-        scoreText = myFont.render('Score '+str(score), False, (255,255,255))
-        win.blit(scoreText, (10, 10))
-        if man.health > 0:
-            pygame.draw.rect(win, (0,255,0), pygame.Rect(100, 10, man.health*2,20))
-        if man.health< 100:
-            pygame.draw.rect(win, (255,0,0), pygame.Rect(100+man.health*2,10, 200-man.health*2, 20))
-    else:
-        gameOver = font.render('Game Over', False, (255,0,0))
-        win.blit(gameOver, (50,50))
+            scoreText = myFont.render('Score '+str(score), False, (255,255,255))
+            win.blit(scoreText, (10, 10))
+            if man.health > 0:
+                pygame.draw.rect(win, (0,255,0), pygame.Rect(100, 10, man.health*2,20))
+            if man.health< 100:
+                pygame.draw.rect(win, (255,0,0), pygame.Rect(100+man.health*2,10, 200-man.health*2, 20))
+        else:
+            gameOver = font.render('Game Over', False, (255,0,0))
+            win.blit(gameOver, (50,50))
+    elif gameScreen == 'home':
+        win.blit(background, (0,0))
+        playBtn.update(win)
+        if playBtn.clicked():
+            gameScreen = 'play'
     pygame.display.update()
 
 
@@ -1503,6 +1525,7 @@ class Person:
                 win.blit(walkRight[0], (self.x, self.y))
 
 class Zombie: #Can run, walk, jump, idle, attack, be hurt, die
+    global man, bullets, zombies, zombieCount, score, playing, end
     def __init__(self, x,y, type): #Need to add type for the 3 zombies
         self.x = x
         self.y = y
@@ -1539,13 +1562,13 @@ class Zombie: #Can run, walk, jump, idle, attack, be hurt, die
     def setAction(self):
         action = self.actions.getTrue()
         if not self.isDead and action not in ['attack', 'hurt', 'jump']:
-            if zombie.x < man.x:
-                zombie.right = True
-                zombie.left = False
+            if self.x < man.x:
+                self.right = True
+                self.left = False
             else:
-                zombie.left = True
-                zombie.right = False
-            if abs((zombie.x + zombie.width//2) - (man.x+man.width//2)) < 75:
+                self.left = True
+                self.right = False
+            if abs((self.x + self.width//2) - (man.x+man.width//2)) < 75:
                 self.actions.bool[self.actions.actions.index(action)] = False
                 self.actions.bool[4] = True #Sets action to attack
                 self.frameCount = 0 #Resets framecount so it's at beginning of attack
@@ -1636,7 +1659,7 @@ class Zombie: #Can run, walk, jump, idle, attack, be hurt, die
         elif action == 'attack':
             self.frameCountMax = len(z1AttackL)-1
             self.frameStart = 0
-            if self.frameCount//self.speed == 1 and abs((zombie.x + zombie.width//2) - (man.x+man.width//2)) < 90 and man.y > screenHeight - 200:
+            if self.frameCount//self.speed == 1 and abs((self.x + self.width//2) - (man.x+man.width//2)) < 90 and man.y > screenHeight - 200:
                 man.health -= 1
             if self.right:
                 img = attackR[self.type][self.frameCount//self.speed]
@@ -1676,8 +1699,8 @@ class Zombie: #Can run, walk, jump, idle, attack, be hurt, die
                 win.blit(img, (self.x, self.y-imgY))
             self.frameCount += 1
         if self.health < 100 and action != 'die':
-            pygame.draw.rect(win, (0,255,0), pygame.Rect(self.x, self.y-20,self.health, 10))
-            pygame.draw.rect(win, (255,0,0), pygame.Rect(self.x+self.health, self.y-20,100-self.health,10))
+            pygame.draw.rect(win, (0,255,0), pygame.Rect(self.x, self.y-self.height-20,self.health, 10))
+            pygame.draw.rect(win, (255,0,0), pygame.Rect(self.x+self.health, self.y-self.height-20,100-self.health,10))
 
 class ActionOrganizer:
     def __init__(self,actions):
@@ -1709,97 +1732,104 @@ class Bullet:
         if self.x > screenWidth or self.x < 0:
             return True
 
-man = Person(screenWidth // 2 - 96 / 2, screenHeight - 175, 96, 112)
-bullets = []
-shotTimer = 0
-zombies = []
-zombieCount = 1
-zombieTimer = 0
-score = 0
+def initV():
+    global man, bullets, zombies, zombieCount, score, playing, end
 
-playing = True
-end = True
+    man = Person(screenWidth // 2 - 96 / 2, screenHeight - 175, 96, 112)
+    bullets = []
+    zombies = []
+    zombieCount = 1
+    score = 0
+    playing = True
+    end = True
 # MAIN LOOP
 
-while playing:
-    clock.tick(56)
+def main():
+    global man, bullets, zombies, zombieCount, score, playing, end
 
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            playing = False
-            end = False
+    shotTimer = 0
+    zombieTimer = 0
+    while playing:
+        clock.tick(56)
 
-    if len(zombies) < zombieCount and zombieTimer >= 50:
-        x = randint(1,2)
-        if x == 1:
-            zombie = Zombie(0,screenHeight-30, randint(0,2))
-            zombies.append(zombie)
-        if x == 2:
-            zombie = Zombie(screenWidth, screenHeight-30, randint(0,2))
-            zombies.append(zombie)
-        zombieTimer = 0
-    if zombieTimer < 110:
-        zombieTimer += 1
-    for bullet in bullets:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                playing = False
+                end = False
+
+        if len(zombies) < zombieCount and zombieTimer >= 50:
+            x = randint(1,2)
+            if x == 1:
+                zombie = Zombie(0,screenHeight-30, randint(0,2))
+                zombies.append(zombie)
+            if x == 2:
+                zombie = Zombie(screenWidth, screenHeight-30, randint(0,2))
+                zombies.append(zombie)
+            zombieTimer = 0
+        if zombieTimer < 110:
+            zombieTimer += 1
+        for bullet in bullets:
+            for zombie in zombies:
+                if bullet.x > zombie.x and bullet.x < zombie.x+zombie.width and bullet.y < zombie.y and bullet.y > zombie.y-zombie.height and zombie.isDead == False:
+                    #hit
+                    sounds['hit'].play()
+                    bullets.remove(bullet)
+                    if zombie.health <= 20:
+                        zombie.die()
+                        score += 1
+                    else:
+                        zombie.health -= 20
+                        if randint(1,5) == 1 and not zombie.actions.bool[4]: #Makes sure not in middle of jumping
+                            zombie.hurt()
+                    break
         for zombie in zombies:
-            if bullet.x > zombie.x and bullet.x < zombie.x+zombie.width and bullet.y < zombie.y and bullet.y > zombie.y-zombie.height and zombie.isDead == False:
-                #hit
-                sounds['hit'].play()
-                bullets.remove(bullet)
-                if zombie.health <= 20:
-                    zombie.die()
-                    score += 1
-                else:
-                    zombie.health -= 20
-                    if randint(1,5) == 1 and not zombie.actions.bool[4]: #Makes sure not in middle of jumping
-                        zombie.hurt()
-                break
-    for zombie in zombies:
-        zombie.setAction()
-    if man.health <= 0:
-        playing = False
+            zombie.setAction()
+        if man.health <= 0:
+            playing = False
 
-    keys = pygame.key.get_pressed()
+        keys = pygame.key.get_pressed()
 
-    if keys[pygame.K_SPACE]:
-        if shotTimer > 10:
-            sounds['shot'].play()
-            bullets.append(Bullet(man.x + man.width / 2, man.y + 50, man.left))
-            shotTimer = 0
-    if shotTimer < 200:
-        shotTimer += 1
-    if keys[pygame.K_LEFT] and man.x > man.vel:
-        man.left = True
-        man.right = False
-        man.standing = False
-        man.x -= man.vel
-    elif keys[pygame.K_RIGHT] and man.x < screenWidth - man.width - man.vel:
-        man.right = True
-        man.left = False
-        man.x += man.vel
-        man.standing = False
-    else:
-        man.standing = True
-        man.walkCount = 0
-    if not man.isJump:
-        if keys[pygame.K_UP]:
-            man.isJump = True
-    else:
-        man.y -= man.jumpAcc
-        if man.jumpAcc > -20:
-            man.jumpAcc -= 1
+        if keys[pygame.K_SPACE]:
+            if shotTimer > 10:
+                sounds['shot'].play()
+                bullets.append(Bullet(man.x + man.width / 2, man.y + 50, man.left))
+                shotTimer = 0
+        if shotTimer < 200:
+            shotTimer += 1
+        if keys[pygame.K_LEFT] and man.x > man.vel:
+            man.left = True
+            man.right = False
+            man.standing = False
+            man.x -= man.vel
+        elif keys[pygame.K_RIGHT] and man.x < screenWidth - man.width - man.vel:
+            man.right = True
+            man.left = False
+            man.x += man.vel
+            man.standing = False
         else:
-            man.jumpAcc = 20
-            man.isJump = False
-    redraw()
+            man.standing = True
+            man.walkCount = 0
+        if not man.isJump:
+            if keys[pygame.K_UP]:
+                man.isJump = True
+        else:
+            man.y -= man.jumpAcc
+            if man.jumpAcc > -20:
+                man.jumpAcc -= 1
+            else:
+                man.jumpAcc = 20
+                man.isJump = False
+        redraw()
 
-while end:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
+    while end:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                end = False
+
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_RETURN]:
             end = False
-
-    keys = pygame.key.get_pressed()
-    if keys[pygame.K_RETURN]:
-        end = False
-    redraw()
+        redraw()
+initV()
+main()
 pygame.quit()
