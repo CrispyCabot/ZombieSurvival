@@ -9,16 +9,41 @@ pygame.init()
 
 myFont = pygame.font.Font('28DaysLater.ttf', 22) #Score Font
 font = pygame.font.Font('28DaysLater.ttf', 36) #Game Over Font
-plFont = pygame.font.Font('28DaysLater.ttf', 56)
+plFont = pygame.font.Font('28DaysLater.ttf', 56) #play font
+plFont2 = pygame.font.Font('28DaysLater.ttf', 60)
+splFont = pygame.font.Font('28DaysLater.ttf', 36) #Shop/Quit font
+splFont2 = pygame.font.Font('28DaysLater.ttf', 40)
 
 screenWidth = 800
 screenHeight = 500
 
 gameScreen = 'home'
 
-playBtn = Button((screenHeight-200)/2,(screenWidth-500)/2,500,200,[200,20,20], 'Play', plFont, [0,0,0])
+backBtn = Button(0,screenHeight-50,100,50, [100,100,100], 'Back', splFont, [255,255,255], splFont2)
 
-win = pygame.display.set_mode((screenWidth, screenHeight), pygame.RESIZABLE)
+def homeScreenLoad():
+    global homeButtons
+    homeButtons = []
+    playBtn = Button((screenWidth - 200)/2,(screenHeight-100)/2-30,200,100,[200,20,20], 'Play', plFont, [0,0,0], plFont2)
+    homeButtons.append(playBtn)
+    shopBtn = Button((screenWidth-100)/2-50, (screenHeight-50)/2+50,100,50, [20,255,20], 'Shop', splFont, [0,0,0], splFont2)
+    homeButtons.append(shopBtn)
+    quitBtn = Button((screenWidth-100)/2+50, (screenHeight-50)/2+50,100,50, [20,20,20], 'Quit', splFont, [150,150,150], splFont2)
+    homeButtons.append(quitBtn)
+homeScreenLoad()
+
+def betweenScreensLoad():
+    global betweenBtns
+    betweenBtns = []
+    playBtn = Button((screenWidth - 220)/2,(screenHeight-100)/2-30,220,100,[200,20,20], 'Continue', plFont, [0,0,0], plFont2)
+    betweenBtns.append(playBtn)
+    shopBtn = Button((screenWidth-100)/2-60, (screenHeight-50)/2+50,100,50, [20,255,20], 'Shop', splFont, [0,0,0], splFont2)
+    betweenBtns.append(shopBtn)
+    quitBtn = Button((screenWidth-100)/2+60, (screenHeight-50)/2+50,100,50, [20,20,20], 'Quit', splFont, [150,150,150], splFont2)
+    betweenBtns.append(quitBtn)
+betweenScreensLoad()
+
+win = pygame.display.set_mode((screenWidth, screenHeight)) #, pygame.RESIZABLE
 
 pygame.display.set_caption('Zombie Survival')
 
@@ -33,11 +58,19 @@ def loadShit():
     global walkRight
     global sounds
     global songs
+    global waveText
     background = pygame.image.load('images/background.jpg')
     background = pygame.transform.scale(background, (screenWidth, screenHeight))
     bulletImg = pygame.image.load('images/bullet.png')
     bulletLeft = pygame.transform.scale(bulletImg, (15, 7))
     bulletRight = pygame.transform.flip(bulletLeft, True, False)
+
+    #convert_alpha is supposed to allow me to use set_alpha later on, but it doesn't work so fuck it.
+    waveText = [pygame.image.load('waveText/wave1.png').convert_alpha(), pygame.image.load('waveText/wave2.png').convert_alpha(),
+                pygame.image.load('waveText/wave3.png').convert_alpha(), pygame.image.load('waveText/wave4.png').convert_alpha(),
+                pygame.image.load('waveText/wave5.png').convert_alpha(), pygame.image.load('waveText/wave6.png').convert_alpha(),
+                pygame.image.load('waveText/wave7.png').convert_alpha(), pygame.image.load('waveText/wave8.png').convert_alpha(),
+                pygame.image.load('waveText/wave9.png').convert_alpha(), pygame.image.load('waveText/wave10.png').convert_alpha()]
 
     walkLeft = [pygame.image.load('char/p0.png'), pygame.image.load('char/p1.png'),
                 pygame.image.load('char/p2.png'), pygame.image.load('char/p3.png'),
@@ -1456,39 +1489,94 @@ def loadZombies():
 loadShit()
 loadZombies()
 
+def drawPlayStuff():
+    global gameScreen, homeButtons, playing, end, wave, waveTimer, waveText
+    if playing:
+        win.blit(background, (0, 0))
+        if waveTimer > 0:
+            waveText[wave-1].set_alpha(waveTimer)
+            win.blit(waveText[wave-1], (100,100))
+            waveTimer -= 1
+        for zombie in zombies:
+            if zombie.draw(win):
+                zombies.remove(zombie)
+        for i in bullets:
+            if i.draw(win):
+                bullets.remove(i)
+        man.draw(win)
+
+        scoreText = myFont.render('Score '+str(score), False, (255,255,255))
+        win.blit(scoreText, (10, 10))
+        if man.health > 0:
+            pygame.draw.rect(win, (0,255,0), pygame.Rect(100, 10, man.health*2,20))
+        if man.health< 200:
+            pygame.draw.rect(win, (255,0,0), pygame.Rect(100+man.health*2,10, 400-man.health*2, 20))
+    else:
+        gameOver = font.render('Game Over', False, (255,0,0))
+        win.blit(gameOver, (50,50))
+
+def drawHomeStuff(homeButtons):
+    global playing, end, gameScreen
+    win.blit(background, (0,0))
+    for button in homeButtons:
+        button.update(win)
+    if homeButtons[0].clicked():
+        gameScreen = 'play'
+    if homeButtons[1].clicked():
+        gameScreen = 'shop'
+    if homeButtons[2].clicked():
+        gameScreen = 'play'
+        end = False
+        playing = False
+
+def drawShopStuff():
+    global gameScreen
+    win.blit(background, (0,0))
+    x = font.render('Still being made', False, (255,255,255))
+    win.blit(x, (100,100))
+    backBtn.update(win)
+    if backBtn.clicked():
+        if score == 0:
+            gameScreen = 'home'
+        else:
+            gameScreen = 'betweenWave'
+
+def drawBetweenThings():
+    global betweenBtns, man, score, gameScreen
+    win.blit(background, (0,0))
+    for button in betweenBtns:
+        button.update(win)
+    if betweenBtns[0].clicked():
+        gameScreen = 'play'
+    if betweenBtns[1].clicked():
+        gameScreen = 'shop'
+    if betweenBtns[2].clicked():
+        gameScreen = 'play'
+        end = False
+        playing = False
+    scoreText = myFont.render('Score '+str(score), False, (255,255,255))
+    win.blit(scoreText, (10, 10))
+    if man.health > 0:
+        pygame.draw.rect(win, (0,255,0), pygame.Rect(100, 10, man.health*2,20))
+    if man.health< 200:
+        pygame.draw.rect(win, (255,0,0), pygame.Rect(100+man.health*2,10, 400-man.health*2, 20))
+
 
 def redraw():
-    global gameScreen
+    global gameScreen, homeButtons, playing, end, wave, waveTimer, waveText
     screenWidth, screenHeight = pygame.display.get_surface().get_size()
+    if not pygame.mixer.music.get_busy():
+        pygame.mixer.music.load(songs[randint(0,len(songs)-1)])
+        pygame.mixer.music.set_volume(0.3)
+        pygame.mixer.music.play()
     if gameScreen == 'play':
-        if not pygame.mixer.music.get_busy():
-            pygame.mixer.music.load(songs[randint(0,len(songs)-1)])
-            pygame.mixer.music.set_volume(0.3)
-            pygame.mixer.music.play()
-        if playing:
-            win.blit(background, (0, 0))
-            for zombie in zombies:
-                if zombie.draw(win):
-                    zombies.remove(zombie)
-            for i in bullets:
-                if i.draw(win):
-                    bullets.remove(i)
-            man.draw(win)
-
-            scoreText = myFont.render('Score '+str(score), False, (255,255,255))
-            win.blit(scoreText, (10, 10))
-            if man.health > 0:
-                pygame.draw.rect(win, (0,255,0), pygame.Rect(100, 10, man.health*2,20))
-            if man.health< 100:
-                pygame.draw.rect(win, (255,0,0), pygame.Rect(100+man.health*2,10, 200-man.health*2, 20))
-        else:
-            gameOver = font.render('Game Over', False, (255,0,0))
-            win.blit(gameOver, (50,50))
+        drawPlayStuff()
     elif gameScreen == 'home':
-        win.blit(background, (0,0))
-        playBtn.update(win)
-        if playBtn.clicked():
-            gameScreen = 'play'
+        drawHomeStuff(homeButtons)
+    elif gameScreen == 'shop':
+        drawShopStuff()
+    elif gameScreen == 'betweenWave':
+        drawBetweenThings()
     pygame.display.update()
 
 
@@ -1505,7 +1593,7 @@ class Person:
         self.standing = True
         self.isJump = False
         self.jumpAcc = 20
-        self.health=100
+        self.health=200
 
     def draw(self, win):
         if self.walkCount + 1 >= 28:
@@ -1544,7 +1632,7 @@ class Zombie: #Can run, walk, jump, idle, attack, be hurt, die
         self.speed = 12
         self.numUps = 0
         self.isDead = False
-        if x == 0:
+        if x == -100:
             self.right = True
         else:
             self.left = True
@@ -1659,7 +1747,7 @@ class Zombie: #Can run, walk, jump, idle, attack, be hurt, die
         elif action == 'attack':
             self.frameCountMax = len(z1AttackL)-1
             self.frameStart = 0
-            if self.frameCount//self.speed == 1 and abs((self.x + self.width//2) - (man.x+man.width//2)) < 90 and man.y > screenHeight - 200:
+            if self.frameCount//self.speed == 1 and abs((self.x + self.width//2) - (man.x+man.width//2)) < 90 and man.y > screenHeight - 250:
                 man.health -= 1
             if self.right:
                 img = attackR[self.type][self.frameCount//self.speed]
@@ -1733,22 +1821,37 @@ class Bullet:
             return True
 
 def initV():
-    global man, bullets, zombies, zombieCount, score, playing, end
+    global man, bullets, zombies, score, playing, end, wave, waveTimer, money
 
-    man = Person(screenWidth // 2 - 96 / 2, screenHeight - 175, 96, 112)
+    man = Person(screenWidth // 2 - 48 / 2, screenHeight - 175, 96, 112)
     bullets = []
     zombies = []
-    zombieCount = 1
     score = 0
+    money = 0
     playing = True
     end = True
-# MAIN LOOP
+    wave = 1
+    waveTimer = 255
 
+def newWave(wave):
+    global gameScreen, zombies, man, bullets
+    zombies = []
+    bullets = []
+    man.x = screenWidth // 2 - 48
+    man.y = screenHeight - 175
+    wave += 1
+    waveTimer = 255
+    gameScreen = 'betweenWave'
+    return wave, waveTimer
+# MAIN LOOP
 def main():
-    global man, bullets, zombies, zombieCount, score, playing, end
+    global man, bullets, zombies, score, playing, end, wave, waveTimer, gameScreen
 
     shotTimer = 0
     zombieTimer = 0
+    zombieTimerEnd = 50
+    zombieCount = 1
+
     while playing:
         clock.tick(56)
 
@@ -1757,68 +1860,79 @@ def main():
                 playing = False
                 end = False
 
-        if len(zombies) < zombieCount and zombieTimer >= 50:
-            x = randint(1,2)
-            if x == 1:
-                zombie = Zombie(0,screenHeight-30, randint(0,2))
-                zombies.append(zombie)
-            if x == 2:
-                zombie = Zombie(screenWidth, screenHeight-30, randint(0,2))
-                zombies.append(zombie)
-            zombieTimer = 0
-        if zombieTimer < 110:
+        if gameScreen == 'play':
+            if wave == 1:
+                if score < 3:
+                    zombieCount = 1
+                elif score < 10:
+                    zombieCount = 3
+                elif score < 30:
+                    zombieCount = 5
+                elif score == 40:
+                    wave, waveTimer = newWave(wave)
+                if len(zombies) < zombieCount and zombieTimer >= zombieTimerEnd:
+                    x = randint(1,2)
+                    if x == 1:
+                        zombie = Zombie(-100,screenHeight-30, randint(0,2))
+                        zombies.append(zombie)
+                    if x == 2:
+                        zombie = Zombie(screenWidth, screenHeight-30, randint(0,2))
+                        zombies.append(zombie)
+                    zombieTimer = 0
+            if wave == 2:
+                print("wave 2")
             zombieTimer += 1
-        for bullet in bullets:
+            for bullet in bullets:
+                for zombie in zombies:
+                    if bullet.x > zombie.x and bullet.x < zombie.x+zombie.width and bullet.y < zombie.y and bullet.y > zombie.y-zombie.height and zombie.isDead == False:
+                        #hit
+                        sounds['hit'].play()
+                        bullets.remove(bullet)
+                        if zombie.health <= 20:
+                            zombie.die()
+                            score += 1
+                        else:
+                            zombie.health -= 20
+                            if randint(1,5) == 1 and not zombie.actions.bool[2]: #Makes sure not in middle of jumping
+                                zombie.hurt()
+                        break
             for zombie in zombies:
-                if bullet.x > zombie.x and bullet.x < zombie.x+zombie.width and bullet.y < zombie.y and bullet.y > zombie.y-zombie.height and zombie.isDead == False:
-                    #hit
-                    sounds['hit'].play()
-                    bullets.remove(bullet)
-                    if zombie.health <= 20:
-                        zombie.die()
-                        score += 1
-                    else:
-                        zombie.health -= 20
-                        if randint(1,5) == 1 and not zombie.actions.bool[4]: #Makes sure not in middle of jumping
-                            zombie.hurt()
-                    break
-        for zombie in zombies:
-            zombie.setAction()
-        if man.health <= 0:
-            playing = False
+                zombie.setAction()
+            if man.health <= 0:
+                playing = False
 
-        keys = pygame.key.get_pressed()
+            keys = pygame.key.get_pressed()
 
-        if keys[pygame.K_SPACE]:
-            if shotTimer > 10:
-                sounds['shot'].play()
-                bullets.append(Bullet(man.x + man.width / 2, man.y + 50, man.left))
-                shotTimer = 0
-        if shotTimer < 200:
-            shotTimer += 1
-        if keys[pygame.K_LEFT] and man.x > man.vel:
-            man.left = True
-            man.right = False
-            man.standing = False
-            man.x -= man.vel
-        elif keys[pygame.K_RIGHT] and man.x < screenWidth - man.width - man.vel:
-            man.right = True
-            man.left = False
-            man.x += man.vel
-            man.standing = False
-        else:
-            man.standing = True
-            man.walkCount = 0
-        if not man.isJump:
-            if keys[pygame.K_UP]:
-                man.isJump = True
-        else:
-            man.y -= man.jumpAcc
-            if man.jumpAcc > -20:
-                man.jumpAcc -= 1
+            if keys[pygame.K_SPACE]:
+                if shotTimer > 10:
+                    sounds['shot'].play()
+                    bullets.append(Bullet(man.x + man.width / 2, man.y + 50, man.left))
+                    shotTimer = 0
+            if shotTimer < 200:
+                shotTimer += 1
+            if keys[pygame.K_LEFT] and man.x > man.vel:
+                man.left = True
+                man.right = False
+                man.standing = False
+                man.x -= man.vel
+            elif keys[pygame.K_RIGHT] and man.x < screenWidth - man.width - man.vel:
+                man.right = True
+                man.left = False
+                man.x += man.vel
+                man.standing = False
             else:
-                man.jumpAcc = 20
-                man.isJump = False
+                man.standing = True
+                man.walkCount = 0
+            if not man.isJump:
+                if keys[pygame.K_UP]:
+                    man.isJump = True
+            else:
+                man.y -= man.jumpAcc
+                if man.jumpAcc > -20:
+                    man.jumpAcc -= 1
+                else:
+                    man.jumpAcc = 20
+                    man.isJump = False
         redraw()
 
     while end:

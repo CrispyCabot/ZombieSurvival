@@ -1,0 +1,2 @@
+I couldn't figure out how to change the alpha value for text in pygame no matter what I tried
+so that is why this folder exists
