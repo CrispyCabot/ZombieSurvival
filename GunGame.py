@@ -12,9 +12,9 @@ font = pygame.font.Font('28DaysLater.ttf', 36) #Game Over Font
 screenWidth = 800
 screenHeight = 500
 
-win = pygame.display.set_mode((screenWidth, screenHeight))
+win = pygame.display.set_mode((screenWidth, screenHeight), pygame.RESIZABLE)
 
-pygame.display.set_caption('Shooting Game')
+pygame.display.set_caption('Zombie Survival')
 
 clock = pygame.time.Clock()
 
@@ -1447,6 +1447,7 @@ loadZombies()
 
 
 def redraw():
+    screenWidth, screenHeight = pygame.display.get_surface().get_size()
     if playing:
         win.blit(background, (0, 0))
         for zombie in zombies:
@@ -1459,8 +1460,10 @@ def redraw():
 
         scoreText = myFont.render('Score '+str(score), False, (255,255,255))
         win.blit(scoreText, (10, 10))
-        pygame.draw.rect(win, (0,255,0), pygame.Rect(100, 10, man.health*2,20))
-        pygame.draw.rect(win, (255,0,0), pygame.Rect(100+man.health*2,10, 200-man.health*2, 20))
+        if man.health > 0:
+            pygame.draw.rect(win, (0,255,0), pygame.Rect(100, 10, man.health*2,20))
+        if man.health< 100:
+            pygame.draw.rect(win, (255,0,0), pygame.Rect(100+man.health*2,10, 200-man.health*2, 20))
     else:
         gameOver = font.render('Game Over', False, (255,0,0))
         win.blit(gameOver, (50,50))
@@ -1500,12 +1503,12 @@ class Person:
                 win.blit(walkRight[0], (self.x, self.y))
 
 class Zombie: #Can run, walk, jump, idle, attack, be hurt, die
-    def __init__(self, x,y,width,height, type): #Need to add type for the 3 zombies
+    def __init__(self, x,y, type): #Need to add type for the 3 zombies
         self.x = x
         self.y = y
         self.type = type
-        self.width = width
-        self.height = height
+        self.width = 97
+        self.height = 144
         self.left = False
         self.right = False
         self.angry = False
@@ -1528,9 +1531,14 @@ class Zombie: #Can run, walk, jump, idle, attack, be hurt, die
         self.actions.bool[6] = True
         self.isDead = True
         self.frameCount = 0
+    def hurt(self):
+        action = self.actions.getTrue()
+        self.actions.bool[self.actions.actions.index(action)] = False
+        self.actions.bool[5] = True
+        self.frameCount = 0
     def setAction(self):
         action = self.actions.getTrue()
-        if not self.isDead and action != 'attack' and action != 'jump':
+        if not self.isDead and action not in ['attack', 'hurt', 'jump']:
             if zombie.x < man.x:
                 zombie.right = True
                 zombie.left = False
@@ -1561,21 +1569,29 @@ class Zombie: #Can run, walk, jump, idle, attack, be hurt, die
             self.frameCountMax =  len(z1RunL)-1
             self.frameStart = 5*self.speed
             if self.right:
+                img = runR[self.type][self.frameCount//self.speed]
+                ignore, imgY = img.get_rect().size
                 self.x += 2
-                win.blit(runR[self.type][self.frameCount//self.speed], (self.x, self.y))
+                win.blit(img, (self.x, self.y-imgY))
             else:
+                img = runL[self.type][self.frameCount//self.speed]
+                ignore, imgY = img.get_rect().size
                 self.x -= 2
-                win.blit(runL[self.type][self.frameCount//self.speed], (self.x, self.y))
+                win.blit(img, (self.x, self.y-imgY))
             self.frameCount += 1
         elif action == 'walk':
             self.frameCountMax = len(z1WalkL)-1
             self.frameStart = 0
             if self.right:
+                img = walkR[self.type][self.frameCount//self.speed]
+                ignore, imgY = img.get_rect().size
                 self.x += .5
-                win.blit(walkR[self.type][self.frameCount//self.speed], (self.x, self.y))
+                win.blit(img, (self.x, self.y-imgY))
             else:
+                img = walkL[self.type][self.frameCount//self.speed]
+                ignore, imgY = img.get_rect().size
                 self.x -= .5
-                win.blit(walkL[self.type][self.frameCount//self.speed], (self.x, self.y))
+                win.blit(img, (self.x, self.y-imgY))
             self.frameCount += 1
         elif action == 'jump':
             self.frameCountMax = len(z1JumpL)-1
@@ -1595,29 +1611,41 @@ class Zombie: #Can run, walk, jump, idle, attack, be hurt, die
                     self.frameCount = -1
             #        print("end jump")
             if self.right:
+                img = jumpR[self.type][self.frameCount//self.speed]
+                ignore, imgY = img.get_rect().size
                 self.x += 3
-                win.blit(jumpR[self.type][self.frameCount//self.speed], (self.x, self.y))
+                win.blit(img, (self.x, self.y-imgY))
             else:
+                img = jumpL[self.type][self.frameCount//self.speed]
+                ignore, imgY = img.get_rect().size
                 self.x -= 3
-                win.blit(jumpL[self.type][self.frameCount//self.speed], (self.x, self.y))
+                win.blit(img, (self.x, self.y-imgY))
             self.frameCount += 1
         elif action == 'idle':
             self.frameCountMax = len(z1IdleL)-1
             self.frameStart = 0
             if self.right:
-                win.blit(idleR[self.type][self.frameCount//self.speed], (self.x, self.y))
+                img = idleR[self.type][self.frameCount//self.speed]
+                ignore, imgY = img.get_rect().size
+                win.blit(img, (self.x, self.y-imgY))
             else:
-                win.blit(idleL[self.type][self.frameCount//self.speed], (self.x, self.y))
+                img = idleL[self.type][self.frameCount//self.speed]
+                ignore, imgY = img.get_rect().size
+                win.blit(img, (self.x, self.y-imgY))
             self.frameCount += 1
         elif action == 'attack':
             self.frameCountMax = len(z1AttackL)-1
             self.frameStart = 0
-            if self.frameCount//self.speed == 1 and abs((zombie.x + zombie.width//2) - (man.x+man.width//2)) < 75 and man.y > screenHeight - 180:
+            if self.frameCount//self.speed == 1 and abs((zombie.x + zombie.width//2) - (man.x+man.width//2)) < 90 and man.y > screenHeight - 200:
                 man.health -= 1
             if self.right:
-                win.blit(attackR[self.type][self.frameCount//self.speed], (self.x, self.y))
+                img = attackR[self.type][self.frameCount//self.speed]
+                ignore, imgY = img.get_rect().size
+                win.blit(img, (self.x, self.y-imgY))
             else:
-                win.blit(attackL[self.type][self.frameCount//self.speed], (self.x, self.y))
+                img = attackL[self.type][self.frameCount//self.speed]
+                ignore, imgY = img.get_rect().size
+                win.blit(img, (self.x, self.y-imgY))
             self.frameCount += 1
             if self.frameCount//self.speed == 4:
                 self.actions.bool[4] = False #Sets attack to False
@@ -1625,17 +1653,27 @@ class Zombie: #Can run, walk, jump, idle, attack, be hurt, die
             self.frameCountMax = len(z1HurtL)-1
             self.frameStart = 0
             if self.right:
-                win.blit(hurtR[self.type][self.frameCount//self.speed], (self.x, self.y))
+                img = hurtR[self.type][self.frameCount//self.speed]
+                ignore, imgY = img.get_rect().size
+                win.blit(img, (self.x, self.y-imgY))
             else:
-                win.blit(hurtL[self.type][self.frameCount//self.speed], (self.x, self.y))
+                img = hurtL[self.type][self.frameCount//self.speed]
+                ignore, imgY = img.get_rect().size
+                win.blit(img, (self.x, self.y-imgY))
             self.frameCount += 1
+            if self.frameCount == 47:
+                self.actions.bool[5] = False
         elif action == 'die':
             self.frameCountMax = len(z1DeathL)-1
             self.frameStart = 0
             if self.right:
-                win.blit(dieR[self.type][self.frameCount//self.speed], (self.x, self.y))
+                img = dieR[self.type][self.frameCount//self.speed]
+                ignore, imgY = img.get_rect().size
+                win.blit(img, (self.x, self.y-imgY))
             else:
-                win.blit(dieL[self.type][self.frameCount//self.speed], (self.x, self.y))
+                img = dieL[self.type][self.frameCount//self.speed]
+                ignore, imgY = img.get_rect().size
+                win.blit(img, (self.x, self.y-imgY))
             self.frameCount += 1
         if self.health < 100 and action != 'die':
             pygame.draw.rect(win, (0,255,0), pygame.Rect(self.x, self.y-20,self.health, 10))
@@ -1675,7 +1713,7 @@ man = Person(screenWidth // 2 - 96 / 2, screenHeight - 175, 96, 112)
 bullets = []
 shotTimer = 0
 zombies = []
-zombieCount = 5
+zombieCount = 1
 zombieTimer = 0
 score = 0
 
@@ -1694,17 +1732,17 @@ while playing:
     if len(zombies) < zombieCount and zombieTimer >= 50:
         x = randint(1,2)
         if x == 1:
-            zombie = Zombie(0,screenHeight-175, 96, 112, randint(0,2))
+            zombie = Zombie(0,screenHeight-30, randint(0,2))
             zombies.append(zombie)
         if x == 2:
-            zombie = Zombie(screenWidth, screenHeight-175, 96, 112, randint(0,2))
+            zombie = Zombie(screenWidth, screenHeight-30, randint(0,2))
             zombies.append(zombie)
         zombieTimer = 0
     if zombieTimer < 110:
         zombieTimer += 1
     for bullet in bullets:
         for zombie in zombies:
-            if bullet.x > zombie.x and bullet.x < zombie.x+zombie.width and bullet.y > zombie.y and bullet.y < zombie.y+zombie.height and zombie.isDead == False:
+            if bullet.x > zombie.x and bullet.x < zombie.x+zombie.width and bullet.y < zombie.y and bullet.y > zombie.y-zombie.height and zombie.isDead == False:
                 #hit
                 sounds['hit'].play()
                 bullets.remove(bullet)
@@ -1713,6 +1751,8 @@ while playing:
                     score += 1
                 else:
                     zombie.health -= 20
+                    if randint(1,5) == 1 and not zombie.actions.bool[4]: #Makes sure not in middle of jumping
+                        zombie.hurt()
                 break
     for zombie in zombies:
         zombie.setAction()
