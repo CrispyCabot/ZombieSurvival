@@ -18,7 +18,7 @@ class Button:
             return True
         return False
     def update(self, win):
-        if self.isInside():
+        if self.isInside() and self.active:
             AAfilledRoundedRect(win, pygame.Rect(self.x, self.y, self.width, self.height), (self.color[0]-20, self.color[1]-20, self.color[2]-20))
             text = self.font2.render(self.text, False, (self.txtCol[0], self.txtCol[1], self.txtCol[2]))
             tW, tH = text.get_rect().size
@@ -33,6 +33,6 @@ class Button:
             temp1 = (self.height-tH)/2
             win.blit(text,(self.x+temp,self.y+temp1))
     def clicked(self):
-        if self.isInside() and pygame.mouse.get_pressed()[0]:
+        if self.isInside() and pygame.mouse.get_pressed()[0] and self.active:
             return True
         return False

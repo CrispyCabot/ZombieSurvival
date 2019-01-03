@@ -1,11 +1,82 @@
 # Shooting game
 import pygame
+import time
+import threading
 from random import randint, choice
 from Button import Button
+
+timeStart = time.time()
+
+loading = True
 
 pygame.mixer.pre_init(44100, -16, 2, 512)
 pygame.mixer.init()
 pygame.init()
+
+loadFont = pygame.font.Font('28DaysLater.ttf', 36)
+loadFont2 = pygame.font.Font('28DaysLater.ttf', 76)
+
+clock = pygame.time.Clock()
+
+screenWidth = 800
+screenHeight = 500
+
+win = pygame.display.set_mode((screenWidth, screenHeight)) #, pygame.RESIZABLE
+
+pygame.display.set_caption('Zombie Survival')
+
+loadZombie = [pygame.image.load('zombieLoading/tile000.png'), pygame.image.load('zombieLoading/tile001.png'),
+                pygame.image.load('zombieLoading/tile002.png'), pygame.image.load('zombieLoading/tile003.png'),
+                pygame.image.load('zombieLoading/tile004.png'), pygame.image.load('zombieLoading/tile005.png'),
+                pygame.image.load('zombieLoading/tile006.png'), pygame.image.load('zombieLoading/tile007.png'),
+                pygame.image.load('zombieLoading/tile008.png'), pygame.image.load('zombieLoading/tile009.png'),]
+
+def zombieLoad():
+    global loading, win
+    speed = 5
+    frameCount = 0
+    while loading:
+        text = loadFont2.render('Loading', True, (255,255,255))
+        w, ignore = text.get_rect().size
+        pygame.draw.rect(win, (0,0,0), pygame.Rect(0,0,screenWidth, screenHeight-100))
+        win.blit(text, ((screenWidth-w)/2, 15))
+        img = loadZombie[frameCount//speed]
+        imgW, imgH = img.get_rect().size
+        win.blit(img, ((screenWidth-imgW)/2, (screenHeight-imgH)/2))
+        if frameCount+1 >= speed * len(loadZombie):
+            frameCount = 0
+        else:
+            frameCount += 1
+        clock.tick(60)
+        pygame.display.update()
+
+thread1 = threading.Thread(target=zombieLoad)
+thread1.start()
+
+class LoadingScreen:
+    def __init__(self):
+        self.text = 'Fonts'
+        self.barLevel = 0
+        self.frameCount = 0
+        self.speed = 1
+        self.totalBars = 52
+        self.multi = 5
+    def update(self, win):
+        self.barLevel += 1
+        pygame.draw.rect(win, (0,0,0), pygame.Rect(0, screenHeight-100, screenWidth, 100))
+        pygame.draw.rect(win, (255,255,255), pygame.Rect((screenWidth-self.totalBars*self.multi)/2, screenHeight-75, self.totalBars*self.multi, 20), 1)
+        pygame.draw.rect(win, (0,255,0), pygame.Rect((screenWidth-self.totalBars*self.multi)/2, screenHeight-75, self.barLevel*self.multi, 20))
+    #    print(self.barLevel) #Used to find the total bar level
+        text = loadFont.render(self.text, True, (255,255,255))
+        imgX, ignore = text.get_rect().size
+        win.blit(text, ((screenWidth-imgX)/2,screenHeight-40))
+    #    time.sleep(.1)
+
+loadScreen = LoadingScreen()
+loadScreen.text = 'Fonts'
+loadScreen.update(win)
+
+gameScreen = 'home'
 
 myFont = pygame.font.Font('28DaysLater.ttf', 22) #Score Font
 font = pygame.font.Font('28DaysLater.ttf', 36) #Game Over Font
@@ -13,11 +84,12 @@ plFont = pygame.font.Font('28DaysLater.ttf', 56) #play font
 plFont2 = pygame.font.Font('28DaysLater.ttf', 60)
 splFont = pygame.font.Font('28DaysLater.ttf', 36) #Shop/Quit font
 splFont2 = pygame.font.Font('28DaysLater.ttf', 40)
+titleFont = pygame.font.Font('ZombieSlayer.ttf', 70)
+shopFont = pygame.font.Font('varsityteam.otf', 20)
+shopFont2 = pygame.font.Font('varsityteam.otf', 24)
 
-screenWidth = 800
-screenHeight = 500
-
-gameScreen = 'home'
+loadScreen.text = 'Buttons'
+loadScreen.update(win)
 
 backBtn = Button(0,screenHeight-50,100,50, [100,100,100], 'Back', splFont, [255,255,255], splFont2)
 
@@ -26,12 +98,10 @@ def homeScreenLoad():
     homeButtons = []
     playBtn = Button((screenWidth - 200)/2,(screenHeight-100)/2-30,200,100,[200,20,20], 'Play', plFont, [0,0,0], plFont2)
     homeButtons.append(playBtn)
-    shopBtn = Button((screenWidth-100)/2-50, (screenHeight-50)/2+50,100,50, [20,255,20], 'Shop', splFont, [0,0,0], splFont2)
-    homeButtons.append(shopBtn)
-    quitBtn = Button((screenWidth-100)/2+50, (screenHeight-50)/2+50,100,50, [20,20,20], 'Quit', splFont, [150,150,150], splFont2)
+    quitBtn = Button((screenWidth-200)/2, (screenHeight-50)/2+50,200,50, [20,20,20], 'Quit', splFont, [150,150,150], splFont2)
     homeButtons.append(quitBtn)
 homeScreenLoad()
-
+loadScreen.update(win)
 def betweenScreensLoad():
     global betweenBtns
     betweenBtns = []
@@ -42,13 +112,14 @@ def betweenScreensLoad():
     quitBtn = Button((screenWidth-100)/2+60, (screenHeight-50)/2+50,100,50, [20,20,20], 'Quit', splFont, [150,150,150], splFont2)
     betweenBtns.append(quitBtn)
 betweenScreensLoad()
-
-win = pygame.display.set_mode((screenWidth, screenHeight)) #, pygame.RESIZABLE
-
-pygame.display.set_caption('Zombie Survival')
-
-clock = pygame.time.Clock()
-
+loadScreen.update(win)
+def shopScreenLoad():
+    global shopButtons
+    shopButtons = []
+    healthInc = Button((screenWidth-100)/2-200,75,100,25,[96,165,243], '$20 - Health', shopFont, [255,255,255], shopFont2)
+    shopButtons.append(healthInc)
+shopScreenLoad()
+loadScreen.update(win)
 def loadShit():
     global background
     global bulletImg
@@ -71,15 +142,21 @@ def loadShit():
                 pygame.image.load('waveText/wave5.png').convert_alpha(), pygame.image.load('waveText/wave6.png').convert_alpha(),
                 pygame.image.load('waveText/wave7.png').convert_alpha(), pygame.image.load('waveText/wave8.png').convert_alpha(),
                 pygame.image.load('waveText/wave9.png').convert_alpha(), pygame.image.load('waveText/wave10.png').convert_alpha()]
-
+    loadScreen.text = 'Player Walk Left'
+    loadScreen.update(win)
     walkLeft = [pygame.image.load('char/p0.png'), pygame.image.load('char/p1.png'),
                 pygame.image.load('char/p2.png'), pygame.image.load('char/p3.png'),
                 pygame.image.load('char/p4.png'), pygame.image.load('char/p5.png'),
                 pygame.image.load('char/p6.png')]
+    loadScreen.text = 'Player Walk Right'
+    loadScreen.update(win)
     walkRight = [pygame.image.load('char/r0.png'), pygame.image.load('char/r1.png'),
                  pygame.image.load('char/r2.png'), pygame.image.load('char/r3.png'),
                  pygame.image.load('char/r4.png'), pygame.image.load('char/r5.png'),
                  pygame.image.load('char/r6.png')]
+
+    loadScreen.text = 'Sounds'
+    loadScreen.update(win)
 
     songs = ['songs/cant-go-to-hell.mp3', 'songs/highway-to-hell.mp3', 'songs/bloodwater.mp3']
 
@@ -88,8 +165,9 @@ def loadShit():
     sounds['hit'].set_volume(0.1)
     sounds['shot'].set_volume(0.5)
 
-#TO DO: ADD LOADING SCREEN
 def loadZombies():
+    loadScreen.text = 'z1AttackL'
+    loadScreen.update(win)
     global z1AttackL
     z1AttackL = []
     img = pygame.image.load('zombie1/animation/Attack1.png')
@@ -123,6 +201,8 @@ def loadZombies():
     img = pygame.transform.flip(img, True, False)
     z1AttackL.append(img)
 
+    loadScreen.text = 'z1DeathL'
+    loadScreen.update(win)
     global z1DeathL
     z1DeathL = []
     img = pygame.image.load('zombie1/animation/Dead1.png')
@@ -166,6 +246,8 @@ def loadZombies():
     img = pygame.transform.flip(img, True, False)
     z1DeathL.append(img)
 
+    loadScreen.text = 'z1HurtL'
+    loadScreen.update(win)
     global z1HurtL
     z1HurtL = []
     img = pygame.image.load('zombie1/animation/Hurt1.png')
@@ -194,6 +276,8 @@ def loadZombies():
     img = pygame.transform.flip(img, True, False)
     z1HurtL.append(img)
 
+    loadScreen.text = 'z1IdleL'
+    loadScreen.update(win)
     global z1IdleL
     z1IdleL = []
     img = pygame.image.load('zombie1/animation/Idle1.png')
@@ -217,6 +301,8 @@ def loadZombies():
     img = pygame.transform.flip(img, True, False)
     z1IdleL.append(img)
 
+    loadScreen.text = 'z1JumpL'
+    loadScreen.update(win)
     global z1JumpL
     z1JumpL = []
     img = pygame.image.load('zombie1/animation/Jump1.png')
@@ -255,6 +341,8 @@ def loadZombies():
     img = pygame.transform.flip(img, True, False)
     z1JumpL.append(img)
 
+    loadScreen.text = 'z1RunL'
+    loadScreen.update(win)
     global z1RunL
     z1RunL = []
     img = pygame.image.load('zombie1/animation/Run1.png')
@@ -308,6 +396,8 @@ def loadZombies():
     img = pygame.transform.flip(img, True, False)
     z1RunL.append(img)
 
+    loadScreen.text = 'z1WalkL'
+    loadScreen.update(win)
     global z1WalkL
     z1WalkL = []
     img = pygame.image.load('zombie1/animation/Walk1.png')
@@ -341,6 +431,8 @@ def loadZombies():
     img = pygame.transform.flip(img, True, False)
     z1WalkL.append(img)
 
+    loadScreen.text = 'z2AttackL'
+    loadScreen.update(win)
     global z2AttackL
     z2AttackL = []
     img = pygame.image.load('zombie2/animation/Attack1.png')
@@ -374,6 +466,8 @@ def loadZombies():
     img = pygame.transform.flip(img, True, False)
     z2AttackL.append(img)
 
+    loadScreen.text = 'z2DeathL'
+    loadScreen.update(win)
     global z2DeathL
     z2DeathL = []
     img = pygame.image.load('zombie2/animation/Dead1.png')
@@ -417,6 +511,8 @@ def loadZombies():
     img = pygame.transform.flip(img, True, False)
     z2DeathL.append(img)
 
+    loadScreen.text = 'z2HurtL'
+    loadScreen.update(win)
     global z2HurtL
     z2HurtL = []
     img = pygame.image.load('zombie2/animation/Hurt1.png')
@@ -445,6 +541,8 @@ def loadZombies():
     img = pygame.transform.flip(img, True, False)
     z2HurtL.append(img)
 
+    loadScreen.text = 'z2IdleL'
+    loadScreen.update(win)
     global z2IdleL
     z2IdleL = []
     img = pygame.image.load('zombie2/animation/Idle1.png')
@@ -468,6 +566,8 @@ def loadZombies():
     img = pygame.transform.flip(img, True, False)
     z2IdleL.append(img)
 
+    loadScreen.text = 'z2JumpL'
+    loadScreen.update(win)
     global z2JumpL
     z2JumpL = []
     img = pygame.image.load('zombie2/animation/Jump1.png')
@@ -506,6 +606,8 @@ def loadZombies():
     img = pygame.transform.flip(img, True, False)
     z2JumpL.append(img)
 
+    loadScreen.text = 'z2RunL'
+    loadScreen.update(win)
     global z2RunL
     z2RunL = []
     img = pygame.image.load('zombie2/animation/Run1.png')
@@ -559,6 +661,8 @@ def loadZombies():
     img = pygame.transform.flip(img, True, False)
     z2RunL.append(img)
 
+    loadScreen.text = 'z2WalkL'
+    loadScreen.update(win)
     global z2WalkL
     z2WalkL = []
     img = pygame.image.load('zombie2/animation/Walk1.png')
@@ -592,6 +696,8 @@ def loadZombies():
     img = pygame.transform.flip(img, True, False)
     z2WalkL.append(img)
 
+    loadScreen.text = 'z3AttackL'
+    loadScreen.update(win)
     global z3AttackL
     z3AttackL = []
     img = pygame.image.load('zombie3/animation/Attack1.png')
@@ -625,6 +731,8 @@ def loadZombies():
     img = pygame.transform.flip(img, True, False)
     z3AttackL.append(img)
 
+    loadScreen.text = 'z3DeathL'
+    loadScreen.update(win)
     global z3DeathL
     z3DeathL = []
     img = pygame.image.load('zombie3/animation/Dead1.png')
@@ -668,6 +776,8 @@ def loadZombies():
     img = pygame.transform.flip(img, True, False)
     z3DeathL.append(img)
 
+    loadScreen.text = 'z3HurtL'
+    loadScreen.update(win)
     global z3HurtL
     z3HurtL = []
     img = pygame.image.load('zombie3/animation/Hurt1.png')
@@ -696,6 +806,8 @@ def loadZombies():
     img = pygame.transform.flip(img, True, False)
     z3HurtL.append(img)
 
+    loadScreen.text = 'z3IdleL'
+    loadScreen.update(win)
     global z3IdleL
     z3IdleL = []
     img = pygame.image.load('zombie3/animation/Idle1.png')
@@ -719,6 +831,8 @@ def loadZombies():
     img = pygame.transform.flip(img, True, False)
     z3IdleL.append(img)
 
+    loadScreen.text = 'z3JumpL'
+    loadScreen.update(win)
     global z3JumpL
     z3JumpL = []
     img = pygame.image.load('zombie3/animation/Jump1.png')
@@ -757,6 +871,8 @@ def loadZombies():
     img = pygame.transform.flip(img, True, False)
     z3JumpL.append(img)
 
+    loadScreen.text = 'z3RunL'
+    loadScreen.update(win)
     global z3RunL
     z3RunL = []
     img = pygame.image.load('zombie3/animation/Run1.png')
@@ -810,6 +926,8 @@ def loadZombies():
     img = pygame.transform.flip(img, True, False)
     z3RunL.append(img)
 
+    loadScreen.text = 'z3WalkL'
+    loadScreen.update(win)
     global z3WalkL
     z3WalkL = []
     img = pygame.image.load('zombie3/animation/Walk1.png')
@@ -843,6 +961,8 @@ def loadZombies():
     img = pygame.transform.flip(img, True, False)
     z3WalkL.append(img)
 
+    loadScreen.text = 'z1AttackR'
+    loadScreen.update(win)
     global z1AttackR
     z1AttackR = []
     img = pygame.image.load('zombie1/animation/Attack1.png')
@@ -870,6 +990,8 @@ def loadZombies():
     img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
     z1AttackR.append(img)
 
+    loadScreen.text = 'z1DeathR'
+    loadScreen.update(win)
     global z1DeathR
     z1DeathR = []
     img = pygame.image.load('zombie1/animation/Dead1.png')
@@ -905,6 +1027,8 @@ def loadZombies():
     img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
     z1DeathR.append(img)
 
+    loadScreen.text = 'z1HurtR'
+    loadScreen.update(win)
     global z1HurtR
     z1HurtR = []
     img = pygame.image.load('zombie1/animation/Hurt1.png')
@@ -928,6 +1052,8 @@ def loadZombies():
     img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
     z1HurtR.append(img)
 
+    loadScreen.text = 'z1IdleR'
+    loadScreen.update(win)
     global z1IdleR
     z1IdleR = []
     img = pygame.image.load('zombie1/animation/Idle1.png')
@@ -947,6 +1073,8 @@ def loadZombies():
     img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
     z1IdleR.append(img)
 
+    loadScreen.text = 'z1JumpR'
+    loadScreen.update(win)
     global z1JumpR
     z1JumpR = []
     img = pygame.image.load('zombie1/animation/Jump1.png')
@@ -978,6 +1106,8 @@ def loadZombies():
     img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
     z1JumpR.append(img)
 
+    loadScreen.text = 'z1RunR'
+    loadScreen.update(win)
     global z1RunR
     z1RunR = []
     img = pygame.image.load('zombie1/animation/Run1.png')
@@ -1021,6 +1151,8 @@ def loadZombies():
     img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
     z1RunR.append(img)
 
+    loadScreen.text = 'z1WalkR'
+    loadScreen.update(win)
     global z1WalkR
     z1WalkR = []
     img = pygame.image.load('zombie1/animation/Walk1.png')
@@ -1048,6 +1180,8 @@ def loadZombies():
     img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
     z1WalkR.append(img)
 
+    loadScreen.text = 'z2AttackR'
+    loadScreen.update(win)
     global z2AttackR
     z2AttackR = []
     img = pygame.image.load('zombie2/animation/Attack1.png')
@@ -1075,6 +1209,8 @@ def loadZombies():
     img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
     z2AttackR.append(img)
 
+    loadScreen.text = 'z2DeathR'
+    loadScreen.update(win)
     global z2DeathR
     z2DeathR = []
     img = pygame.image.load('zombie2/animation/Dead1.png')
@@ -1110,6 +1246,8 @@ def loadZombies():
     img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
     z2DeathR.append(img)
 
+    loadScreen.text = 'z2HurtR'
+    loadScreen.update(win)
     global z2HurtR
     z2HurtR = []
     img = pygame.image.load('zombie2/animation/Hurt1.png')
@@ -1133,6 +1271,8 @@ def loadZombies():
     img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
     z2HurtR.append(img)
 
+    loadScreen.text = 'z2IdleR'
+    loadScreen.update(win)
     global z2IdleR
     z2IdleR = []
     img = pygame.image.load('zombie2/animation/Idle1.png')
@@ -1152,6 +1292,8 @@ def loadZombies():
     img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
     z2IdleR.append(img)
 
+    loadScreen.text = 'z2JumpR'
+    loadScreen.update(win)
     global z2JumpR
     z2JumpR = []
     img = pygame.image.load('zombie2/animation/Jump1.png')
@@ -1183,6 +1325,8 @@ def loadZombies():
     img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
     z2JumpR.append(img)
 
+    loadScreen.text = 'z2RunR'
+    loadScreen.update(win)
     global z2RunR
     z2RunR = []
     img = pygame.image.load('zombie2/animation/Run1.png')
@@ -1226,6 +1370,8 @@ def loadZombies():
     img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
     z2RunR.append(img)
 
+    loadScreen.text = 'z2WalkR'
+    loadScreen.update(win)
     global z2WalkR
     z2WalkR = []
     img = pygame.image.load('zombie2/animation/Walk1.png')
@@ -1253,6 +1399,8 @@ def loadZombies():
     img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
     z2WalkR.append(img)
 
+    loadScreen.text = 'z3AttackR'
+    loadScreen.update(win)
     global z3AttackR
     z3AttackR = []
     img = pygame.image.load('zombie3/animation/Attack1.png')
@@ -1280,6 +1428,8 @@ def loadZombies():
     img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
     z3AttackR.append(img)
 
+    loadScreen.text = 'z3DeathR'
+    loadScreen.update(win)
     global z3DeathR
     z3DeathR = []
     img = pygame.image.load('zombie3/animation/Dead1.png')
@@ -1315,6 +1465,8 @@ def loadZombies():
     img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
     z3DeathR.append(img)
 
+    loadScreen.text = 'z3HurtR'
+    loadScreen.update(win)
     global z3HurtR
     z3HurtR = []
     img = pygame.image.load('zombie3/animation/Hurt1.png')
@@ -1338,6 +1490,8 @@ def loadZombies():
     img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
     z3HurtR.append(img)
 
+    loadScreen.text = 'z3IdleR'
+    loadScreen.update(win)
     global z3IdleR
     z3IdleR = []
     img = pygame.image.load('zombie3/animation/Idle1.png')
@@ -1357,6 +1511,8 @@ def loadZombies():
     img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
     z3IdleR.append(img)
 
+    loadScreen.text = 'z3JumpR'
+    loadScreen.update(win)
     global z3JumpR
     z3JumpR = []
     img = pygame.image.load('zombie3/animation/Jump1.png')
@@ -1388,6 +1544,8 @@ def loadZombies():
     img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
     z3JumpR.append(img)
 
+    loadScreen.text = 'z3RunR'
+    loadScreen.update(win)
     global z3RunR
     z3RunR = []
     img = pygame.image.load('zombie3/animation/Run1.png')
@@ -1431,6 +1589,8 @@ def loadZombies():
     img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
     z3RunR.append(img)
 
+    loadScreen.text = 'z3WalkR'
+    loadScreen.update(win)
     global z3WalkR
     z3WalkR = []
     img = pygame.image.load('zombie3/animation/Walk1.png')
@@ -1486,8 +1646,25 @@ def loadZombies():
     dieL = [z1DeathL, z2DeathL, z3DeathL]
     runL = [z1RunL, z2RunL, z3RunL]
     runR = [z1RunR, z2RunR, z3RunR]
+loadScreen.text = 'Player Images'
+loadScreen.update(win)
 loadShit()
+loadScreen.text = 'Whole lot of Zombies'
+loadScreen.update(win)
 loadZombies()
+
+print('Loading Time:', time.time()-timeStart, 'seconds')
+loading = False
+
+def drawTop(man, win, score, money):
+    scoreText = myFont.render('Score '+str(score), True, (255,255,255))
+    win.blit(scoreText, (10, 10))
+    if man.health > 0:
+        pygame.draw.rect(win, (0,255,0), pygame.Rect(100, 10, man.health*2,20))
+    if man.health< 200:
+        pygame.draw.rect(win, (255,0,0), pygame.Rect(100+man.health*2,10, 400-man.health*2, 20))
+    moneyText = myFont.render('Money: $'+str(money), True, (0,255,0))
+    win.blit(moneyText, (screenWidth-100, 10))
 
 def drawPlayStuff():
     global gameScreen, homeButtons, playing, end, wave, waveTimer, waveText
@@ -1504,13 +1681,7 @@ def drawPlayStuff():
             if i.draw(win):
                 bullets.remove(i)
         man.draw(win)
-
-        scoreText = myFont.render('Score '+str(score), False, (255,255,255))
-        win.blit(scoreText, (10, 10))
-        if man.health > 0:
-            pygame.draw.rect(win, (0,255,0), pygame.Rect(100, 10, man.health*2,20))
-        if man.health< 200:
-            pygame.draw.rect(win, (255,0,0), pygame.Rect(100+man.health*2,10, 400-man.health*2, 20))
+        drawTop(man, win, score, money)
     else:
         gameOver = font.render('Game Over', False, (255,0,0))
         win.blit(gameOver, (50,50))
@@ -1518,32 +1689,37 @@ def drawPlayStuff():
 def drawHomeStuff(homeButtons):
     global playing, end, gameScreen
     win.blit(background, (0,0))
+    text = titleFont.render('Zombie Survival', True, (255,50,50))
+    w, h = text.get_rect().size
+    win.blit(text, ((screenWidth-w)/2, 50))
     for button in homeButtons:
         button.update(win)
     if homeButtons[0].clicked():
         gameScreen = 'play'
     if homeButtons[1].clicked():
-        gameScreen = 'shop'
-    if homeButtons[2].clicked():
         gameScreen = 'play'
         end = False
         playing = False
 
 def drawShopStuff():
-    global gameScreen
+    global gameScreen, shopButtons
     win.blit(background, (0,0))
-    x = font.render('Still being made', False, (255,255,255))
-    win.blit(x, (100,100))
+    drawTop(man, win, score, money)
     backBtn.update(win)
+    for button in shopButtons:
+        button.update(win)
+    if shopButtons[0].clicked():
+        print('bought health')
+        time.sleep(.2) #So that it doesn't register multiple clicks
     if backBtn.clicked():
-        if score == 0:
-            gameScreen = 'home'
-        else:
-            gameScreen = 'betweenWave'
+        gameScreen = 'betweenWave'
 
 def drawBetweenThings():
-    global betweenBtns, man, score, gameScreen
+    global betweenBtns, man, score, gameScreen, playing, end
     win.blit(background, (0,0))
+    text = titleFont.render('Wave Complete', True, (255,0,0))
+    w, h = text.get_rect().size
+    win.blit(text, ((screenWidth-w)/2, 50))
     for button in betweenBtns:
         button.update(win)
     if betweenBtns[0].clicked():
@@ -1554,13 +1730,7 @@ def drawBetweenThings():
         gameScreen = 'play'
         end = False
         playing = False
-    scoreText = myFont.render('Score '+str(score), False, (255,255,255))
-    win.blit(scoreText, (10, 10))
-    if man.health > 0:
-        pygame.draw.rect(win, (0,255,0), pygame.Rect(100, 10, man.health*2,20))
-    if man.health< 200:
-        pygame.draw.rect(win, (255,0,0), pygame.Rect(100+man.health*2,10, 400-man.health*2, 20))
-
+    drawTop(man, win, score, money)
 
 def redraw():
     global gameScreen, homeButtons, playing, end, wave, waveTimer, waveText
@@ -1594,6 +1764,7 @@ class Person:
         self.isJump = False
         self.jumpAcc = 20
         self.health=200
+        self.shotDelay = 10
 
     def draw(self, win):
         if self.walkCount + 1 >= 28:
@@ -1802,7 +1973,7 @@ class ActionOrganizer:
         for i in range(0,len(self.actions)-1):
             if self.bool[i]:
                 return self.actions[i]
-        return self.actions[-1]
+        return self.actions[-1] #Used for zombies
 
 class Bullet:
     def __init__(self, x, y, left):
@@ -1826,7 +1997,7 @@ def initV():
     man = Person(screenWidth // 2 - 48 / 2, screenHeight - 175, 96, 112)
     bullets = []
     zombies = []
-    score = 0
+    score = 39
     money = 0
     playing = True
     end = True
@@ -1870,17 +2041,33 @@ def main():
                     zombieCount = 5
                 elif score == 40:
                     wave, waveTimer = newWave(wave)
-                if len(zombies) < zombieCount and zombieTimer >= zombieTimerEnd:
-                    x = randint(1,2)
-                    if x == 1:
-                        zombie = Zombie(-100,screenHeight-30, randint(0,2))
-                        zombies.append(zombie)
-                    if x == 2:
-                        zombie = Zombie(screenWidth, screenHeight-30, randint(0,2))
-                        zombies.append(zombie)
-                    zombieTimer = 0
             if wave == 2:
-                print("wave 2")
+                if score < 50:
+                    zombieCount = 5
+                elif score < 60:
+                    zombieTimerEnd = 30
+                elif score < 70:
+                    zombieCount = 6
+                elif score == 80:
+                    wave, waveTimer = newWave(wave)
+            if wave == 3:
+                if score < 50:
+                    zombieCount = 5
+                elif score < 60:
+                    zombieTimerEnd = 30
+                elif score < 70:
+                    zombieCount = 6
+                elif score == 80:
+                    wave, waveTimer = newWave(wave)
+            if len(zombies) < zombieCount and zombieTimer >= zombieTimerEnd:
+                x = randint(1,2)
+                if x == 1:
+                    zombie = Zombie(-100,screenHeight-30, randint(0,2))
+                    zombies.append(zombie)
+                if x == 2:
+                    zombie = Zombie(screenWidth, screenHeight-30, randint(0,2))
+                    zombies.append(zombie)
+                zombieTimer = 0
             zombieTimer += 1
             for bullet in bullets:
                 for zombie in zombies:
@@ -1904,7 +2091,7 @@ def main():
             keys = pygame.key.get_pressed()
 
             if keys[pygame.K_SPACE]:
-                if shotTimer > 10:
+                if shotTimer > man.shotDelay:
                     sounds['shot'].play()
                     bullets.append(Bullet(man.x + man.width / 2, man.y + 50, man.left))
                     shotTimer = 0

@@ -1,7 +1,9 @@
 #image sprite importer
 
 def makeLEFT(initName, word, num): # LEFT
-    endString = 'global '+initName+'\n'+initName+ ' = []\n'
+    endString = 'loadScreen.text = \''+initName+'\'\n'
+    endString += 'loadScreen.update(win)\n'
+    endString += 'global '+initName+'\n'+initName+ ' = []\n'
     for i in range(1, num+1):
         stuff1 = 'img = pygame.image.load(\''+word+str(i)+'.png\')\n'
         stuff2 = 'imgW, imgH = img.get_rect().size\n'
@@ -13,7 +15,9 @@ def makeLEFT(initName, word, num): # LEFT
     print(endString)
 
 def makeRIGHT(initName, word, num): # RIGHT
-    endString = 'global '+initName+'\n'+initName+ ' = []\n'
+    endString = 'loadScreen.text = \''+initName+'\'\n'
+    endString += 'loadScreen.update(win)\n'
+    endString += 'global '+initName+'\n'+initName+ ' = []\n'
     for i in range(1, num+1):
         stuff1 = 'img = pygame.image.load(\''+word+str(i)+'.png\')\n'
         stuff2 = 'imgW, imgH = img.get_rect().size\n'
@@ -46,4 +50,4 @@ def right():
         makeRIGHT('z'+str(i)+'WalkR', 'zombie'+str(i)+'/animation/Walk',6)
 
 left()
-#right()
+right()
