@@ -116,7 +116,7 @@ loadScreen.update(win)
 def shopScreenLoad():
     global shopButtons
     shopButtons = []
-    healthInc = Button((screenWidth-100)/2-200,75,100,25,[96,165,243], '$20 - Health', shopFont, [255,255,255], shopFont2)
+    healthInc = Button((screenWidth-100)/2-300,75,150,25,[96,165,243], '$20 - Health', shopFont, [255,255,255], shopFont2)
     shopButtons.append(healthInc)
 shopScreenLoad()
 loadScreen.update(win)
@@ -1663,8 +1663,9 @@ def drawTop(man, win, score, money):
         pygame.draw.rect(win, (0,255,0), pygame.Rect(100, 10, man.health*2,20))
     if man.health< 200:
         pygame.draw.rect(win, (255,0,0), pygame.Rect(100+man.health*2,10, 400-man.health*2, 20))
-    moneyText = myFont.render('Money: $'+str(money), True, (0,255,0))
-    win.blit(moneyText, (screenWidth-100, 10))
+    moneyText = myFont.render('Money '+str(money), True, (0,255,0))
+    w, ignore = moneyText.get_rect().size
+    win.blit(moneyText, (screenWidth-10-w, 10))
 
 def drawPlayStuff():
     global gameScreen, homeButtons, playing, end, wave, waveTimer, waveText
@@ -1701,15 +1702,48 @@ def drawHomeStuff(homeButtons):
         end = False
         playing = False
 
+shopDispCounter = 255
+notEnoughMoney = False
+maxHealth = False
+
 def drawShopStuff():
-    global gameScreen, shopButtons
+    global gameScreen, shopButtons, money, shopDispCounter, notEnoughMoney, maxHealth
     win.blit(background, (0,0))
     drawTop(man, win, score, money)
     backBtn.update(win)
+    if maxHealth:
+        shopDispCounter -= 2
+        text = font.render('Already Max Health', True, (255,255,255))
+        surface = pygame.Surface(text.get_rect().size)
+        surface.fill((0,0,0))
+        surface.blit(text, (0,0))
+        surface.set_alpha(shopDispCounter)
+        win.blit(surface, (110, screenHeight-50))
+    elif notEnoughMoney:
+        shopDispCounter -= 2
+        text = font.render('Not Enough Money', True, (255,0,0))
+        surface = pygame.Surface(text.get_rect().size)
+        surface.fill((0,0,0))
+        surface.blit(text, (0,0))
+        surface.set_alpha(shopDispCounter)
+        win.blit(surface, (110, screenHeight-50))
+    if shopDispCounter <= 1:
+        shopDispCounter = 255
+        maxHealth = False
+        notEnoughMoney = False
     for button in shopButtons:
         button.update(win)
-    if shopButtons[0].clicked():
-        print('bought health')
+    if shopButtons[0].clicked(): #Health
+        if man.health < 200:
+            if money >= 20:
+                man.health += 10
+                money -= 20
+            else:
+                notEnoughMoney = True
+                shopDispCounter = 255
+        else:
+            maxHealth = True
+            shopDispCounter = 255
         time.sleep(.2) #So that it doesn't register multiple clicks
     if backBtn.clicked():
         gameScreen = 'betweenWave'
@@ -1748,7 +1782,6 @@ def redraw():
     elif gameScreen == 'betweenWave':
         drawBetweenThings()
     pygame.display.update()
-
 
 class Person:
     def __init__(self, x, y, width, height):
@@ -2016,7 +2049,7 @@ def newWave(wave):
     return wave, waveTimer
 # MAIN LOOP
 def main():
-    global man, bullets, zombies, score, playing, end, wave, waveTimer, gameScreen
+    global man, bullets, zombies, score, playing, end, wave, waveTimer, gameScreen, money
 
     shotTimer = 0
     zombieTimer = 0
@@ -2078,6 +2111,7 @@ def main():
                         if zombie.health <= 20:
                             zombie.die()
                             score += 1
+                            money += 5
                         else:
                             zombie.health -= 20
                             if randint(1,5) == 1 and not zombie.actions.bool[2]: #Makes sure not in middle of jumping
