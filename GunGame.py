@@ -4,6 +4,7 @@ import time
 import threading
 from random import randint, choice
 from Button import Button
+from sys import platform
 
 timeStart = time.time()
 
