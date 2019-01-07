@@ -5,18 +5,22 @@ import threading
 from random import randint, choice
 from Button import Button
 from sys import platform
+import os
+
+path = os.path.abspath(__file__)
+path = path[0:-10]
 
 timeStart = time.time()
 
 loading = True
 
-print(platform) #hi hey
+#print(platform)
 
 pygame.mixer.pre_init(44100, -16, 2, 512)
 pygame.mixer.init()
 pygame.init()
 
-loadFont = pygame.font.Font('28DaysLater.ttf', 36)
+loadFont = pygame.font.Font(path+'28DaysLater.ttf', 36)
 loadFont2 = pygame.font.Font('28DaysLater.ttf', 76)
 
 clock = pygame.time.Clock()
