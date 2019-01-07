@@ -10,7 +10,7 @@ timeStart = time.time()
 
 loading = True
 
-print(platform) #hi
+print(platform) #hi hey
 
 pygame.mixer.pre_init(44100, -16, 2, 512)
 pygame.mixer.init()
