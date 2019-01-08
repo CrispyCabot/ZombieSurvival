@@ -3,9 +3,12 @@ import pygame
 import time
 import threading
 from random import randint, choice
-from Button import Button
 from sys import platform
 import os
+
+#Self made classes
+from Button import Button
+from LoadingScreen import LoadingScreen
 
 path = os.path.abspath(__file__)
 path = path[0:-10]
@@ -60,26 +63,7 @@ def zombieLoad():
 thread1 = threading.Thread(target=zombieLoad)
 thread1.start()
 
-class LoadingScreen:
-    def __init__(self):
-        self.text = 'Fonts'
-        self.barLevel = 0
-        self.frameCount = 0
-        self.speed = 1
-        self.totalBars = 52
-        self.multi = 5
-    def update(self, win):
-        self.barLevel += 1
-        pygame.draw.rect(win, (0,0,0), pygame.Rect(0, screenHeight-100, screenWidth, 100))
-        pygame.draw.rect(win, (255,255,255), pygame.Rect((screenWidth-self.totalBars*self.multi)/2, screenHeight-75, self.totalBars*self.multi, 20), 1)
-        pygame.draw.rect(win, (0,255,0), pygame.Rect((screenWidth-self.totalBars*self.multi)/2, screenHeight-75, self.barLevel*self.multi, 20))
-    #    print(self.barLevel) #Used to find the total bar level
-        text = loadFont.render(self.text, True, (255,255,255))
-        imgX, ignore = text.get_rect().size
-        win.blit(text, ((screenWidth-imgX)/2,screenHeight-40))
-    #    time.sleep(.1)
-
-loadScreen = LoadingScreen()
+loadScreen = LoadingScreen(win, screenWidth, screenHeight, loadFont)
 loadScreen.text = 'Fonts'
 loadScreen.update(win)
 
@@ -128,20 +112,17 @@ def shopScreenLoad():
 shopScreenLoad()
 loadScreen.update(win)
 def loadShit():
-    global background
-    global bulletImg
-    global bulletLeft
-    global bulletRight
-    global walkLeft
-    global walkRight
-    global sounds
-    global songs
-    global waveText
+    global background, bulletImg, bulletLeft, bulletRight, walkLeft, walkRight, sounds, songs, waveText, explosion, grenade
+
     background = pygame.image.load(path+'images/background.jpg')
     background = pygame.transform.scale(background, (screenWidth, screenHeight))
     bulletImg = pygame.image.load(path+'images/bullet.png')
     bulletLeft = pygame.transform.scale(bulletImg, (15, 7))
     bulletRight = pygame.transform.flip(bulletLeft, True, False)
+
+    grenade = pygame.image.load(path+'images/grenade.png')
+
+    explosion = [pygame.image.load(path+'explosion/tile000.png'), pygame.image.load(path+'explosion/tile001.png'), pygame.image.load(path+'explosion/tile002.png'), pygame.image.load(path+'explosion/tile003.png'), pygame.image.load(path+'explosion/tile004.png'), pygame.image.load(path+'explosion/tile005.png'), pygame.image.load(path+'explosion/tile006.png'), pygame.image.load(path+'explosion/tile007.png'), pygame.image.load(path+'explosion/tile008.png'), pygame.image.load(path+'explosion/tile009.png'), pygame.image.load(path+'explosion/tile010.png'), pygame.image.load(path+'explosion/tile011.png'), pygame.image.load(path+'explosion/tile012.png'), pygame.image.load(path+'explosion/tile013.png'), pygame.image.load(path+'explosion/tile014.png'), pygame.image.load(path+'explosion/tile015.png'), pygame.image.load(path+'explosion/tile016.png'), pygame.image.load(path+'explosion/tile017.png'), pygame.image.load(path+'explosion/tile018.png'), pygame.image.load(path+'explosion/tile019.png'), pygame.image.load(path+'explosion/tile020.png'), pygame.image.load(path+'explosion/tile021.png'), pygame.image.load(path+'explosion/tile022.png'), pygame.image.load(path+'explosion/tile023.png'), pygame.image.load(path+'explosion/tile024.png'), pygame.image.load(path+'explosion/tile025.png'), pygame.image.load(path+'explosion/tile026.png'), pygame.image.load(path+'explosion/tile027.png'), pygame.image.load(path+'explosion/tile028.png'), pygame.image.load(path+'explosion/tile029.png'), pygame.image.load(path+'explosion/tile030.png'), pygame.image.load(path+'explosion/tile031.png'), pygame.image.load(path+'explosion/tile032.png'), pygame.image.load(path+'explosion/tile033.png'), pygame.image.load(path+'explosion/tile034.png'), pygame.image.load(path+'explosion/tile035.png'), pygame.image.load(path+'explosion/tile036.png'), pygame.image.load(path+'explosion/tile037.png'), pygame.image.load(path+'explosion/tile038.png'), pygame.image.load(path+'explosion/tile039.png'), pygame.image.load(path+'explosion/tile040.png'), pygame.image.load(path+'explosion/tile041.png'), pygame.image.load(path+'explosion/tile042.png'), pygame.image.load(path+'explosion/tile043.png'), pygame.image.load(path+'explosion/tile044.png'), pygame.image.load(path+'explosion/tile045.png'), pygame.image.load(path+'explosion/tile046.png'), pygame.image.load(path+'explosion/tile047.png'), pygame.image.load(path+'explosion/tile048.png'), pygame.image.load(path+'explosion/tile049.png'), pygame.image.load(path+'explosion/tile050.png'), pygame.image.load(path+'explosion/tile051.png'), pygame.image.load(path+'explosion/tile052.png'), pygame.image.load(path+'explosion/tile053.png'), pygame.image.load(path+'explosion/tile054.png'), pygame.image.load(path+'explosion/tile055.png'), pygame.image.load(path+'explosion/tile056.png'), pygame.image.load(path+'explosion/tile057.png'), pygame.image.load(path+'explosion/tile058.png'), pygame.image.load(path+'explosion/tile059.png'), pygame.image.load(path+'explosion/tile060.png'), pygame.image.load(path+'explosion/tile061.png'), pygame.image.load(path+'explosion/tile062.png'), pygame.image.load(path+'explosion/tile063.png'), pygame.image.load(path+'explosion/tile064.png'), pygame.image.load(path+'explosion/tile065.png'), pygame.image.load(path+'explosion/tile066.png'), pygame.image.load(path+'explosion/tile067.png'), pygame.image.load(path+'explosion/tile068.png'), pygame.image.load(path+'explosion/tile069.png'), pygame.image.load(path+'explosion/tile070.png'), pygame.image.load(path+'explosion/tile071.png'), pygame.image.load(path+'explosion/tile072.png'), pygame.image.load(path+'explosion/tile073.png')]
 
     #convert_alpha is supposed to allow me to use set_alpha later on, but it doesn't work so fuck it.
     waveText = [pygame.image.load(path+'waveText/wave1.png').convert_alpha(), pygame.image.load(path+'waveText/wave2.png').convert_alpha(),
@@ -1815,6 +1796,7 @@ class Person:
         self.jumpAcc = 20
         self.health=200
         self.shotDelay = 10
+        self.grenades = 3
 
     def draw(self, win):
         if self.walkCount + 1 >= 28:
@@ -2094,10 +2076,12 @@ def main():
                     wave, waveTimer = newWave(wave)
             if wave == 2:
                 if score < 50:
-                    zombieCount = 5
+                    zombieCount = 3
                 elif score < 60:
+                    zombieCount = 4
                     zombieTimerEnd = 30
                 elif score < 70:
+                    zombieTimerEnd = 30
                     zombieCount = 6
                 elif score == 80:
                     wave, waveTimer = newWave(wave)

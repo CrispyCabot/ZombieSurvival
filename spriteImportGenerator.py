@@ -27,7 +27,7 @@ def makeRIGHT(initName, word, num): # RIGHT
 
         endString = endString+stuff1+stuff2+stuff3+stuff5
     print(endString)
-        
+
 
 def left():
     for i in range(1,4):
@@ -49,5 +49,13 @@ def right():
         makeRIGHT('z'+str(i)+'RunR', 'zombie'+str(i)+'/animation/Run',10)
         makeRIGHT('z'+str(i)+'WalkR', 'zombie'+str(i)+'/animation/Walk',6)
 
-left()
-right()
+#left()
+#right()
+
+def makeThing():
+    endString = 'explosion = ['
+    for i in range(0,74):
+        endString += 'pygame.image.load(path+\'explosion/tile{0:03d}.png\'), '.format(i)
+    print(endString)
+
+makeThing()
