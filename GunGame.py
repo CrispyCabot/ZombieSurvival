@@ -172,39 +172,45 @@ def loadShit():
     sounds['hit'].set_volume(0.1)
     sounds['shot'].set_volume(0.5)
 
+zombieWidth = 0
+zombieHeight = 0
+
 def loadZombies():
+    global zombieWidth, zombieHeight
+    scaler = .3
     loadScreen.text = 'z1AttackL'
     loadScreen.update(win)
     global z1AttackL
     z1AttackL = []
     img = pygame.image.load(path+'zombie1/animation/Attack1.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z1AttackL.append(img)
     img = pygame.image.load(path+'zombie1/animation/Attack2.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
+    zombieWidth, zombieHeight = img.get_rect().size
     img = pygame.transform.flip(img, True, False)
     z1AttackL.append(img)
     img = pygame.image.load(path+'zombie1/animation/Attack3.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z1AttackL.append(img)
     img = pygame.image.load(path+'zombie1/animation/Attack4.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z1AttackL.append(img)
     img = pygame.image.load(path+'zombie1/animation/Attack5.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z1AttackL.append(img)
     img = pygame.image.load(path+'zombie1/animation/Attack6.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z1AttackL.append(img)
 
@@ -214,42 +220,42 @@ def loadZombies():
     z1DeathL = []
     img = pygame.image.load(path+'zombie1/animation/Dead1.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z1DeathL.append(img)
     img = pygame.image.load(path+'zombie1/animation/Dead2.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z1DeathL.append(img)
     img = pygame.image.load(path+'zombie1/animation/Dead3.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z1DeathL.append(img)
     img = pygame.image.load(path+'zombie1/animation/Dead4.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z1DeathL.append(img)
     img = pygame.image.load(path+'zombie1/animation/Dead5.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z1DeathL.append(img)
     img = pygame.image.load(path+'zombie1/animation/Dead6.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z1DeathL.append(img)
     img = pygame.image.load(path+'zombie1/animation/Dead7.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z1DeathL.append(img)
     img = pygame.image.load(path+'zombie1/animation/Dead8.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z1DeathL.append(img)
 
@@ -259,27 +265,27 @@ def loadZombies():
     z1HurtL = []
     img = pygame.image.load(path+'zombie1/animation/Hurt1.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z1HurtL.append(img)
     img = pygame.image.load(path+'zombie1/animation/Hurt2.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z1HurtL.append(img)
     img = pygame.image.load(path+'zombie1/animation/Hurt3.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z1HurtL.append(img)
     img = pygame.image.load(path+'zombie1/animation/Hurt4.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z1HurtL.append(img)
     img = pygame.image.load(path+'zombie1/animation/Hurt5.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z1HurtL.append(img)
 
@@ -289,22 +295,22 @@ def loadZombies():
     z1IdleL = []
     img = pygame.image.load(path+'zombie1/animation/Idle1.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z1IdleL.append(img)
     img = pygame.image.load(path+'zombie1/animation/Idle2.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z1IdleL.append(img)
     img = pygame.image.load(path+'zombie1/animation/Idle3.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z1IdleL.append(img)
     img = pygame.image.load(path+'zombie1/animation/Idle4.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z1IdleL.append(img)
 
@@ -314,37 +320,37 @@ def loadZombies():
     z1JumpL = []
     img = pygame.image.load(path+'zombie1/animation/Jump1.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z1JumpL.append(img)
     img = pygame.image.load(path+'zombie1/animation/Jump2.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z1JumpL.append(img)
     img = pygame.image.load(path+'zombie1/animation/Jump3.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z1JumpL.append(img)
     img = pygame.image.load(path+'zombie1/animation/Jump4.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z1JumpL.append(img)
     img = pygame.image.load(path+'zombie1/animation/Jump5.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z1JumpL.append(img)
     img = pygame.image.load(path+'zombie1/animation/Jump6.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z1JumpL.append(img)
     img = pygame.image.load(path+'zombie1/animation/Jump7.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z1JumpL.append(img)
 
@@ -354,52 +360,52 @@ def loadZombies():
     z1RunL = []
     img = pygame.image.load(path+'zombie1/animation/Run1.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z1RunL.append(img)
     img = pygame.image.load(path+'zombie1/animation/Run2.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z1RunL.append(img)
     img = pygame.image.load(path+'zombie1/animation/Run3.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z1RunL.append(img)
     img = pygame.image.load(path+'zombie1/animation/Run4.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z1RunL.append(img)
     img = pygame.image.load(path+'zombie1/animation/Run5.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z1RunL.append(img)
     img = pygame.image.load(path+'zombie1/animation/Run6.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z1RunL.append(img)
     img = pygame.image.load(path+'zombie1/animation/Run7.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z1RunL.append(img)
     img = pygame.image.load(path+'zombie1/animation/Run8.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z1RunL.append(img)
     img = pygame.image.load(path+'zombie1/animation/Run9.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z1RunL.append(img)
     img = pygame.image.load(path+'zombie1/animation/Run10.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z1RunL.append(img)
 
@@ -409,32 +415,32 @@ def loadZombies():
     z1WalkL = []
     img = pygame.image.load(path+'zombie1/animation/Walk1.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z1WalkL.append(img)
     img = pygame.image.load(path+'zombie1/animation/Walk2.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z1WalkL.append(img)
     img = pygame.image.load(path+'zombie1/animation/Walk3.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z1WalkL.append(img)
     img = pygame.image.load(path+'zombie1/animation/Walk4.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z1WalkL.append(img)
     img = pygame.image.load(path+'zombie1/animation/Walk5.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z1WalkL.append(img)
     img = pygame.image.load(path+'zombie1/animation/Walk6.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z1WalkL.append(img)
 
@@ -444,32 +450,32 @@ def loadZombies():
     z2AttackL = []
     img = pygame.image.load(path+'zombie2/animation/Attack1.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z2AttackL.append(img)
     img = pygame.image.load(path+'zombie2/animation/Attack2.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z2AttackL.append(img)
     img = pygame.image.load(path+'zombie2/animation/Attack3.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z2AttackL.append(img)
     img = pygame.image.load(path+'zombie2/animation/Attack4.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z2AttackL.append(img)
     img = pygame.image.load(path+'zombie2/animation/Attack5.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z2AttackL.append(img)
     img = pygame.image.load(path+'zombie2/animation/Attack6.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z2AttackL.append(img)
 
@@ -479,42 +485,42 @@ def loadZombies():
     z2DeathL = []
     img = pygame.image.load(path+'zombie2/animation/Dead1.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z2DeathL.append(img)
     img = pygame.image.load(path+'zombie2/animation/Dead2.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z2DeathL.append(img)
     img = pygame.image.load(path+'zombie2/animation/Dead3.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z2DeathL.append(img)
     img = pygame.image.load(path+'zombie2/animation/Dead4.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z2DeathL.append(img)
     img = pygame.image.load(path+'zombie2/animation/Dead5.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z2DeathL.append(img)
     img = pygame.image.load(path+'zombie2/animation/Dead6.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z2DeathL.append(img)
     img = pygame.image.load(path+'zombie2/animation/Dead7.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z2DeathL.append(img)
     img = pygame.image.load(path+'zombie2/animation/Dead8.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z2DeathL.append(img)
 
@@ -524,27 +530,27 @@ def loadZombies():
     z2HurtL = []
     img = pygame.image.load(path+'zombie2/animation/Hurt1.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z2HurtL.append(img)
     img = pygame.image.load(path+'zombie2/animation/Hurt2.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z2HurtL.append(img)
     img = pygame.image.load(path+'zombie2/animation/Hurt3.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z2HurtL.append(img)
     img = pygame.image.load(path+'zombie2/animation/Hurt4.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z2HurtL.append(img)
     img = pygame.image.load(path+'zombie2/animation/Hurt5.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z2HurtL.append(img)
 
@@ -554,22 +560,22 @@ def loadZombies():
     z2IdleL = []
     img = pygame.image.load(path+'zombie2/animation/Idle1.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z2IdleL.append(img)
     img = pygame.image.load(path+'zombie2/animation/Idle2.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z2IdleL.append(img)
     img = pygame.image.load(path+'zombie2/animation/Idle3.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z2IdleL.append(img)
     img = pygame.image.load(path+'zombie2/animation/Idle4.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z2IdleL.append(img)
 
@@ -579,37 +585,37 @@ def loadZombies():
     z2JumpL = []
     img = pygame.image.load(path+'zombie2/animation/Jump1.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z2JumpL.append(img)
     img = pygame.image.load(path+'zombie2/animation/Jump2.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z2JumpL.append(img)
     img = pygame.image.load(path+'zombie2/animation/Jump3.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z2JumpL.append(img)
     img = pygame.image.load(path+'zombie2/animation/Jump4.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z2JumpL.append(img)
     img = pygame.image.load(path+'zombie2/animation/Jump5.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z2JumpL.append(img)
     img = pygame.image.load(path+'zombie2/animation/Jump6.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z2JumpL.append(img)
     img = pygame.image.load(path+'zombie2/animation/Jump7.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z2JumpL.append(img)
 
@@ -619,52 +625,52 @@ def loadZombies():
     z2RunL = []
     img = pygame.image.load(path+'zombie2/animation/Run1.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z2RunL.append(img)
     img = pygame.image.load(path+'zombie2/animation/Run2.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z2RunL.append(img)
     img = pygame.image.load(path+'zombie2/animation/Run3.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z2RunL.append(img)
     img = pygame.image.load(path+'zombie2/animation/Run4.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z2RunL.append(img)
     img = pygame.image.load(path+'zombie2/animation/Run5.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z2RunL.append(img)
     img = pygame.image.load(path+'zombie2/animation/Run6.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z2RunL.append(img)
     img = pygame.image.load(path+'zombie2/animation/Run7.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z2RunL.append(img)
     img = pygame.image.load(path+'zombie2/animation/Run8.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z2RunL.append(img)
     img = pygame.image.load(path+'zombie2/animation/Run9.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z2RunL.append(img)
     img = pygame.image.load(path+'zombie2/animation/Run10.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z2RunL.append(img)
 
@@ -674,32 +680,32 @@ def loadZombies():
     z2WalkL = []
     img = pygame.image.load(path+'zombie2/animation/Walk1.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z2WalkL.append(img)
     img = pygame.image.load(path+'zombie2/animation/Walk2.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z2WalkL.append(img)
     img = pygame.image.load(path+'zombie2/animation/Walk3.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z2WalkL.append(img)
     img = pygame.image.load(path+'zombie2/animation/Walk4.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z2WalkL.append(img)
     img = pygame.image.load(path+'zombie2/animation/Walk5.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z2WalkL.append(img)
     img = pygame.image.load(path+'zombie2/animation/Walk6.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z2WalkL.append(img)
 
@@ -709,32 +715,32 @@ def loadZombies():
     z3AttackL = []
     img = pygame.image.load(path+'zombie3/animation/Attack1.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z3AttackL.append(img)
     img = pygame.image.load(path+'zombie3/animation/Attack2.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z3AttackL.append(img)
     img = pygame.image.load(path+'zombie3/animation/Attack3.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z3AttackL.append(img)
     img = pygame.image.load(path+'zombie3/animation/Attack4.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z3AttackL.append(img)
     img = pygame.image.load(path+'zombie3/animation/Attack5.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z3AttackL.append(img)
     img = pygame.image.load(path+'zombie3/animation/Attack6.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z3AttackL.append(img)
 
@@ -744,42 +750,42 @@ def loadZombies():
     z3DeathL = []
     img = pygame.image.load(path+'zombie3/animation/Dead1.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z3DeathL.append(img)
     img = pygame.image.load(path+'zombie3/animation/Dead2.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z3DeathL.append(img)
     img = pygame.image.load(path+'zombie3/animation/Dead3.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z3DeathL.append(img)
     img = pygame.image.load(path+'zombie3/animation/Dead4.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z3DeathL.append(img)
     img = pygame.image.load(path+'zombie3/animation/Dead5.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z3DeathL.append(img)
     img = pygame.image.load(path+'zombie3/animation/Dead6.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z3DeathL.append(img)
     img = pygame.image.load(path+'zombie3/animation/Dead7.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z3DeathL.append(img)
     img = pygame.image.load(path+'zombie3/animation/Dead8.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z3DeathL.append(img)
 
@@ -789,27 +795,27 @@ def loadZombies():
     z3HurtL = []
     img = pygame.image.load(path+'zombie3/animation/Hurt1.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z3HurtL.append(img)
     img = pygame.image.load(path+'zombie3/animation/Hurt2.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z3HurtL.append(img)
     img = pygame.image.load(path+'zombie3/animation/Hurt3.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z3HurtL.append(img)
     img = pygame.image.load(path+'zombie3/animation/Hurt4.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z3HurtL.append(img)
     img = pygame.image.load(path+'zombie3/animation/Hurt5.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z3HurtL.append(img)
 
@@ -819,22 +825,22 @@ def loadZombies():
     z3IdleL = []
     img = pygame.image.load(path+'zombie3/animation/Idle1.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z3IdleL.append(img)
     img = pygame.image.load(path+'zombie3/animation/Idle2.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z3IdleL.append(img)
     img = pygame.image.load(path+'zombie3/animation/Idle3.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z3IdleL.append(img)
     img = pygame.image.load(path+'zombie3/animation/Idle4.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z3IdleL.append(img)
 
@@ -844,37 +850,37 @@ def loadZombies():
     z3JumpL = []
     img = pygame.image.load(path+'zombie3/animation/Jump1.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z3JumpL.append(img)
     img = pygame.image.load(path+'zombie3/animation/Jump2.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z3JumpL.append(img)
     img = pygame.image.load(path+'zombie3/animation/Jump3.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z3JumpL.append(img)
     img = pygame.image.load(path+'zombie3/animation/Jump4.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z3JumpL.append(img)
     img = pygame.image.load(path+'zombie3/animation/Jump5.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z3JumpL.append(img)
     img = pygame.image.load(path+'zombie3/animation/Jump6.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z3JumpL.append(img)
     img = pygame.image.load(path+'zombie3/animation/Jump7.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z3JumpL.append(img)
 
@@ -884,52 +890,52 @@ def loadZombies():
     z3RunL = []
     img = pygame.image.load(path+'zombie3/animation/Run1.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z3RunL.append(img)
     img = pygame.image.load(path+'zombie3/animation/Run2.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z3RunL.append(img)
     img = pygame.image.load(path+'zombie3/animation/Run3.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z3RunL.append(img)
     img = pygame.image.load(path+'zombie3/animation/Run4.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z3RunL.append(img)
     img = pygame.image.load(path+'zombie3/animation/Run5.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z3RunL.append(img)
     img = pygame.image.load(path+'zombie3/animation/Run6.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z3RunL.append(img)
     img = pygame.image.load(path+'zombie3/animation/Run7.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z3RunL.append(img)
     img = pygame.image.load(path+'zombie3/animation/Run8.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z3RunL.append(img)
     img = pygame.image.load(path+'zombie3/animation/Run9.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z3RunL.append(img)
     img = pygame.image.load(path+'zombie3/animation/Run10.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z3RunL.append(img)
 
@@ -939,32 +945,32 @@ def loadZombies():
     z3WalkL = []
     img = pygame.image.load(path+'zombie3/animation/Walk1.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z3WalkL.append(img)
     img = pygame.image.load(path+'zombie3/animation/Walk2.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z3WalkL.append(img)
     img = pygame.image.load(path+'zombie3/animation/Walk3.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z3WalkL.append(img)
     img = pygame.image.load(path+'zombie3/animation/Walk4.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z3WalkL.append(img)
     img = pygame.image.load(path+'zombie3/animation/Walk5.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z3WalkL.append(img)
     img = pygame.image.load(path+'zombie3/animation/Walk6.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     img = pygame.transform.flip(img, True, False)
     z3WalkL.append(img)
 
@@ -974,27 +980,27 @@ def loadZombies():
     z1AttackR = []
     img = pygame.image.load(path+'zombie1/animation/Attack1.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z1AttackR.append(img)
     img = pygame.image.load(path+'zombie1/animation/Attack2.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z1AttackR.append(img)
     img = pygame.image.load(path+'zombie1/animation/Attack3.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z1AttackR.append(img)
     img = pygame.image.load(path+'zombie1/animation/Attack4.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z1AttackR.append(img)
     img = pygame.image.load(path+'zombie1/animation/Attack5.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z1AttackR.append(img)
     img = pygame.image.load(path+'zombie1/animation/Attack6.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z1AttackR.append(img)
 
     loadScreen.text = 'z1DeathR'
@@ -1003,35 +1009,35 @@ def loadZombies():
     z1DeathR = []
     img = pygame.image.load(path+'zombie1/animation/Dead1.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z1DeathR.append(img)
     img = pygame.image.load(path+'zombie1/animation/Dead2.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z1DeathR.append(img)
     img = pygame.image.load(path+'zombie1/animation/Dead3.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z1DeathR.append(img)
     img = pygame.image.load(path+'zombie1/animation/Dead4.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z1DeathR.append(img)
     img = pygame.image.load(path+'zombie1/animation/Dead5.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z1DeathR.append(img)
     img = pygame.image.load(path+'zombie1/animation/Dead6.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z1DeathR.append(img)
     img = pygame.image.load(path+'zombie1/animation/Dead7.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z1DeathR.append(img)
     img = pygame.image.load(path+'zombie1/animation/Dead8.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z1DeathR.append(img)
 
     loadScreen.text = 'z1HurtR'
@@ -1040,23 +1046,23 @@ def loadZombies():
     z1HurtR = []
     img = pygame.image.load(path+'zombie1/animation/Hurt1.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z1HurtR.append(img)
     img = pygame.image.load(path+'zombie1/animation/Hurt2.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z1HurtR.append(img)
     img = pygame.image.load(path+'zombie1/animation/Hurt3.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z1HurtR.append(img)
     img = pygame.image.load(path+'zombie1/animation/Hurt4.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z1HurtR.append(img)
     img = pygame.image.load(path+'zombie1/animation/Hurt5.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z1HurtR.append(img)
 
     loadScreen.text = 'z1IdleR'
@@ -1065,19 +1071,19 @@ def loadZombies():
     z1IdleR = []
     img = pygame.image.load(path+'zombie1/animation/Idle1.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z1IdleR.append(img)
     img = pygame.image.load(path+'zombie1/animation/Idle2.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z1IdleR.append(img)
     img = pygame.image.load(path+'zombie1/animation/Idle3.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z1IdleR.append(img)
     img = pygame.image.load(path+'zombie1/animation/Idle4.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z1IdleR.append(img)
 
     loadScreen.text = 'z1JumpR'
@@ -1086,31 +1092,31 @@ def loadZombies():
     z1JumpR = []
     img = pygame.image.load(path+'zombie1/animation/Jump1.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z1JumpR.append(img)
     img = pygame.image.load(path+'zombie1/animation/Jump2.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z1JumpR.append(img)
     img = pygame.image.load(path+'zombie1/animation/Jump3.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z1JumpR.append(img)
     img = pygame.image.load(path+'zombie1/animation/Jump4.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z1JumpR.append(img)
     img = pygame.image.load(path+'zombie1/animation/Jump5.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z1JumpR.append(img)
     img = pygame.image.load(path+'zombie1/animation/Jump6.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z1JumpR.append(img)
     img = pygame.image.load(path+'zombie1/animation/Jump7.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z1JumpR.append(img)
 
     loadScreen.text = 'z1RunR'
@@ -1119,43 +1125,43 @@ def loadZombies():
     z1RunR = []
     img = pygame.image.load(path+'zombie1/animation/Run1.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z1RunR.append(img)
     img = pygame.image.load(path+'zombie1/animation/Run2.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z1RunR.append(img)
     img = pygame.image.load(path+'zombie1/animation/Run3.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z1RunR.append(img)
     img = pygame.image.load(path+'zombie1/animation/Run4.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z1RunR.append(img)
     img = pygame.image.load(path+'zombie1/animation/Run5.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z1RunR.append(img)
     img = pygame.image.load(path+'zombie1/animation/Run6.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z1RunR.append(img)
     img = pygame.image.load(path+'zombie1/animation/Run7.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z1RunR.append(img)
     img = pygame.image.load(path+'zombie1/animation/Run8.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z1RunR.append(img)
     img = pygame.image.load(path+'zombie1/animation/Run9.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z1RunR.append(img)
     img = pygame.image.load(path+'zombie1/animation/Run10.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z1RunR.append(img)
 
     loadScreen.text = 'z1WalkR'
@@ -1164,27 +1170,27 @@ def loadZombies():
     z1WalkR = []
     img = pygame.image.load(path+'zombie1/animation/Walk1.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z1WalkR.append(img)
     img = pygame.image.load(path+'zombie1/animation/Walk2.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z1WalkR.append(img)
     img = pygame.image.load(path+'zombie1/animation/Walk3.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z1WalkR.append(img)
     img = pygame.image.load(path+'zombie1/animation/Walk4.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z1WalkR.append(img)
     img = pygame.image.load(path+'zombie1/animation/Walk5.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z1WalkR.append(img)
     img = pygame.image.load(path+'zombie1/animation/Walk6.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z1WalkR.append(img)
 
     loadScreen.text = 'z2AttackR'
@@ -1193,27 +1199,27 @@ def loadZombies():
     z2AttackR = []
     img = pygame.image.load(path+'zombie2/animation/Attack1.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z2AttackR.append(img)
     img = pygame.image.load(path+'zombie2/animation/Attack2.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z2AttackR.append(img)
     img = pygame.image.load(path+'zombie2/animation/Attack3.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z2AttackR.append(img)
     img = pygame.image.load(path+'zombie2/animation/Attack4.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z2AttackR.append(img)
     img = pygame.image.load(path+'zombie2/animation/Attack5.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z2AttackR.append(img)
     img = pygame.image.load(path+'zombie2/animation/Attack6.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z2AttackR.append(img)
 
     loadScreen.text = 'z2DeathR'
@@ -1222,35 +1228,35 @@ def loadZombies():
     z2DeathR = []
     img = pygame.image.load(path+'zombie2/animation/Dead1.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z2DeathR.append(img)
     img = pygame.image.load(path+'zombie2/animation/Dead2.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z2DeathR.append(img)
     img = pygame.image.load(path+'zombie2/animation/Dead3.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z2DeathR.append(img)
     img = pygame.image.load(path+'zombie2/animation/Dead4.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z2DeathR.append(img)
     img = pygame.image.load(path+'zombie2/animation/Dead5.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z2DeathR.append(img)
     img = pygame.image.load(path+'zombie2/animation/Dead6.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z2DeathR.append(img)
     img = pygame.image.load(path+'zombie2/animation/Dead7.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z2DeathR.append(img)
     img = pygame.image.load(path+'zombie2/animation/Dead8.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z2DeathR.append(img)
 
     loadScreen.text = 'z2HurtR'
@@ -1259,23 +1265,23 @@ def loadZombies():
     z2HurtR = []
     img = pygame.image.load(path+'zombie2/animation/Hurt1.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z2HurtR.append(img)
     img = pygame.image.load(path+'zombie2/animation/Hurt2.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z2HurtR.append(img)
     img = pygame.image.load(path+'zombie2/animation/Hurt3.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z2HurtR.append(img)
     img = pygame.image.load(path+'zombie2/animation/Hurt4.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z2HurtR.append(img)
     img = pygame.image.load(path+'zombie2/animation/Hurt5.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z2HurtR.append(img)
 
     loadScreen.text = 'z2IdleR'
@@ -1284,19 +1290,19 @@ def loadZombies():
     z2IdleR = []
     img = pygame.image.load(path+'zombie2/animation/Idle1.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z2IdleR.append(img)
     img = pygame.image.load(path+'zombie2/animation/Idle2.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z2IdleR.append(img)
     img = pygame.image.load(path+'zombie2/animation/Idle3.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z2IdleR.append(img)
     img = pygame.image.load(path+'zombie2/animation/Idle4.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z2IdleR.append(img)
 
     loadScreen.text = 'z2JumpR'
@@ -1305,31 +1311,31 @@ def loadZombies():
     z2JumpR = []
     img = pygame.image.load(path+'zombie2/animation/Jump1.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z2JumpR.append(img)
     img = pygame.image.load(path+'zombie2/animation/Jump2.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z2JumpR.append(img)
     img = pygame.image.load(path+'zombie2/animation/Jump3.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z2JumpR.append(img)
     img = pygame.image.load(path+'zombie2/animation/Jump4.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z2JumpR.append(img)
     img = pygame.image.load(path+'zombie2/animation/Jump5.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z2JumpR.append(img)
     img = pygame.image.load(path+'zombie2/animation/Jump6.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z2JumpR.append(img)
     img = pygame.image.load(path+'zombie2/animation/Jump7.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z2JumpR.append(img)
 
     loadScreen.text = 'z2RunR'
@@ -1338,43 +1344,43 @@ def loadZombies():
     z2RunR = []
     img = pygame.image.load(path+'zombie2/animation/Run1.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z2RunR.append(img)
     img = pygame.image.load(path+'zombie2/animation/Run2.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z2RunR.append(img)
     img = pygame.image.load(path+'zombie2/animation/Run3.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z2RunR.append(img)
     img = pygame.image.load(path+'zombie2/animation/Run4.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z2RunR.append(img)
     img = pygame.image.load(path+'zombie2/animation/Run5.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z2RunR.append(img)
     img = pygame.image.load(path+'zombie2/animation/Run6.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z2RunR.append(img)
     img = pygame.image.load(path+'zombie2/animation/Run7.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z2RunR.append(img)
     img = pygame.image.load(path+'zombie2/animation/Run8.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z2RunR.append(img)
     img = pygame.image.load(path+'zombie2/animation/Run9.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z2RunR.append(img)
     img = pygame.image.load(path+'zombie2/animation/Run10.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z2RunR.append(img)
 
     loadScreen.text = 'z2WalkR'
@@ -1383,27 +1389,27 @@ def loadZombies():
     z2WalkR = []
     img = pygame.image.load(path+'zombie2/animation/Walk1.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z2WalkR.append(img)
     img = pygame.image.load(path+'zombie2/animation/Walk2.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z2WalkR.append(img)
     img = pygame.image.load(path+'zombie2/animation/Walk3.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z2WalkR.append(img)
     img = pygame.image.load(path+'zombie2/animation/Walk4.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z2WalkR.append(img)
     img = pygame.image.load(path+'zombie2/animation/Walk5.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z2WalkR.append(img)
     img = pygame.image.load(path+'zombie2/animation/Walk6.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z2WalkR.append(img)
 
     loadScreen.text = 'z3AttackR'
@@ -1412,27 +1418,27 @@ def loadZombies():
     z3AttackR = []
     img = pygame.image.load(path+'zombie3/animation/Attack1.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z3AttackR.append(img)
     img = pygame.image.load(path+'zombie3/animation/Attack2.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z3AttackR.append(img)
     img = pygame.image.load(path+'zombie3/animation/Attack3.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z3AttackR.append(img)
     img = pygame.image.load(path+'zombie3/animation/Attack4.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z3AttackR.append(img)
     img = pygame.image.load(path+'zombie3/animation/Attack5.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z3AttackR.append(img)
     img = pygame.image.load(path+'zombie3/animation/Attack6.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z3AttackR.append(img)
 
     loadScreen.text = 'z3DeathR'
@@ -1441,35 +1447,35 @@ def loadZombies():
     z3DeathR = []
     img = pygame.image.load(path+'zombie3/animation/Dead1.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z3DeathR.append(img)
     img = pygame.image.load(path+'zombie3/animation/Dead2.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z3DeathR.append(img)
     img = pygame.image.load(path+'zombie3/animation/Dead3.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z3DeathR.append(img)
     img = pygame.image.load(path+'zombie3/animation/Dead4.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z3DeathR.append(img)
     img = pygame.image.load(path+'zombie3/animation/Dead5.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z3DeathR.append(img)
     img = pygame.image.load(path+'zombie3/animation/Dead6.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z3DeathR.append(img)
     img = pygame.image.load(path+'zombie3/animation/Dead7.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z3DeathR.append(img)
     img = pygame.image.load(path+'zombie3/animation/Dead8.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z3DeathR.append(img)
 
     loadScreen.text = 'z3HurtR'
@@ -1478,23 +1484,23 @@ def loadZombies():
     z3HurtR = []
     img = pygame.image.load(path+'zombie3/animation/Hurt1.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z3HurtR.append(img)
     img = pygame.image.load(path+'zombie3/animation/Hurt2.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z3HurtR.append(img)
     img = pygame.image.load(path+'zombie3/animation/Hurt3.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z3HurtR.append(img)
     img = pygame.image.load(path+'zombie3/animation/Hurt4.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z3HurtR.append(img)
     img = pygame.image.load(path+'zombie3/animation/Hurt5.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z3HurtR.append(img)
 
     loadScreen.text = 'z3IdleR'
@@ -1503,19 +1509,19 @@ def loadZombies():
     z3IdleR = []
     img = pygame.image.load(path+'zombie3/animation/Idle1.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z3IdleR.append(img)
     img = pygame.image.load(path+'zombie3/animation/Idle2.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z3IdleR.append(img)
     img = pygame.image.load(path+'zombie3/animation/Idle3.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z3IdleR.append(img)
     img = pygame.image.load(path+'zombie3/animation/Idle4.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z3IdleR.append(img)
 
     loadScreen.text = 'z3JumpR'
@@ -1524,31 +1530,31 @@ def loadZombies():
     z3JumpR = []
     img = pygame.image.load(path+'zombie3/animation/Jump1.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z3JumpR.append(img)
     img = pygame.image.load(path+'zombie3/animation/Jump2.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z3JumpR.append(img)
     img = pygame.image.load(path+'zombie3/animation/Jump3.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z3JumpR.append(img)
     img = pygame.image.load(path+'zombie3/animation/Jump4.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z3JumpR.append(img)
     img = pygame.image.load(path+'zombie3/animation/Jump5.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z3JumpR.append(img)
     img = pygame.image.load(path+'zombie3/animation/Jump6.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z3JumpR.append(img)
     img = pygame.image.load(path+'zombie3/animation/Jump7.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z3JumpR.append(img)
 
     loadScreen.text = 'z3RunR'
@@ -1557,43 +1563,43 @@ def loadZombies():
     z3RunR = []
     img = pygame.image.load(path+'zombie3/animation/Run1.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z3RunR.append(img)
     img = pygame.image.load(path+'zombie3/animation/Run2.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z3RunR.append(img)
     img = pygame.image.load(path+'zombie3/animation/Run3.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z3RunR.append(img)
     img = pygame.image.load(path+'zombie3/animation/Run4.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z3RunR.append(img)
     img = pygame.image.load(path+'zombie3/animation/Run5.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z3RunR.append(img)
     img = pygame.image.load(path+'zombie3/animation/Run6.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z3RunR.append(img)
     img = pygame.image.load(path+'zombie3/animation/Run7.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z3RunR.append(img)
     img = pygame.image.load(path+'zombie3/animation/Run8.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z3RunR.append(img)
     img = pygame.image.load(path+'zombie3/animation/Run9.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z3RunR.append(img)
     img = pygame.image.load(path+'zombie3/animation/Run10.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z3RunR.append(img)
 
     loadScreen.text = 'z3WalkR'
@@ -1602,27 +1608,27 @@ def loadZombies():
     z3WalkR = []
     img = pygame.image.load(path+'zombie3/animation/Walk1.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z3WalkR.append(img)
     img = pygame.image.load(path+'zombie3/animation/Walk2.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z3WalkR.append(img)
     img = pygame.image.load(path+'zombie3/animation/Walk3.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z3WalkR.append(img)
     img = pygame.image.load(path+'zombie3/animation/Walk4.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z3WalkR.append(img)
     img = pygame.image.load(path+'zombie3/animation/Walk5.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z3WalkR.append(img)
     img = pygame.image.load(path+'zombie3/animation/Walk6.png')
     imgW, imgH = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.4*imgW), int(.4*imgH)))
+    img = pygame.transform.scale(img, (int(scaler*imgW), int(scaler*imgH)))
     z3WalkR.append(img)
 
     global attackL
@@ -1738,12 +1744,16 @@ def drawShopStuff():
         shopDispCounter = 255
         maxHealth = False
         notEnoughMoney = False
+
     for button in shopButtons:
         button.update(win)
     if shopButtons[0].clicked(): #Health
         if man.health < 200:
             if money >= 20:
-                man.health += 10
+                if man.health < 190:
+                    man.health += 10
+                else:
+                    man.health = 200
                 money -= 20
             else:
                 notEnoughMoney = True
@@ -1824,20 +1834,21 @@ class Person:
                 win.blit(walkRight[0], (self.x, self.y))
 
 class Zombie: #Can run, walk, jump, idle, attack, be hurt, die
-    global man, bullets, zombies, zombieCount, score, playing, end
-    def __init__(self, x,y, type): #Need to add type for the 3 zombies
+    global man, bullets, zombies, zombieCount, score, playing, end, zombieWidth, zombieHeight
+    def __init__(self, x,y, type):
         self.x = x
         self.y = y
         self.type = type
-        self.width = 97
-        self.height = 144
+        self.width = zombieWidth
+        self.height = zombieHeight
         self.left = False
         self.right = False
         self.angry = False
         self.frameCount = 0
         self.frameCountMax = 0
         self.frameStart = 0
-        self.health=100
+        self.maxHealth = 100
+        self.health = 100
         self.actions = ['run', 'walk', 'jump', 'idle', 'attack', 'hurt', 'die']
         self.actions = ActionOrganizer(self.actions)
         self.speed = 12
@@ -1867,7 +1878,7 @@ class Zombie: #Can run, walk, jump, idle, attack, be hurt, die
             else:
                 self.left = True
                 self.right = False
-            if abs((self.x + self.width//2) - (man.x+man.width//2)) < 75:
+            if abs((self.x + self.width//2) - (man.x+man.width//2)) < 70:
                 self.actions.bool[self.actions.actions.index(action)] = False
                 self.actions.bool[4] = True #Sets action to attack
                 self.frameCount = 0 #Resets framecount so it's at beginning of attack
@@ -1958,7 +1969,7 @@ class Zombie: #Can run, walk, jump, idle, attack, be hurt, die
         elif action == 'attack':
             self.frameCountMax = len(z1AttackL)-1
             self.frameStart = 0
-            if self.frameCount//self.speed == 1 and abs((self.x + self.width//2) - (man.x+man.width//2)) < 90 and man.y > screenHeight - 250:
+            if self.frameCount//self.speed == 1 and abs((self.x + self.width//2) - (man.x+man.width//2)) < 70 and man.y > screenHeight - 250:
                 man.health -= 1
             if self.right:
                 img = attackR[self.type][self.frameCount//self.speed]
@@ -1997,9 +2008,9 @@ class Zombie: #Can run, walk, jump, idle, attack, be hurt, die
                 ignore, imgY = img.get_rect().size
                 win.blit(img, (self.x, self.y-imgY))
             self.frameCount += 1
-        if self.health < 100 and action != 'die':
-            pygame.draw.rect(win, (0,255,0), pygame.Rect(self.x, self.y-self.height-20,self.health, 10))
-            pygame.draw.rect(win, (255,0,0), pygame.Rect(self.x+self.health, self.y-self.height-20,100-self.health,10))
+        if self.health < self.maxHealth and action != 'die':
+            pygame.draw.rect(win, (0,255,0), pygame.Rect(self.x, self.y-self.height-25,self.health, 10))
+            pygame.draw.rect(win, (255,0,0), pygame.Rect(self.x+self.health, self.y-self.height-25,self.maxHealth-self.health,10))
 
 class ActionOrganizer:
     def __init__(self,actions):
@@ -2034,7 +2045,7 @@ class Bullet:
 def initV():
     global man, bullets, zombies, score, playing, end, wave, waveTimer, money
 
-    man = Person(screenWidth // 2 - 48 / 2, screenHeight - 175, 96, 112)
+    man = Person(screenWidth // 2 - 48 / 2, screenHeight - 155, 96, 112)
     bullets = []
     zombies = []
     score = 39
