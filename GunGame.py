@@ -2045,10 +2045,10 @@ class Bullet:
 def initV():
     global man, bullets, zombies, score, playing, end, wave, waveTimer, money
 
-    man = Person(screenWidth // 2 - 48 / 2, screenHeight - 155, 96, 112)
+    man = Person(screenWidth // 2 - 48/2, screenHeight - 155, 96, 112)
     bullets = []
     zombies = []
-    score = 39
+    score = 0
     money = 0
     playing = True
     end = True
@@ -2102,14 +2102,27 @@ def main():
                 elif score == 80:
                     wave, waveTimer = newWave(wave)
             if wave == 3:
-                if score < 50:
+                if score < 90:
                     zombieCount = 5
-                elif score < 60:
-                    zombieTimerEnd = 30
-                elif score < 70:
-                    zombieCount = 6
-                elif score == 80:
+                elif score < 100:
+                    zombieTimerEnd = 10
+                elif score < 120:
+                    zombieCount = 8
+                elif score == 150:
                     wave, waveTimer = newWave(wave)
+            if wave == 4:
+                if score < 180:
+                    zombieTimerEnd = 50
+                    zombieCount = 10
+                elif score < 200:
+                    zombieTimerEnd = 40
+                elif score < 220:
+                    zombieTimerEnd = 20
+                    zombieCount = 15
+                elif score == 250:
+                    wave, waveTimer = newWave(wave)
+            if wave == 5:
+                print("wave 5")
             if len(zombies) < zombieCount and zombieTimer >= zombieTimerEnd:
                 x = randint(1,2)
                 if x == 1:
