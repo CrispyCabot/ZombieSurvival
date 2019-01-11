@@ -120,8 +120,6 @@ def loadShit():
     bulletLeft = pygame.transform.scale(bulletImg, (15, 7))
     bulletRight = pygame.transform.flip(bulletLeft, True, False)
 
-    grenade = pygame.image.load(path+'images/grenade.png')
-
     explosion = [pygame.image.load(path+'explosion/tile000.png'), pygame.image.load(path+'explosion/tile001.png'), pygame.image.load(path+'explosion/tile002.png'), pygame.image.load(path+'explosion/tile003.png'), pygame.image.load(path+'explosion/tile004.png'), pygame.image.load(path+'explosion/tile005.png'), pygame.image.load(path+'explosion/tile006.png'), pygame.image.load(path+'explosion/tile007.png'), pygame.image.load(path+'explosion/tile008.png'), pygame.image.load(path+'explosion/tile009.png'), pygame.image.load(path+'explosion/tile010.png'), pygame.image.load(path+'explosion/tile011.png'), pygame.image.load(path+'explosion/tile012.png'), pygame.image.load(path+'explosion/tile013.png'), pygame.image.load(path+'explosion/tile014.png'), pygame.image.load(path+'explosion/tile015.png'), pygame.image.load(path+'explosion/tile016.png'), pygame.image.load(path+'explosion/tile017.png'), pygame.image.load(path+'explosion/tile018.png'), pygame.image.load(path+'explosion/tile019.png'), pygame.image.load(path+'explosion/tile020.png'), pygame.image.load(path+'explosion/tile021.png'), pygame.image.load(path+'explosion/tile022.png'), pygame.image.load(path+'explosion/tile023.png'), pygame.image.load(path+'explosion/tile024.png'), pygame.image.load(path+'explosion/tile025.png'), pygame.image.load(path+'explosion/tile026.png'), pygame.image.load(path+'explosion/tile027.png'), pygame.image.load(path+'explosion/tile028.png'), pygame.image.load(path+'explosion/tile029.png'), pygame.image.load(path+'explosion/tile030.png'), pygame.image.load(path+'explosion/tile031.png'), pygame.image.load(path+'explosion/tile032.png'), pygame.image.load(path+'explosion/tile033.png'), pygame.image.load(path+'explosion/tile034.png'), pygame.image.load(path+'explosion/tile035.png'), pygame.image.load(path+'explosion/tile036.png'), pygame.image.load(path+'explosion/tile037.png'), pygame.image.load(path+'explosion/tile038.png'), pygame.image.load(path+'explosion/tile039.png'), pygame.image.load(path+'explosion/tile040.png'), pygame.image.load(path+'explosion/tile041.png'), pygame.image.load(path+'explosion/tile042.png'), pygame.image.load(path+'explosion/tile043.png'), pygame.image.load(path+'explosion/tile044.png'), pygame.image.load(path+'explosion/tile045.png'), pygame.image.load(path+'explosion/tile046.png'), pygame.image.load(path+'explosion/tile047.png'), pygame.image.load(path+'explosion/tile048.png'), pygame.image.load(path+'explosion/tile049.png'), pygame.image.load(path+'explosion/tile050.png'), pygame.image.load(path+'explosion/tile051.png'), pygame.image.load(path+'explosion/tile052.png'), pygame.image.load(path+'explosion/tile053.png'), pygame.image.load(path+'explosion/tile054.png'), pygame.image.load(path+'explosion/tile055.png'), pygame.image.load(path+'explosion/tile056.png'), pygame.image.load(path+'explosion/tile057.png'), pygame.image.load(path+'explosion/tile058.png'), pygame.image.load(path+'explosion/tile059.png'), pygame.image.load(path+'explosion/tile060.png'), pygame.image.load(path+'explosion/tile061.png'), pygame.image.load(path+'explosion/tile062.png'), pygame.image.load(path+'explosion/tile063.png'), pygame.image.load(path+'explosion/tile064.png'), pygame.image.load(path+'explosion/tile065.png'), pygame.image.load(path+'explosion/tile066.png'), pygame.image.load(path+'explosion/tile067.png'), pygame.image.load(path+'explosion/tile068.png'), pygame.image.load(path+'explosion/tile069.png'), pygame.image.load(path+'explosion/tile070.png'), pygame.image.load(path+'explosion/tile071.png'), pygame.image.load(path+'explosion/tile072.png'), pygame.image.load(path+'explosion/tile073.png')]
 
     #convert_alpha is supposed to allow me to use set_alpha later on, but it doesn't work so fuck it.
@@ -1675,6 +1673,8 @@ def drawPlayStuff():
         for i in bullets:
             if i.draw(win):
                 bullets.remove(i)
+        for i in grenades:
+            i.update(win)
         man.draw(win)
         drawTop(man, win, score, money)
     else:
@@ -2024,12 +2024,38 @@ class Bullet:
         if self.x > screenWidth or self.x < 0:
             return True
 
+class Grenade:
+    global screenHeight, screenWidth
+    img = pygame.image.load(path+'images/grenade.png')
+    imgx, imgy = img.get_rect().size
+    img = pygame.transform.scale(img, (int(.03*imgx), int(.03*imgy)))
+    def __init__(self, x, y, direction):
+        self.x = x
+        self.y = y
+        self.dirr = direction
+        self.jumpVar = 9
+        self.angle = 25
+    def update(self, win):
+        if self.dirr: #LEFT
+            self.x -= 7
+        else:
+            self.x += 7
+        if self.y < screenHeight-100:
+            self.y -= self.jumpVar
+            self.jumpVar -= 1
+        self.angle += 5
+        grenade = pygame.transform.rotate(Grenade.img, self.angle)
+        w, h = grenade.get_rect().size
+        win.blit(grenade, (self.x+w//2, self.y+h//2))
+
+
 def initV():
-    global man, bullets, zombies, score, playing, end, wave, waveTimer, money
+    global man, bullets, zombies, score, playing, end, wave, waveTimer, money, grenades
 
     man = Person(screenWidth // 2 - 48/2, screenHeight - 155, 96, 112)
     bullets = []
     zombies = []
+    grenades = []
     score = 0
     money = 0
     playing = True
@@ -2049,9 +2075,10 @@ def newWave(wave):
     return wave, waveTimer
 # MAIN LOOP
 def main():
-    global man, bullets, zombies, score, playing, end, wave, waveTimer, gameScreen, money
+    global man, bullets, zombies, score, playing, end, wave, waveTimer, gameScreen, money, grenades
 
     shotTimer = 0
+    grenadeTimer = 0
     zombieTimer = 0
     zombieTimerEnd = 50
     zombieCount = 1
@@ -2144,8 +2171,14 @@ def main():
                     sounds['shot'].play()
                     bullets.append(Bullet(man.x + man.width / 2, man.y + 50, man.left))
                     shotTimer = 0
-            if shotTimer < 200:
-                shotTimer += 1
+            if keys[pygame.K_g]:
+                if grenadeTimer > 20:
+                    print('grenade')
+                    temp = Grenade(man.x+man.width//2, man.y, man.left)
+                    grenades.append(temp)
+                    grenadeTimer = 0
+            shotTimer += 1
+            grenadeTimer += 1
             if keys[pygame.K_LEFT] and man.x > man.vel:
                 man.left = True
                 man.right = False
