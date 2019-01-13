@@ -110,7 +110,7 @@ def shopScreenLoad():
     shopButtons = []
     healthInc = Button((screenWidth-150)/2-300,75,150,25,[96,165,243], '$20 - Health', shopFont, [255,255,255], shopFont2)
     shopButtons.append(healthInc)
-    grenade = Button((screenWidth-150)/2-120, 75, 150, 25, [45, 199, 78], '$50 - Grenade', shopFont, [255,255,255], shopFont2)
+    grenade = Button((screenWidth-150)/2-120, 75, 150, 25, [45, 199, 78], '$75 - Grenade', shopFont, [255,255,255], shopFont2)
     shopButtons.append(grenade)
 shopScreenLoad()
 loadScreen.update(win)
@@ -1697,7 +1697,7 @@ def drawPlayStuff():
         win.blit(gameOver, (50,50))
 
 def drawHomeStuff(homeButtons):
-    global playing, end, gameScreen
+    global playing, end, gameScreen, gameTimerStart
     win.blit(background, (0,0))
     text = titleFont.render('Zombie Survival', True, (255,50,50))
     w, h = text.get_rect().size
@@ -1706,6 +1706,7 @@ def drawHomeStuff(homeButtons):
         button.update(win)
     if homeButtons[0].clicked():
         gameScreen = 'play'
+        gameTimerStart = time.time()
     if homeButtons[1].clicked():
         gameScreen = 'play'
         end = False
@@ -1760,8 +1761,8 @@ def drawShopStuff():
         time.sleep(.2) #So that it doesn't register multiple clicks
     if shopButtons[1].clicked(): #Grenade
         if man.grenades < 6:
-            if money >= 50:
-                money -= 50
+            if money >= 75:
+                money -= 75
                 man.grenades += 1
             else:
                 notEnoughMoney = True
@@ -1774,7 +1775,7 @@ def drawShopStuff():
         gameScreen = 'betweenWave'
 
 def drawBetweenThings():
-    global betweenBtns, man, score, gameScreen, playing, end
+    global betweenBtns, man, score, gameScreen, playing, end, gameTimerStart
     win.blit(background, (0,0))
     text = titleFont.render('Wave Complete', True, (255,0,0))
     w, h = text.get_rect().size
@@ -1783,6 +1784,7 @@ def drawBetweenThings():
         button.update(win)
     if betweenBtns[0].clicked():
         gameScreen = 'play'
+        gameTimerStart = time.time()
     if betweenBtns[1].clicked():
         gameScreen = 'shop'
     if betweenBtns[2].clicked():
@@ -1796,7 +1798,7 @@ def redraw():
     screenWidth, screenHeight = pygame.display.get_surface().get_size()
     if not pygame.mixer.music.get_busy():
         pygame.mixer.music.load(songs[randint(0,len(songs)-1)])
-        pygame.mixer.music.set_volume(0.3)
+        pygame.mixer.music.set_volume(.5)
         pygame.mixer.music.play()
     if gameScreen == 'play':
         drawPlayStuff()
@@ -2095,7 +2097,7 @@ class Grenade:
 
 
 def initV():
-    global man, bullets, zombies, score, playing, end, wave, waveTimer, money, grenades
+    global man, bullets, zombies, score, playing, end, wave, waveTimer, money, grenades, gameTimerStart
 
     man = Person(screenWidth // 2 - 48/2, screenHeight - 155, 96, 112)
     bullets = []
@@ -2107,6 +2109,7 @@ def initV():
     end = True
     wave = 1
     waveTimer = 255
+    gameTimerStart = 0
 
 def distance(p0, p1):
     return math.sqrt((p0[0] - p1[0])**2 + (p0[1] - p1[1])**2)
@@ -2120,10 +2123,11 @@ def newWave(wave):
     wave += 1
     waveTimer = 255
     gameScreen = 'betweenWave'
+    print(wave, waveTimer)
     return wave, waveTimer
 # MAIN LOOP
 def main():
-    global man, bullets, zombies, score, playing, end, wave, waveTimer, gameScreen, money, grenades
+    global man, bullets, zombies, score, playing, end, wave, waveTimer, gameScreen, money, grenades, gameTimerStart
 
     shotTimer = 0
     grenadeTimer = 0
@@ -2141,46 +2145,47 @@ def main():
 
         if gameScreen == 'play':
             if wave == 1:
-                if score < 3:
+                if time.time()-gameTimerStart < 10:
                     zombieCount = 1
-                elif score < 10:
+                elif time.time()-gameTimerStart < 30:
                     zombieCount = 3
-                elif score < 30:
+                elif time.time()-gameTimerStart < 60:
                     zombieCount = 5
-                elif score == 40:
+                elif time.time()-gameTimerStart > 60:
+                    print("this")
                     wave, waveTimer = newWave(wave)
-            if wave == 2:
-                if score < 50:
+            elif wave == 2:
+                if time.time()-gameTimerStart < 10:
                     zombieCount = 3
-                elif score < 60:
+                elif time.time()-gameTimerStart < 30:
                     zombieCount = 4
                     zombieTimerEnd = 30
-                elif score < 70:
+                elif time.time()-gameTimerStart < 60:
                     zombieTimerEnd = 30
                     zombieCount = 6
-                elif score == 80:
+                elif time.time()-gameTimerStart > 60:
                     wave, waveTimer = newWave(wave)
-            if wave == 3:
-                if score < 90:
+            elif wave == 3:
+                if time.time()-gameTimerStart < 10:
                     zombieCount = 5
-                elif score < 100:
+                elif time.time()-gameTimerStart < 30:
                     zombieTimerEnd = 10
-                elif score < 120:
+                elif time.time()-gameTimerStart < 60:
                     zombieCount = 8
-                elif score == 150:
+                elif time.time()-gameTimerStart > 60:
                     wave, waveTimer = newWave(wave)
-            if wave == 4:
-                if score < 180:
+            elif wave == 4:
+                if time.time()-gameTimerStart < 10:
                     zombieTimerEnd = 50
                     zombieCount = 10
-                elif score < 200:
+                elif time.time()-gameTimerStart < 30:
                     zombieTimerEnd = 40
-                elif score < 220:
+                elif time.time()-gameTimerStart < 60:
                     zombieTimerEnd = 20
                     zombieCount = 15
-                elif score == 250:
+                elif time.time()-gameTimerStart > 60:
                     wave, waveTimer = newWave(wave)
-            if wave == 5:
+            elif wave == 5:
                 print("wave 5")
             if len(zombies) < zombieCount and zombieTimer >= zombieTimerEnd:
                 x = randint(1,2)
