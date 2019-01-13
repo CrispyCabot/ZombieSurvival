@@ -5,6 +5,7 @@ import threading
 from random import randint, choice
 from sys import platform
 import os
+import math
 
 #Self made classes
 from Button import Button
@@ -107,18 +108,24 @@ loadScreen.update(win)
 def shopScreenLoad():
     global shopButtons
     shopButtons = []
-    healthInc = Button((screenWidth-100)/2-300,75,150,25,[96,165,243], '$20 - Health', shopFont, [255,255,255], shopFont2)
+    healthInc = Button((screenWidth-150)/2-300,75,150,25,[96,165,243], '$20 - Health', shopFont, [255,255,255], shopFont2)
     shopButtons.append(healthInc)
+    grenade = Button((screenWidth-150)/2-120, 75, 150, 25, [45, 199, 78], '$50 - Grenade', shopFont, [255,255,255], shopFont2)
+    shopButtons.append(grenade)
 shopScreenLoad()
 loadScreen.update(win)
 def loadShit():
-    global background, bulletImg, bulletLeft, bulletRight, walkLeft, walkRight, sounds, songs, waveText, explosion, grenade
+    global grenadeImg, background, bulletImg, bulletLeft, bulletRight, walkLeft, walkRight, sounds, songs, waveText, explosion, grenade
 
     background = pygame.image.load(path+'images/background.jpg')
     background = pygame.transform.scale(background, (screenWidth, screenHeight))
     bulletImg = pygame.image.load(path+'images/bullet.png')
     bulletLeft = pygame.transform.scale(bulletImg, (15, 7))
     bulletRight = pygame.transform.flip(bulletLeft, True, False)
+
+    grenadeImg = pygame.image.load(path+'images/grenade.png')
+    imgx, imgy = grenadeImg.get_rect().size
+    grenadeImg = pygame.transform.scale(grenadeImg, (int(.04*imgx), int(.04*imgy)))
 
     explosion = [pygame.image.load(path+'explosion/tile000.png'), pygame.image.load(path+'explosion/tile001.png'), pygame.image.load(path+'explosion/tile002.png'), pygame.image.load(path+'explosion/tile003.png'), pygame.image.load(path+'explosion/tile004.png'), pygame.image.load(path+'explosion/tile005.png'), pygame.image.load(path+'explosion/tile006.png'), pygame.image.load(path+'explosion/tile007.png'), pygame.image.load(path+'explosion/tile008.png'), pygame.image.load(path+'explosion/tile009.png'), pygame.image.load(path+'explosion/tile010.png'), pygame.image.load(path+'explosion/tile011.png'), pygame.image.load(path+'explosion/tile012.png'), pygame.image.load(path+'explosion/tile013.png'), pygame.image.load(path+'explosion/tile014.png'), pygame.image.load(path+'explosion/tile015.png'), pygame.image.load(path+'explosion/tile016.png'), pygame.image.load(path+'explosion/tile017.png'), pygame.image.load(path+'explosion/tile018.png'), pygame.image.load(path+'explosion/tile019.png'), pygame.image.load(path+'explosion/tile020.png'), pygame.image.load(path+'explosion/tile021.png'), pygame.image.load(path+'explosion/tile022.png'), pygame.image.load(path+'explosion/tile023.png'), pygame.image.load(path+'explosion/tile024.png'), pygame.image.load(path+'explosion/tile025.png'), pygame.image.load(path+'explosion/tile026.png'), pygame.image.load(path+'explosion/tile027.png'), pygame.image.load(path+'explosion/tile028.png'), pygame.image.load(path+'explosion/tile029.png'), pygame.image.load(path+'explosion/tile030.png'), pygame.image.load(path+'explosion/tile031.png'), pygame.image.load(path+'explosion/tile032.png'), pygame.image.load(path+'explosion/tile033.png'), pygame.image.load(path+'explosion/tile034.png'), pygame.image.load(path+'explosion/tile035.png'), pygame.image.load(path+'explosion/tile036.png'), pygame.image.load(path+'explosion/tile037.png'), pygame.image.load(path+'explosion/tile038.png'), pygame.image.load(path+'explosion/tile039.png'), pygame.image.load(path+'explosion/tile040.png'), pygame.image.load(path+'explosion/tile041.png'), pygame.image.load(path+'explosion/tile042.png'), pygame.image.load(path+'explosion/tile043.png'), pygame.image.load(path+'explosion/tile044.png'), pygame.image.load(path+'explosion/tile045.png'), pygame.image.load(path+'explosion/tile046.png'), pygame.image.load(path+'explosion/tile047.png'), pygame.image.load(path+'explosion/tile048.png'), pygame.image.load(path+'explosion/tile049.png'), pygame.image.load(path+'explosion/tile050.png'), pygame.image.load(path+'explosion/tile051.png'), pygame.image.load(path+'explosion/tile052.png'), pygame.image.load(path+'explosion/tile053.png'), pygame.image.load(path+'explosion/tile054.png'), pygame.image.load(path+'explosion/tile055.png'), pygame.image.load(path+'explosion/tile056.png'), pygame.image.load(path+'explosion/tile057.png'), pygame.image.load(path+'explosion/tile058.png'), pygame.image.load(path+'explosion/tile059.png'), pygame.image.load(path+'explosion/tile060.png'), pygame.image.load(path+'explosion/tile061.png'), pygame.image.load(path+'explosion/tile062.png'), pygame.image.load(path+'explosion/tile063.png'), pygame.image.load(path+'explosion/tile064.png'), pygame.image.load(path+'explosion/tile065.png'), pygame.image.load(path+'explosion/tile066.png'), pygame.image.load(path+'explosion/tile067.png'), pygame.image.load(path+'explosion/tile068.png'), pygame.image.load(path+'explosion/tile069.png'), pygame.image.load(path+'explosion/tile070.png'), pygame.image.load(path+'explosion/tile071.png'), pygame.image.load(path+'explosion/tile072.png'), pygame.image.load(path+'explosion/tile073.png')]
 
@@ -1649,18 +1656,23 @@ print('Loading Time:', time.time()-timeStart, 'seconds')
 loading = False
 
 def drawTop(man, win, score, money):
+    global grenadeImg
     scoreText = myFont.render('Score '+str(score), True, (255,255,255))
     win.blit(scoreText, (10, 10))
     if man.health > 0:
         pygame.draw.rect(win, (0,255,0), pygame.Rect(100, 10, man.health*2,20))
     if man.health< 200:
         pygame.draw.rect(win, (255,0,0), pygame.Rect(100+man.health*2,10, 400-man.health*2, 20))
+    xgrenade = 510
+    for i in range(man.grenades):
+        win.blit(grenadeImg, (xgrenade, 10))
+        xgrenade += 30
     moneyText = myFont.render('Money '+str(money), True, (0,255,0))
     w, ignore = moneyText.get_rect().size
     win.blit(moneyText, (screenWidth-10-w, 10))
 
 def drawPlayStuff():
-    global gameScreen, homeButtons, playing, end, wave, waveTimer, waveText
+    global gameScreen, homeButtons, playing, end, wave, waveTimer, waveText, grenades
     if playing:
         win.blit(background, (0, 0))
         if waveTimer > 0:
@@ -1674,7 +1686,8 @@ def drawPlayStuff():
             if i.draw(win):
                 bullets.remove(i)
         for i in grenades:
-            i.update(win)
+            if i.update(win):
+                grenades.remove(i)
         man.draw(win)
         drawTop(man, win, score, money)
     else:
@@ -1698,16 +1711,16 @@ def drawHomeStuff(homeButtons):
 
 shopDispCounter = 255
 notEnoughMoney = False
-maxHealth = False
+maxThing = False
 
 def drawShopStuff():
-    global gameScreen, shopButtons, money, shopDispCounter, notEnoughMoney, maxHealth
+    global gameScreen, shopButtons, money, shopDispCounter, notEnoughMoney, maxThing
     win.blit(background, (0,0))
     drawTop(man, win, score, money)
     backBtn.update(win)
-    if maxHealth:
+    if maxThing:
         shopDispCounter -= 2
-        text = font.render('Already Max Health', True, (255,255,255))
+        text = font.render('Already Max', True, (255,255,255))
         surface = pygame.Surface(text.get_rect().size)
         surface.fill((0,0,0))
         surface.blit(text, (0,0))
@@ -1723,7 +1736,7 @@ def drawShopStuff():
         win.blit(surface, (110, screenHeight-50))
     if shopDispCounter <= 1:
         shopDispCounter = 255
-        maxHealth = False
+        maxThing = False
         notEnoughMoney = False
 
     for button in shopButtons:
@@ -1740,9 +1753,21 @@ def drawShopStuff():
                 notEnoughMoney = True
                 shopDispCounter = 255
         else:
-            maxHealth = True
+            maxThing = True
             shopDispCounter = 255
         time.sleep(.2) #So that it doesn't register multiple clicks
+    if shopButtons[1].clicked(): #Grenade
+        if man.grenades < 6:
+            if money >= 50:
+                money -= 50
+                man.grenades += 1
+            else:
+                notEnoughMoney = True
+                shopDispCounter = 255
+        else:
+            maxThing = True
+            shopDispCounter = 255
+        time.sleep(.2)
     if backBtn.clicked():
         gameScreen = 'betweenWave'
 
@@ -2025,28 +2050,45 @@ class Bullet:
             return True
 
 class Grenade:
-    global screenHeight, screenWidth
+    global screenHeight, screenWidth, explosion
     img = pygame.image.load(path+'images/grenade.png')
     imgx, imgy = img.get_rect().size
     img = pygame.transform.scale(img, (int(.03*imgx), int(.03*imgy)))
-    def __init__(self, x, y, direction):
+    def __init__(self, x, y, direction, moving):
         self.x = x
         self.y = y
         self.dirr = direction
         self.jumpVar = 9
         self.angle = 25
+        self.moving = moving
+        self.exploding = False
+        self.frameCounter = 0
+        self.w, self.h = explosion[35].get_rect().size
     def update(self, win):
-        if self.dirr: #LEFT
-            self.x -= 7
+        if not self.exploding:
+            if self.dirr: #LEFT
+                self.x -= 7
+                if self.moving:
+                    self.x -= 5
+            else:
+                self.x += 7
+                if self.moving:
+                    self.x += 5
+            if self.y < screenHeight-100:
+                self.y -= self.jumpVar
+                self.jumpVar -= 1
+            else: #Hit ground
+                self.exploding = True
+            self.angle += 5
+            grenade = pygame.transform.rotate(Grenade.img, self.angle)
+            w, h = grenade.get_rect().size
+            win.blit(grenade, (self.x+w//2, self.y+h//2))
         else:
-            self.x += 7
-        if self.y < screenHeight-100:
-            self.y -= self.jumpVar
-            self.jumpVar -= 1
-        self.angle += 5
-        grenade = pygame.transform.rotate(Grenade.img, self.angle)
-        w, h = grenade.get_rect().size
-        win.blit(grenade, (self.x+w//2, self.y+h//2))
+        #    w, h = explosion[self.frameCounter//1].get_rect().size
+            win.blit(explosion[self.frameCounter//1], (self.x, self.y))
+            self.frameCounter += 1
+            if self.frameCounter >= 74: #148 if above is //2
+                return True
 
 
 def initV():
@@ -2062,6 +2104,9 @@ def initV():
     end = True
     wave = 1
     waveTimer = 255
+
+def distance(p0, p1):
+    return math.sqrt((p0[0] - p1[0])**2 + (p0[1] - p1[1])**2)
 
 def newWave(wave):
     global gameScreen, zombies, man, bullets
@@ -2150,15 +2195,26 @@ def main():
                         #hit
                         sounds['hit'].play()
                         bullets.remove(bullet)
-                        if zombie.health <= 20:
+                        zombie.health -= 20
+                        if randint(1,5) == 1 and not zombie.actions.bool[2]: #Makes sure not in middle of jumping
+                            zombie.hurt()
+                        if zombie.health <= 0 and not zombie.isDead:
                             zombie.die()
                             score += 1
                             money += 5
-                        else:
-                            zombie.health -= 20
-                            if randint(1,5) == 1 and not zombie.actions.bool[2]: #Makes sure not in middle of jumping
-                                zombie.hurt()
                         break
+            for grenade in grenades:
+                for zombie in zombies: #Uncomment below to show hitboxes
+            #        pygame.draw.circle(win, (255,0,0), (int(grenade.x+grenade.w//2), int(grenade.y+grenade.h//2)), 90, 4)
+            #        pygame.draw.circle(win, (255,255,0), (int(zombie.x+zombie.width//2), int(zombie.y-zombie.height//2)), 10)
+            #        pygame.display.update()
+                    if distance([grenade.x+grenade.w//2, grenade.y+grenade.h//2-10], [zombie.x+zombie.width//2, zombie.y-zombie.height//2]) < 90 and grenade.exploding and grenade.frameCounter < 26:
+                        zombie.health -= 5
+                    if zombie.health <= 0 and not zombie.isDead:
+                        zombie.die()
+                        score += 1
+                        money += 5
+
             for zombie in zombies:
                 zombie.setAction()
             if man.health <= 0:
@@ -2173,18 +2229,22 @@ def main():
                     shotTimer = 0
             if keys[pygame.K_g]:
                 if grenadeTimer > 20:
-                    print('grenade')
-                    temp = Grenade(man.x+man.width//2, man.y, man.left)
-                    grenades.append(temp)
-                    grenadeTimer = 0
+                    if man.grenades > 0:
+                        if keys[pygame.K_LEFT] or keys[pygame.K_RIGHT] or keys[pygame.K_d] or keys[pygame.K_a]:
+                            temp = Grenade(man.x+man.width//2, man.y, man.left, True)
+                        else:
+                            temp = Grenade(man.x+man.width//2, man.y, man.left, False)
+                        grenades.append(temp)
+                        grenadeTimer = 0
+                        man.grenades -= 1
             shotTimer += 1
             grenadeTimer += 1
-            if keys[pygame.K_LEFT] and man.x > man.vel:
+            if (keys[pygame.K_LEFT] or keys[pygame.K_a]) and man.x > man.vel:
                 man.left = True
                 man.right = False
                 man.standing = False
                 man.x -= man.vel
-            elif keys[pygame.K_RIGHT] and man.x < screenWidth - man.width - man.vel:
+            elif (keys[pygame.K_RIGHT] or keys[pygame.K_d]) and man.x < screenWidth - man.width - man.vel:
                 man.right = True
                 man.left = False
                 man.x += man.vel
@@ -2193,7 +2253,7 @@ def main():
                 man.standing = True
                 man.walkCount = 0
             if not man.isJump:
-                if keys[pygame.K_UP]:
+                if keys[pygame.K_UP] or keys[pygame.K_w]:
                     man.isJump = True
             else:
                 man.y -= man.jumpAcc
