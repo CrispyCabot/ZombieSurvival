@@ -36,11 +36,11 @@ win = pygame.display.set_mode((screenWidth, screenHeight)) #, pygame.RESIZABLE
 
 pygame.display.set_caption('Zombie Survival')
 
-loadZombie = [pygame.image.load(path+'zombieLoading\\tile000.png'), pygame.image.load(path+'zombieLoading\\tile001.png'),
-                pygame.image.load(path+'zombieLoading\\tile002.png'), pygame.image.load(path+'zombieLoading\\tile003.png'),
-                pygame.image.load(path+'zombieLoading\\tile004.png'), pygame.image.load(path+'zombieLoading\\tile005.png'),
-                pygame.image.load(path+'zombieLoading\\tile006.png'), pygame.image.load(path+'zombieLoading\\tile007.png'),
-                pygame.image.load(path+'zombieLoading\\tile008.png'), pygame.image.load(path+'zombieLoading\\tile009.png'),]
+loadZombie = [pygame.image.load(path+os.path.join('zombieLoading','tile000.png')), pygame.image.load(path+os.path.join('zombieLoading','tile001.png')),
+                pygame.image.load(path+os.path.join('zombieLoading','tile002.png')), pygame.image.load(path+os.path.join('zombieLoading','tile003.png')),
+                pygame.image.load(path+os.path.join('zombieLoading','tile004.png')), pygame.image.load(path+os.path.join('zombieLoading','tile005.png')),
+                pygame.image.load(path+os.path.join('zombieLoading','tile006.png')), pygame.image.load(path+os.path.join('zombieLoading','tile007.png')),
+                pygame.image.load(path+os.path.join('zombieLoading','tile008.png')), pygame.image.load(path+os.path.join('zombieLoading','tile009.png'))]
 
 def zombieLoad():
     global loading, win
@@ -125,45 +125,45 @@ loadScreen.update(win)
 def loadShit():
     global grenadeImg, background, bulletImg, bulletLeft, bulletRight, walkLeft, walkRight, sounds, songs, waveText, explosion, grenade
 
-    background = pygame.image.load(path+'images\\background.jpg')
+    background = pygame.image.load(path+os.path.join('images','background.jpg'))
     background = pygame.transform.scale(background, (screenWidth, screenHeight))
-    bulletImg = pygame.image.load(path+'images\\bullet.png')
+    bulletImg = pygame.image.load(path+os.path.join('images','bullet.png'))
     bulletLeft = pygame.transform.scale(bulletImg, (15, 7))
     bulletRight = pygame.transform.flip(bulletLeft, True, False)
 
-    grenadeImg = pygame.image.load(path+'images\\grenade.png')
+    grenadeImg = pygame.image.load(path+os.path.join('images','grenade.png'))
     imgx, imgy = grenadeImg.get_rect().size
     grenadeImg = pygame.transform.scale(grenadeImg, (int(.04*imgx), int(.04*imgy)))
 
-    explosion = [pygame.image.load(path+'explosion\\tile000.png'), pygame.image.load(path+'explosion\\tile001.png'), pygame.image.load(path+'explosion\\tile002.png'), pygame.image.load(path+'explosion\\tile003.png'), pygame.image.load(path+'explosion\\tile004.png'), pygame.image.load(path+'explosion\\tile005.png'), pygame.image.load(path+'explosion\\tile006.png'), pygame.image.load(path+'explosion\\tile007.png'), pygame.image.load(path+'explosion\\tile008.png'), pygame.image.load(path+'explosion\\tile009.png'), pygame.image.load(path+'explosion\\tile010.png'), pygame.image.load(path+'explosion\\tile011.png'), pygame.image.load(path+'explosion\\tile012.png'), pygame.image.load(path+'explosion\\tile013.png'), pygame.image.load(path+'explosion\\tile014.png'), pygame.image.load(path+'explosion\\tile015.png'), pygame.image.load(path+'explosion\\tile016.png'), pygame.image.load(path+'explosion\\tile017.png'), pygame.image.load(path+'explosion\\tile018.png'), pygame.image.load(path+'explosion\\tile019.png'), pygame.image.load(path+'explosion\\tile020.png'), pygame.image.load(path+'explosion\\tile021.png'), pygame.image.load(path+'explosion\\tile022.png'), pygame.image.load(path+'explosion\\tile023.png'), pygame.image.load(path+'explosion\\tile024.png'), pygame.image.load(path+'explosion\\tile025.png'), pygame.image.load(path+'explosion\\tile026.png'), pygame.image.load(path+'explosion\\tile027.png'), pygame.image.load(path+'explosion\\tile028.png'), pygame.image.load(path+'explosion\\tile029.png'), pygame.image.load(path+'explosion\\tile030.png'), pygame.image.load(path+'explosion\\tile031.png'), pygame.image.load(path+'explosion\\tile032.png'), pygame.image.load(path+'explosion\\tile033.png'), pygame.image.load(path+'explosion\\tile034.png'), pygame.image.load(path+'explosion\\tile035.png'), pygame.image.load(path+'explosion\\tile036.png'), pygame.image.load(path+'explosion\\tile037.png'), pygame.image.load(path+'explosion\\tile038.png'), pygame.image.load(path+'explosion\\tile039.png'), pygame.image.load(path+'explosion\\tile040.png'), pygame.image.load(path+'explosion\\tile041.png'), pygame.image.load(path+'explosion\\tile042.png'), pygame.image.load(path+'explosion\\tile043.png'), pygame.image.load(path+'explosion\\tile044.png'), pygame.image.load(path+'explosion\\tile045.png'), pygame.image.load(path+'explosion\\tile046.png'), pygame.image.load(path+'explosion\\tile047.png'), pygame.image.load(path+'explosion\\tile048.png'), pygame.image.load(path+'explosion\\tile049.png'), pygame.image.load(path+'explosion\\tile050.png'), pygame.image.load(path+'explosion\\tile051.png'), pygame.image.load(path+'explosion\\tile052.png'), pygame.image.load(path+'explosion\\tile053.png'), pygame.image.load(path+'explosion\\tile054.png'), pygame.image.load(path+'explosion\\tile055.png'), pygame.image.load(path+'explosion\\tile056.png'), pygame.image.load(path+'explosion\\tile057.png'), pygame.image.load(path+'explosion\\tile058.png'), pygame.image.load(path+'explosion\\tile059.png'), pygame.image.load(path+'explosion\\tile060.png'), pygame.image.load(path+'explosion\\tile061.png'), pygame.image.load(path+'explosion\\tile062.png'), pygame.image.load(path+'explosion\\tile063.png'), pygame.image.load(path+'explosion\\tile064.png'), pygame.image.load(path+'explosion\\tile065.png'), pygame.image.load(path+'explosion\\tile066.png'), pygame.image.load(path+'explosion\\tile067.png'), pygame.image.load(path+'explosion\\tile068.png'), pygame.image.load(path+'explosion\\tile069.png'), pygame.image.load(path+'explosion\\tile070.png'), pygame.image.load(path+'explosion\\tile071.png'), pygame.image.load(path+'explosion\\tile072.png'), pygame.image.load(path+'explosion\\tile073.png')]
+    explosion = [pygame.image.load(path+os.path.join('explosion','tile000.png')), pygame.image.load(path+os.path.join('explosion','tile001.png')), pygame.image.load(path+os.path.join('explosion','tile002.png')), pygame.image.load(path+os.path.join('explosion','tile003.png')), pygame.image.load(path+os.path.join('explosion','tile004.png')), pygame.image.load(path+os.path.join('explosion','tile005.png')), pygame.image.load(path+os.path.join('explosion','tile006.png')), pygame.image.load(path+os.path.join('explosion','tile007.png')), pygame.image.load(path+os.path.join('explosion','tile008.png')), pygame.image.load(path+os.path.join('explosion','tile009.png')), pygame.image.load(path+os.path.join('explosion','tile010.png')), pygame.image.load(path+os.path.join('explosion','tile011.png')), pygame.image.load(path+os.path.join('explosion','tile012.png')), pygame.image.load(path+os.path.join('explosion','tile013.png')), pygame.image.load(path+os.path.join('explosion','tile014.png')), pygame.image.load(path+os.path.join('explosion','tile015.png')), pygame.image.load(path+os.path.join('explosion','tile016.png')), pygame.image.load(path+os.path.join('explosion','tile017.png')), pygame.image.load(path+os.path.join('explosion','tile018.png')), pygame.image.load(path+os.path.join('explosion','tile019.png')), pygame.image.load(path+os.path.join('explosion','tile020.png')), pygame.image.load(path+os.path.join('explosion','tile021.png')), pygame.image.load(path+os.path.join('explosion','tile022.png')), pygame.image.load(path+os.path.join('explosion','tile023.png')), pygame.image.load(path+os.path.join('explosion','tile024.png')), pygame.image.load(path+os.path.join('explosion','tile025.png')), pygame.image.load(path+os.path.join('explosion','tile026.png')), pygame.image.load(path+os.path.join('explosion','tile027.png')), pygame.image.load(path+os.path.join('explosion','tile028.png')), pygame.image.load(path+os.path.join('explosion','tile029.png')), pygame.image.load(path+os.path.join('explosion','tile030.png')), pygame.image.load(path+os.path.join('explosion','tile031.png')), pygame.image.load(path+os.path.join('explosion','tile032.png')), pygame.image.load(path+os.path.join('explosion','tile033.png')), pygame.image.load(path+os.path.join('explosion','tile034.png')), pygame.image.load(path+os.path.join('explosion','tile035.png')), pygame.image.load(path+os.path.join('explosion','tile036.png')), pygame.image.load(path+os.path.join('explosion','tile037.png')), pygame.image.load(path+os.path.join('explosion','tile038.png')), pygame.image.load(path+os.path.join('explosion','tile039.png')), pygame.image.load(path+os.path.join('explosion','tile040.png')), pygame.image.load(path+os.path.join('explosion','tile041.png')), pygame.image.load(path+os.path.join('explosion','tile042.png')), pygame.image.load(path+os.path.join('explosion','tile043.png')), pygame.image.load(path+os.path.join('explosion','tile044.png')), pygame.image.load(path+os.path.join('explosion','tile045.png')), pygame.image.load(path+os.path.join('explosion','tile046.png')), pygame.image.load(path+os.path.join('explosion','tile047.png')), pygame.image.load(path+os.path.join('explosion','tile048.png')), pygame.image.load(path+os.path.join('explosion','tile049.png')), pygame.image.load(path+os.path.join('explosion','tile050.png')), pygame.image.load(path+os.path.join('explosion','tile051.png')), pygame.image.load(path+os.path.join('explosion','tile052.png')), pygame.image.load(path+os.path.join('explosion','tile053.png')), pygame.image.load(path+os.path.join('explosion','tile054.png')), pygame.image.load(path+os.path.join('explosion','tile055.png')), pygame.image.load(path+os.path.join('explosion','tile056.png')), pygame.image.load(path+os.path.join('explosion','tile057.png')), pygame.image.load(path+os.path.join('explosion','tile058.png')), pygame.image.load(path+os.path.join('explosion','tile059.png')), pygame.image.load(path+os.path.join('explosion','tile060.png')), pygame.image.load(path+os.path.join('explosion','tile061.png')), pygame.image.load(path+os.path.join('explosion','tile062.png')), pygame.image.load(path+os.path.join('explosion','tile063.png')), pygame.image.load(path+os.path.join('explosion','tile064.png')), pygame.image.load(path+os.path.join('explosion','tile065.png')), pygame.image.load(path+os.path.join('explosion','tile066.png')), pygame.image.load(path+os.path.join('explosion','tile067.png')), pygame.image.load(path+os.path.join('explosion','tile068.png')), pygame.image.load(path+os.path.join('explosion','tile069.png')), pygame.image.load(path+os.path.join('explosion','tile070.png')), pygame.image.load(path+os.path.join('explosion','tile071.png')), pygame.image.load(path+os.path.join('explosion','tile072.png')), pygame.image.load(path+os.path.join('explosion','tile073.png'))]
 
     #convert_alpha is supposed to allow me to use set_alpha later on, but it doesn't work so fuck it.
-    waveText = [pygame.image.load(path+'waveText\\wave1.png').convert_alpha(), pygame.image.load(path+'waveText\\wave2.png').convert_alpha(),
-                pygame.image.load(path+'waveText\\wave3.png').convert_alpha(), pygame.image.load(path+'waveText\\wave4.png').convert_alpha(),
-                pygame.image.load(path+'waveText\\wave5.png').convert_alpha(), pygame.image.load(path+'waveText\\wave6.png').convert_alpha(),
-                pygame.image.load(path+'waveText\\wave7.png').convert_alpha(), pygame.image.load(path+'waveText\\wave8.png').convert_alpha(),
-                pygame.image.load(path+'waveText\\wave9.png').convert_alpha(), pygame.image.load(path+'waveText\\wave10.png').convert_alpha()]
+    waveText = [pygame.image.load(path+os.path.join('waveText','wave1.png')).convert_alpha(), pygame.image.load(path+os.path.join('waveText','wave2.png')).convert_alpha(),
+                pygame.image.load(path+os.path.join('waveText','wave3.png')).convert_alpha(), pygame.image.load(path+os.path.join('waveText','wave4.png')).convert_alpha(),
+                pygame.image.load(path+os.path.join('waveText','wave5.png')).convert_alpha(), pygame.image.load(path+os.path.join('waveText','wave6.png')).convert_alpha(),
+                pygame.image.load(path+os.path.join('waveText','wave7.png')).convert_alpha(), pygame.image.load(path+os.path.join('waveText','wave8.png')).convert_alpha(),
+                pygame.image.load(path+os.path.join('waveText','wave9.png')).convert_alpha(), pygame.image.load(path+os.path.join('waveText','wave10.png')).convert_alpha()]
     loadScreen.text = 'Player Walk Left'
     loadScreen.update(win)
-    walkLeft = [pygame.image.load(path+'char\\p0.png'), pygame.image.load(path+'char\\p1.png'),
-                pygame.image.load(path+'char\\p2.png'), pygame.image.load(path+'char\\p3.png'),
-                pygame.image.load(path+'char\\p4.png'), pygame.image.load(path+'char\\p5.png'),
-                pygame.image.load(path+'char\\p6.png')]
+    walkLeft = [pygame.image.load(path+os.path.join('char','p0.png')), pygame.image.load(path+os.path.join('char','p1.png')),
+                pygame.image.load(path+os.path.join('char','p2.png')), pygame.image.load(path+os.path.join('char','p3.png')),
+                pygame.image.load(path+os.path.join('char','p4.png')), pygame.image.load(path+os.path.join('char','p5.png')),
+                pygame.image.load(path+os.path.join('char','p6.png'))]
     loadScreen.text = 'Player Walk Right'
     loadScreen.update(win)
-    walkRight = [pygame.image.load(path+'char\\r0.png'), pygame.image.load(path+'char\\r1.png'),
-                 pygame.image.load(path+'char\\r2.png'), pygame.image.load(path+'char\\r3.png'),
-                 pygame.image.load(path+'char\\r4.png'), pygame.image.load(path+'char\\r5.png'),
-                 pygame.image.load(path+'char\\r6.png')]
+    walkRight = [pygame.image.load(path+os.path.join('char','r0.png')), pygame.image.load(path+os.path.join('char','r1.png')),
+                 pygame.image.load(path+os.path.join('char','r2.png')), pygame.image.load(path+os.path.join('char','r3.png')),
+                 pygame.image.load(path+os.path.join('char','r4.png')), pygame.image.load(path+os.path.join('char','r5.png')),
+                 pygame.image.load(path+os.path.join('char','r6.png'))]
 
     loadScreen.text = 'Sounds'
     loadScreen.update(win)
 
-    songs = [path+'songs\\cant-go-to-hell.mp3', path+'songs\\highway-to-hell.mp3', path+'songs\\bloodwater.mp3']
+    songs = [path+os.path.join('songs','cant-go-to-hell.mp3'), path+os.path.join('songs','highway-to-hell.mp3'), path+os.path.join('songs','bloodwater.mp3')]
 
-    sounds = {'shot': pygame.mixer.Sound(path+'sounds\\bullet.wav'),
-              'hit': pygame.mixer.Sound(path+'sounds\\hit.wav'),
-              'grenade': pygame.mixer.Sound(path+'sounds\\grenade.wav')}
+    sounds = {'shot': pygame.mixer.Sound(path+os.path.join('sounds','bullet.wav')),
+              'hit': pygame.mixer.Sound(path+os.path.join('sounds','hit.wav')),
+              'grenade': pygame.mixer.Sound(path+os.path.join('sounds','grenade.wav'))}
     sounds['hit'].set_volume(0.1)
     sounds['shot'].set_volume(0.5)
     sounds['grenade'].set_volume(0.5)

@@ -49,14 +49,14 @@ def right():
         makeRIGHT('z'+str(i)+'RunR', '\'zombie'+str(i)+'\',\'animation\',\'Run',10)
         makeRIGHT('z'+str(i)+'WalkR', '\'zombie'+str(i)+'\',\'animation\',\'Walk',6)
 
-left() # zombieWidth, zombieHeight = img.get_rect().size
-right() #THE ABOVE IS NOT INCLUDED AND NEEDS TO BE ADDED AFTER LOADING ATTACK2
+#left() # zombieWidth, zombieHeight = img.get_rect().size
+#right() #THE ABOVE IS NOT INCLUDED AND NEEDS TO BE ADDED AFTER LOADING ATTACK2
 #makeLEFT('z'+str(i)+'AttackL', '\'zombie'+str(i)+'\',\'animation\',\'Attack',6)
 
 def makeThing():
     endString = 'explosion = ['
     for i in range(0,74):
-        endString += 'pygame.image.load(path+\'explosion/tile{0:03d}.png\'), '.format(i)
+        endString += 'pygame.image.load(path+os.path.join(\'explosion\',\'tile{0:03d}.png\')), '.format(i)
     print(endString)
 
-#makeThing()
+makeThing()
