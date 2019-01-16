@@ -5,7 +5,7 @@ class LoadingScreen:
         self.barLevel = 0
         self.frameCount = 0
         self.speed = 1
-        self.totalBars = 52
+        self.totalBars = 53 #add 1 here when new .update() is called
         self.multi = 5
         self.screenHeight = screenHeight
         self.screenWidth = screenWidth

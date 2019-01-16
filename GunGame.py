@@ -24,8 +24,8 @@ pygame.mixer.pre_init(44100, -16, 2, 512)
 pygame.mixer.init()
 pygame.init()
 
-loadFont = pygame.font.Font(path+'28DaysLater.ttf', 36)
-loadFont2 = pygame.font.Font(path+'28DaysLater.ttf', 76)
+loadFont = pygame.font.Font(path+os.path.join('fonts', '28DaysLater.ttf'), 36)
+loadFont2 = pygame.font.Font(path+os.path.join('fonts','28DaysLater.ttf'), 76)
 
 clock = pygame.time.Clock()
 
@@ -70,15 +70,15 @@ loadScreen.update(win)
 
 gameScreen = 'home'
 
-myFont = pygame.font.Font(path+'28DaysLater.ttf', 22) #Score Font
-font = pygame.font.Font(path+'28DaysLater.ttf', 36) #Game Over Font
-plFont = pygame.font.Font(path+'28DaysLater.ttf', 56) #play font
-plFont2 = pygame.font.Font(path+'28DaysLater.ttf', 60)
-splFont = pygame.font.Font(path+'28DaysLater.ttf', 36) #Shop/Quit font
-splFont2 = pygame.font.Font(path+'28DaysLater.ttf', 40)
-titleFont = pygame.font.Font(path+'ZombieSlayer.ttf', 70)
-shopFont = pygame.font.Font(path+'varsityteam.otf', 20)
-shopFont2 = pygame.font.Font(path+'varsityteam.otf', 24)
+myFont = pygame.font.Font(path+os.path.join('fonts','28DaysLater.ttf'), 22) #Score Font
+font = pygame.font.Font(path+os.path.join('fonts','28DaysLater.ttf'), 36) #Game Over Font
+plFont = pygame.font.Font(path+os.path.join('fonts','28DaysLater.ttf'), 56) #play font
+plFont2 = pygame.font.Font(path+os.path.join('fonts','28DaysLater.ttf'), 60)
+splFont = pygame.font.Font(path+os.path.join('fonts','28DaysLater.ttf'), 36) #Shop/Quit font
+splFont2 = pygame.font.Font(path+os.path.join('fonts','28DaysLater.ttf'), 40)
+titleFont = pygame.font.Font(path+os.path.join('fonts','ZombieSlayer.ttf'), 70)
+shopFont = pygame.font.Font(path+os.path.join('fonts','varsityteam.otf'), 20)
+shopFont2 = pygame.font.Font(path+os.path.join('fonts','varsityteam.otf'), 24)
 
 loadScreen.text = 'Buttons'
 loadScreen.update(win)
@@ -122,9 +122,9 @@ def gameOverScreenLoad():
     gameOverBtns.append(quitBtn)
 gameOverScreenLoad()
 loadScreen.update(win)
-def loadShit():
+def loadStuff():
     global grenadeImg, background, bulletImg, bulletLeft, bulletRight, walkLeft, walkRight, sounds, songs, waveText, explosion, grenade
-
+    global gunsL, gunsR
     background = pygame.image.load(path+os.path.join('images','background.jpg'))
     background = pygame.transform.scale(background, (screenWidth, screenHeight))
     bulletImg = pygame.image.load(path+os.path.join('images','bullet.png'))
@@ -156,7 +156,13 @@ def loadShit():
                  pygame.image.load(path+os.path.join('char','r4.png')), pygame.image.load(path+os.path.join('char','r5.png')),
                  pygame.image.load(path+os.path.join('char','r6.png'))]
 
-    loadScreen.text = 'Sounds'
+    loadScreen.text = 'Weapons'
+    loadScreen.update(win)
+
+    gunsL = {'original':pygame.image.load(path+os.path.join('weapons','original.png'))}
+    gunsR = {'original':pygame.transform.flip(pygame.image.load(path+os.path.join('weapons','original.png')), True, False)}
+
+    loadScreen.text = 'Songs'
     loadScreen.update(win)
 
     songs = [path+os.path.join('songs','cant-go-to-hell.mp3'), path+os.path.join('songs','highway-to-hell.mp3'), path+os.path.join('songs','bloodwater.mp3')]
@@ -1657,7 +1663,7 @@ def loadZombies():
     runR = [z1RunR, z2RunR, z3RunR]
 loadScreen.text = 'Player Images'
 loadScreen.update(win)
-loadShit()
+loadStuff()
 loadScreen.text = 'Whole lot of Zombies'
 loadScreen.update(win)
 loadZombies()
@@ -1803,7 +1809,7 @@ def drawBetweenThings():
     drawTop(man, win, score, money)
 
 def drawGameOver():
-    global gameOverBtns, gameScreen, playing
+    global gameOverBtns, gameScreen, playing, man, score, money
     win.blit(background, (0,0))
     text = titleFont.render('Game Over', True, (255,0,0))
     w, h = text.get_rect().size
@@ -1816,6 +1822,7 @@ def drawGameOver():
         initV()
     if gameOverBtns[1].clicked():
         playing = False
+    drawTop(man, win, score, money)
 
 def redraw():
     global gameScreen, homeButtons, playing, end, wave, waveTimer, waveText
@@ -1837,6 +1844,7 @@ def redraw():
     pygame.display.update()
 
 class Person:
+    global gunsL, gunsR
     def __init__(self, x, y, width, height):
         self.x = x
         self.y = y
@@ -1860,15 +1868,19 @@ class Person:
         if not self.standing:
             if self.left:
                 win.blit(walkLeft[self.walkCount // 4], (self.x, self.y))
+                win.blit(gunsL['original'], (self.x, self.y))
                 self.walkCount += 1
             elif self.right:
                 win.blit(walkRight[self.walkCount // 4], (self.x, self.y))
+                win.blit(gunsR['original'], (self.x, self.y))
                 self.walkCount += 1
         else:
             if self.left:
                 win.blit(walkLeft[0], (self.x, self.y))
+                win.blit(gunsL['original'], (self.x, self.y))
             else:
                 win.blit(walkRight[0], (self.x, self.y))
+                win.blit(gunsR['original'], (self.x, self.y))
 
 class Zombie: #Can run, walk, jump, idle, attack, be hurt, die
     global man, bullets, zombies, zombieCount, score, playing, end, zombieWidth, zombieHeight
@@ -2238,7 +2250,7 @@ def main():
             #        pygame.draw.circle(win, (255,0,0), (int(grenade.x+grenade.w//2), int(grenade.y+grenade.h//2)), 90, 4)
             #        pygame.draw.circle(win, (255,255,0), (int(zombie.x+zombie.width//2), int(zombie.y-zombie.height//2)), 10)
             #        pygame.display.update()
-                    if distance([grenade.x+grenade.w//2, grenade.y+grenade.h//2-10], [zombie.x+zombie.width//2, zombie.y-zombie.height//2]) < 90 and grenade.exploding and grenade.frameCounter < 26:
+                    if distance([grenade.x+grenade.w//2, grenade.y+grenade.h//2-10], [zombie.x+zombie.width//2, zombie.y-zombie.height//2]) < 120 and grenade.exploding and grenade.frameCounter < 26:
                         zombie.health -= 5
                     if zombie.health <= 0 and not zombie.isDead:
                         zombie.die()
