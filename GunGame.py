@@ -2133,7 +2133,7 @@ def newWave(wave):
     zombies = []
     bullets = []
     man.x = SCREEN_WIDTH // 2 - 48
-    man.y = SCREEN_HEIGHT - 175
+    man.y = SCREEN_HEIGHT - 155
     wave += 1
     waveTimer = 255
     gameScreen = 'betweenWave'
@@ -2282,6 +2282,8 @@ def main():
                 else:
                     man.jumpAcc = 20
                     man.isJump = False
+                    if man.y != SCREEN_HEIGHT-155:
+                        man.y = SCREEN_HEIGHT-155
         redraw()
 initV()
 main()
