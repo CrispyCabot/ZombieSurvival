@@ -80,6 +80,7 @@ loadScreen.text = 'Buttons'
 loadScreen.update(win)
 
 backBtn = Button(0,SCREEN_HEIGHT-50,100,50, [100,100,100], 'Back', splFont, [255,255,255], splFont2)
+resume = Button((SCREEN_WIDTH - 300)/2,(SCREEN_HEIGHT-100)/2-30,300,100,[100,200,100], 'Resume', plFont, [0,0,0], plFont2)
 
 def homeScreenLoad():
     global homeButtons
@@ -152,8 +153,10 @@ def loadStuff():
     loadScreen.text = 'Weapons'
     loadScreen.update(win)
 
-    gunsL = {'original':pygame.image.load(PATH+os.path.join('data', 'weapons','original.png'))}
-    gunsR = {'original':pygame.transform.flip(pygame.image.load(PATH+os.path.join('data', 'weapons','original.png')), True, False)}
+    gunsL = {'original':pygame.image.load(PATH+os.path.join('data', 'weapons','original.png')),
+    'laser':pygame.image.load(PATH+os.path.join('data', 'weapons','laser.png'))}
+    gunsR = {'original':pygame.transform.flip(pygame.image.load(PATH+os.path.join('data', 'weapons','original.png')), True, False),
+    'laser':pygame.transform.flip(pygame.image.load(PATH+os.path.join('data', 'weapons','laser.png')), True, False)}
 
     loadScreen.text = 'Songs'
     loadScreen.update(win)
@@ -1699,7 +1702,7 @@ def drawPlayStuff():
             if zombie.draw(win):
                 zombies.remove(zombie)
         drawTop(man, win, score, money)
-        timeText = myFont.render('Time '+ str(60-int(time.time()-gameTimerStart)), True, (255,255,255))
+        timeText = myFont.render('Time '+ str(60-int(gameTimer/60)), True, (255,255,255))
         w, h = timeText.get_rect().size
         win.blit(timeText, (SCREEN_WIDTH-10-w,SCREEN_HEIGHT-10-h))
     else:
@@ -1784,7 +1787,7 @@ def drawShopStuff():
         gameScreen = 'betweenWave'
 
 def drawBetweenThings():
-    global betweenBtns, man, score, gameScreen, playing, end, gameTimerStart
+    global betweenBtns, man, score, gameScreen, playing, end, gameTimer
     win.blit(background, (0,0))
     text = titleFont.render('Wave Complete', True, (255,0,0))
     w, h = text.get_rect().size
@@ -1793,7 +1796,7 @@ def drawBetweenThings():
         button.update(win)
     if betweenBtns[0].clicked():
         gameScreen = 'play'
-        gameTimerStart = time.time()
+        gameTimer = 0
     if betweenBtns[1].clicked():
         gameScreen = 'shop'
     if betweenBtns[2].clicked():
@@ -1834,6 +1837,10 @@ def redraw():
         drawBetweenThings()
     elif gameScreen == 'gameOver':
         drawGameOver()
+    elif gameScreen == 'paused':
+        resume.update(win)
+        if resume.clicked():
+            gameScreen = 'play'
     pygame.display.update()
 
 class Person:
@@ -1853,6 +1860,7 @@ class Person:
         self.health=200
         self.shotDelay = 10
         self.grenades = 3
+        self.weapon = 'original'
 
     def draw(self, win):
         if self.walkCount + 1 >= 28:
@@ -1861,19 +1869,19 @@ class Person:
         if not self.standing:
             if self.left:
                 win.blit(walkLeft[self.walkCount // 4], (self.x, self.y))
-                win.blit(gunsL['original'], (self.x, self.y))
+                win.blit(gunsL[self.weapon], (self.x, self.y))
                 self.walkCount += 1
             elif self.right:
                 win.blit(walkRight[self.walkCount // 4], (self.x, self.y))
-                win.blit(gunsR['original'], (self.x, self.y))
+                win.blit(gunsR[self.weapon], (self.x, self.y))
                 self.walkCount += 1
         else:
             if self.left:
                 win.blit(walkLeft[0], (self.x, self.y))
-                win.blit(gunsL['original'], (self.x, self.y))
+                win.blit(gunsL[self.weapon], (self.x, self.y))
             else:
                 win.blit(walkRight[0], (self.x, self.y))
-                win.blit(gunsR['original'], (self.x, self.y))
+                win.blit(gunsR[self.weapon], (self.x, self.y))
 
 class Zombie: #Can run, walk, jump, idle, attack, be hurt, die
     global man, bullets, zombies, zombieCount, score, playing, end, zombieWidth, zombieHeight
@@ -2112,8 +2120,7 @@ class Grenade:
 
 
 def initV():
-    global man, bullets, zombies, score, playing, end, wave, waveTimer, money, grenades, gameTimerStart
-
+    global man, bullets, zombies, score, playing, end, wave, waveTimer, money, grenades, gameTimer
     man = Person(SCREEN_WIDTH // 2 - 48/2, SCREEN_HEIGHT - 155, 96, 112)
     bullets = []
     zombies = []
@@ -2123,7 +2130,7 @@ def initV():
     playing = True
     wave = 1
     waveTimer = 255
-    gameTimerStart = 0
+    gameTimer = 0
 
 def distance(p0, p1):
     return math.sqrt((p0[0] - p1[0])**2 + (p0[1] - p1[1])**2)
@@ -2140,13 +2147,13 @@ def newWave(wave):
     return wave, waveTimer
 # MAIN LOOP
 def main():
-    global man, bullets, zombies, score, playing, end, wave, waveTimer, gameScreen, money, grenades, gameTimerStart
-
+    global man, bullets, zombies, score, playing, end, wave, waveTimer, gameScreen, money, grenades, gameTimer
     shotTimer = 0
     grenadeTimer = 0
     zombieTimer = 0
     zombieTimerEnd = 50
     zombieCount = 1
+    gameTimer = 0
 
     while playing:
         clock.tick(56)
@@ -2156,45 +2163,46 @@ def main():
                 playing = False
 
         if gameScreen == 'play':
+            gameTimer += 1
             if wave == 1:
-                if time.time()-gameTimerStart < 10:
+                if gameTimer < 10*60:
                     zombieCount = 1
-                elif time.time()-gameTimerStart < 30:
+                elif gameTimer < 30*60:
                     zombieCount = 3
-                elif time.time()-gameTimerStart < 60:
+                elif gameTimer < 60*60:
                     zombieCount = 5
-                elif time.time()-gameTimerStart > 60:
+                elif gameTimer > 60*60:
                     wave, waveTimer = newWave(wave)
             elif wave == 2:
-                if time.time()-gameTimerStart < 10:
+                if gameTimer < 10*60:
                     zombieCount = 3
-                elif time.time()-gameTimerStart < 30:
+                elif gameTimer < 30*60:
                     zombieCount = 4
                     zombieTimerEnd = 30
-                elif time.time()-gameTimerStart < 60:
+                elif gameTimer < 60*60:
                     zombieTimerEnd = 30
                     zombieCount = 6
-                elif time.time()-gameTimerStart > 60:
+                elif gameTimer > 60*60:
                     wave, waveTimer = newWave(wave)
             elif wave == 3:
-                if time.time()-gameTimerStart < 10:
+                if gameTimer < 10*60:
                     zombieCount = 5
-                elif time.time()-gameTimerStart < 30:
+                elif gameTimer < 30*60:
                     zombieTimerEnd = 10
-                elif time.time()-gameTimerStart < 60:
+                elif gameTimer < 60*60:
                     zombieCount = 8
-                elif time.time()-gameTimerStart > 60:
+                elif gameTimer > 60*60:
                     wave, waveTimer = newWave(wave)
             elif wave == 4:
-                if time.time()-gameTimerStart < 10:
+                if gameTimer < 10*60:
                     zombieTimerEnd = 50
                     zombieCount = 10
-                elif time.time()-gameTimerStart < 30:
+                elif gameTimer < 30*60:
                     zombieTimerEnd = 40
-                elif time.time()-gameTimerStart < 60:
+                elif gameTimer < 60*60:
                     zombieTimerEnd = 20
                     zombieCount = 15
-                elif time.time()-gameTimerStart > 60:
+                elif gameTimer > 60*60:
                     wave, waveTimer = newWave(wave)
             elif wave == 5:
                 print("wave 5")
@@ -2214,7 +2222,10 @@ def main():
                         #hit
                         sounds['hit'].play()
                         bullets.remove(bullet)
-                        zombie.health -= 20
+                        if bullet.type == 'original':
+                            zombie.health -= 20
+                        elif bullet.type == 'laser':
+                            zombie.health -= 30
                         if randint(1,5) == 1 and not zombie.actions.bool[2]: #Makes sure not in middle of jumping
                             zombie.hurt()
                         if zombie.health <= 0 and not zombie.isDead:
@@ -2245,7 +2256,7 @@ def main():
             if keys[pygame.K_SPACE]:
                 if shotTimer > man.shotDelay:
                     sounds['shot'].play()
-                    bullets.append(Bullet(man.x + man.width / 2, man.y + 50, man.left))
+                    bullets.append(Bullet(man.x + man.width / 2, man.y + 50, man.left, man.weapon))
                     shotTimer = 0
             if keys[pygame.K_g]:
                 if grenadeTimer > 20:
@@ -2259,6 +2270,8 @@ def main():
                         man.grenades -= 1
             shotTimer += 1
             grenadeTimer += 1
+            if (keys[pygame.K_p]):
+                gameScreen = 'paused'
             if (keys[pygame.K_LEFT] or keys[pygame.K_a]) and man.x > man.vel:
                 man.left = True
                 man.right = False
