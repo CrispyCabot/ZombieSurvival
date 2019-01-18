@@ -7,17 +7,12 @@ from sys import platform
 import os
 import math
 
-#Self made classes
-from Button import Button
-from LoadingScreen import LoadingScreen
-from Bullet import Bullet
 from config import SCREEN_WIDTH, SCREEN_HEIGHT, PATH
+from LoadingScreen import LoadingScreen
 
 timeStart = time.time()
 
 loading = True
-
-#print(platform)
 
 pygame.mixer.pre_init(44100, -16, 2, 512)
 pygame.mixer.init()
@@ -61,6 +56,15 @@ thread1 = threading.Thread(target=zombieLoad)
 thread1.start()
 
 loadScreen = LoadingScreen(win, SCREEN_WIDTH, SCREEN_HEIGHT, loadFont)
+
+#Self made classes
+from Button import Button
+from Bullet import Bullet #Loads bullets
+from Grenade import Grenade #Loads grenades
+loadScreen.text = 'Character'
+loadScreen.update(win)
+from Person import Person #Update loading screen twice - loads character
+
 loadScreen.text = 'Fonts'
 loadScreen.update(win)
 
@@ -129,34 +133,15 @@ def loadStuff():
     imgx, imgy = grenadeImg.get_rect().size
     grenadeImg = pygame.transform.scale(grenadeImg, (int(.04*imgx), int(.04*imgy)))
 
-    explosion = [pygame.image.load(PATH+os.path.join('data', 'explosion','tile000.png')), pygame.image.load(PATH+os.path.join('data', 'explosion','tile001.png')), pygame.image.load(PATH+os.path.join('data', 'explosion','tile002.png')), pygame.image.load(PATH+os.path.join('data', 'explosion','tile003.png')), pygame.image.load(PATH+os.path.join('data', 'explosion','tile004.png')), pygame.image.load(PATH+os.path.join('data', 'explosion','tile005.png')), pygame.image.load(PATH+os.path.join('data', 'explosion','tile006.png')), pygame.image.load(PATH+os.path.join('data', 'explosion','tile007.png')), pygame.image.load(PATH+os.path.join('data', 'explosion','tile008.png')), pygame.image.load(PATH+os.path.join('data', 'explosion','tile009.png')), pygame.image.load(PATH+os.path.join('data', 'explosion','tile010.png')), pygame.image.load(PATH+os.path.join('data', 'explosion','tile011.png')), pygame.image.load(PATH+os.path.join('data', 'explosion','tile012.png')), pygame.image.load(PATH+os.path.join('data', 'explosion','tile013.png')), pygame.image.load(PATH+os.path.join('data', 'explosion','tile014.png')), pygame.image.load(PATH+os.path.join('data', 'explosion','tile015.png')), pygame.image.load(PATH+os.path.join('data', 'explosion','tile016.png')), pygame.image.load(PATH+os.path.join('data', 'explosion','tile017.png')), pygame.image.load(PATH+os.path.join('data', 'explosion','tile018.png')), pygame.image.load(PATH+os.path.join('data', 'explosion','tile019.png')), pygame.image.load(PATH+os.path.join('data', 'explosion','tile020.png')), pygame.image.load(PATH+os.path.join('data', 'explosion','tile021.png')), pygame.image.load(PATH+os.path.join('data', 'explosion','tile022.png')), pygame.image.load(PATH+os.path.join('data', 'explosion','tile023.png')), pygame.image.load(PATH+os.path.join('data', 'explosion','tile024.png')), pygame.image.load(PATH+os.path.join('data', 'explosion','tile025.png')), pygame.image.load(PATH+os.path.join('data', 'explosion','tile026.png')), pygame.image.load(PATH+os.path.join('data', 'explosion','tile027.png')), pygame.image.load(PATH+os.path.join('data', 'explosion','tile028.png')), pygame.image.load(PATH+os.path.join('data', 'explosion','tile029.png')), pygame.image.load(PATH+os.path.join('data', 'explosion','tile030.png')), pygame.image.load(PATH+os.path.join('data', 'explosion','tile031.png')), pygame.image.load(PATH+os.path.join('data', 'explosion','tile032.png')), pygame.image.load(PATH+os.path.join('data', 'explosion','tile033.png')), pygame.image.load(PATH+os.path.join('data', 'explosion','tile034.png')), pygame.image.load(PATH+os.path.join('data', 'explosion','tile035.png')), pygame.image.load(PATH+os.path.join('data', 'explosion','tile036.png')), pygame.image.load(PATH+os.path.join('data', 'explosion','tile037.png')), pygame.image.load(PATH+os.path.join('data', 'explosion','tile038.png')), pygame.image.load(PATH+os.path.join('data', 'explosion','tile039.png')), pygame.image.load(PATH+os.path.join('data', 'explosion','tile040.png')), pygame.image.load(PATH+os.path.join('data', 'explosion','tile041.png')), pygame.image.load(PATH+os.path.join('data', 'explosion','tile042.png')), pygame.image.load(PATH+os.path.join('data', 'explosion','tile043.png')), pygame.image.load(PATH+os.path.join('data', 'explosion','tile044.png')), pygame.image.load(PATH+os.path.join('data', 'explosion','tile045.png')), pygame.image.load(PATH+os.path.join('data', 'explosion','tile046.png')), pygame.image.load(PATH+os.path.join('data', 'explosion','tile047.png')), pygame.image.load(PATH+os.path.join('data', 'explosion','tile048.png')), pygame.image.load(PATH+os.path.join('data', 'explosion','tile049.png')), pygame.image.load(PATH+os.path.join('data', 'explosion','tile050.png')), pygame.image.load(PATH+os.path.join('data', 'explosion','tile051.png')), pygame.image.load(PATH+os.path.join('data', 'explosion','tile052.png')), pygame.image.load(PATH+os.path.join('data', 'explosion','tile053.png')), pygame.image.load(PATH+os.path.join('data', 'explosion','tile054.png')), pygame.image.load(PATH+os.path.join('data', 'explosion','tile055.png')), pygame.image.load(PATH+os.path.join('data', 'explosion','tile056.png')), pygame.image.load(PATH+os.path.join('data', 'explosion','tile057.png')), pygame.image.load(PATH+os.path.join('data', 'explosion','tile058.png')), pygame.image.load(PATH+os.path.join('data', 'explosion','tile059.png')), pygame.image.load(PATH+os.path.join('data', 'explosion','tile060.png')), pygame.image.load(PATH+os.path.join('data', 'explosion','tile061.png')), pygame.image.load(PATH+os.path.join('data', 'explosion','tile062.png')), pygame.image.load(PATH+os.path.join('data', 'explosion','tile063.png')), pygame.image.load(PATH+os.path.join('data', 'explosion','tile064.png')), pygame.image.load(PATH+os.path.join('data', 'explosion','tile065.png')), pygame.image.load(PATH+os.path.join('data', 'explosion','tile066.png')), pygame.image.load(PATH+os.path.join('data', 'explosion','tile067.png')), pygame.image.load(PATH+os.path.join('data', 'explosion','tile068.png')), pygame.image.load(PATH+os.path.join('data', 'explosion','tile069.png')), pygame.image.load(PATH+os.path.join('data', 'explosion','tile070.png')), pygame.image.load(PATH+os.path.join('data', 'explosion','tile071.png')), pygame.image.load(PATH+os.path.join('data', 'explosion','tile072.png')), pygame.image.load(PATH+os.path.join('data', 'explosion','tile073.png'))]
-
     #convert_alpha is supposed to allow me to use set_alpha later on, but it doesn't work so fuck it.
     waveText = [pygame.image.load(PATH+os.path.join('data', 'waveText','wave1.png')).convert_alpha(), pygame.image.load(PATH+os.path.join('data', 'waveText','wave2.png')).convert_alpha(),
                 pygame.image.load(PATH+os.path.join('data', 'waveText','wave3.png')).convert_alpha(), pygame.image.load(PATH+os.path.join('data', 'waveText','wave4.png')).convert_alpha(),
                 pygame.image.load(PATH+os.path.join('data', 'waveText','wave5.png')).convert_alpha(), pygame.image.load(PATH+os.path.join('data', 'waveText','wave6.png')).convert_alpha(),
                 pygame.image.load(PATH+os.path.join('data', 'waveText','wave7.png')).convert_alpha(), pygame.image.load(PATH+os.path.join('data', 'waveText','wave8.png')).convert_alpha(),
                 pygame.image.load(PATH+os.path.join('data', 'waveText','wave9.png')).convert_alpha(), pygame.image.load(PATH+os.path.join('data', 'waveText','wave10.png')).convert_alpha()]
-    loadScreen.text = 'Player Walk Left'
-    loadScreen.update(win)
-    walkLeft = [pygame.image.load(PATH+os.path.join('data', 'char','p0.png')), pygame.image.load(PATH+os.path.join('data', 'char','p1.png')),
-                pygame.image.load(PATH+os.path.join('data', 'char','p2.png')), pygame.image.load(PATH+os.path.join('data', 'char','p3.png')),
-                pygame.image.load(PATH+os.path.join('data', 'char','p4.png')), pygame.image.load(PATH+os.path.join('data', 'char','p5.png')),
-                pygame.image.load(PATH+os.path.join('data', 'char','p6.png'))]
-    loadScreen.text = 'Player Walk Right'
-    loadScreen.update(win)
-    walkRight = [pygame.image.load(PATH+os.path.join('data', 'char','r0.png')), pygame.image.load(PATH+os.path.join('data', 'char','r1.png')),
-                 pygame.image.load(PATH+os.path.join('data', 'char','r2.png')), pygame.image.load(PATH+os.path.join('data', 'char','r3.png')),
-                 pygame.image.load(PATH+os.path.join('data', 'char','r4.png')), pygame.image.load(PATH+os.path.join('data', 'char','r5.png')),
-                 pygame.image.load(PATH+os.path.join('data', 'char','r6.png'))]
 
     loadScreen.text = 'Weapons'
     loadScreen.update(win)
-
-    gunsL = {'original':pygame.image.load(PATH+os.path.join('data', 'weapons','original.png')),
-    'laser':pygame.image.load(PATH+os.path.join('data', 'weapons','laser.png'))}
-    gunsR = {'original':pygame.transform.flip(pygame.image.load(PATH+os.path.join('data', 'weapons','original.png')), True, False),
-    'laser':pygame.transform.flip(pygame.image.load(PATH+os.path.join('data', 'weapons','laser.png')), True, False)}
 
     loadScreen.text = 'Songs'
     loadScreen.update(win)
@@ -1695,7 +1680,7 @@ def drawPlayStuff():
             if i.draw(win):
                 bullets.remove(i)
         for i in grenades:
-            if i.update(win):
+            if i.update(win, sounds['grenade']):
                 grenades.remove(i)
         man.draw(win)
         for zombie in zombies:
@@ -1842,46 +1827,6 @@ def redraw():
         if resume.clicked():
             gameScreen = 'play'
     pygame.display.update()
-
-class Person:
-    global gunsL, gunsR
-    def __init__(self, x, y, width, height):
-        self.x = x
-        self.y = y
-        self.vel = 5
-        self.width = width
-        self.height = height
-        self.left = False
-        self.right = False
-        self.walkCount = 0
-        self.standing = True
-        self.isJump = False
-        self.jumpAcc = 20
-        self.health=200
-        self.shotDelay = 10
-        self.grenades = 3
-        self.weapon = 'original'
-
-    def draw(self, win):
-        if self.walkCount + 1 >= 28:
-            self.walkCount = 0
-
-        if not self.standing:
-            if self.left:
-                win.blit(walkLeft[self.walkCount // 4], (self.x, self.y))
-                win.blit(gunsL[self.weapon], (self.x, self.y))
-                self.walkCount += 1
-            elif self.right:
-                win.blit(walkRight[self.walkCount // 4], (self.x, self.y))
-                win.blit(gunsR[self.weapon], (self.x, self.y))
-                self.walkCount += 1
-        else:
-            if self.left:
-                win.blit(walkLeft[0], (self.x, self.y))
-                win.blit(gunsL[self.weapon], (self.x, self.y))
-            else:
-                win.blit(walkRight[0], (self.x, self.y))
-                win.blit(gunsR[self.weapon], (self.x, self.y))
 
 class Zombie: #Can run, walk, jump, idle, attack, be hurt, die
     global man, bullets, zombies, zombieCount, score, playing, end, zombieWidth, zombieHeight
@@ -2075,49 +2020,6 @@ class ActionOrganizer:
             if self.bool[i]:
                 return self.actions[i]
         return self.actions[-1] #Used for zombies
-
-class Grenade:
-    global SCREEN_HEIGHT, SCREEN_WIDTH, explosion, sounds
-    img = pygame.image.load(PATH+os.path.join('data', 'images','grenade.png'))
-    imgx, imgy = img.get_rect().size
-    img = pygame.transform.scale(img, (int(.03*imgx), int(.03*imgy)))
-    def __init__(self, x, y, direction, moving):
-        self.x = x
-        self.y = y
-        self.dirr = direction
-        self.jumpVar = 9
-        self.angle = 25
-        self.moving = moving
-        self.exploding = False
-        self.frameCounter = 0
-        self.w, self.h = explosion[35].get_rect().size
-    def update(self, win):
-        if not self.exploding:
-            if self.dirr: #LEFT
-                self.x -= 7
-                if self.moving:
-                    self.x -= 5
-            else:
-                self.x += 7
-                if self.moving:
-                    self.x += 5
-            if self.y < SCREEN_HEIGHT-100:
-                self.y -= self.jumpVar
-                self.jumpVar -= 1
-            else: #Hit ground
-                self.exploding = True
-                sounds['grenade'].play()
-            self.angle += 5
-            grenade = pygame.transform.rotate(Grenade.img, self.angle)
-            w, h = grenade.get_rect().size
-            win.blit(grenade, (self.x+w//2, self.y+h//2))
-        else:
-        #    w, h = explosion[self.frameCounter//1].get_rect().size
-            win.blit(explosion[self.frameCounter//1], (self.x, self.y))
-            self.frameCounter += 1
-            if self.frameCounter >= 74: #148 if above is //2
-                return True
-
 
 def initV():
     global man, bullets, zombies, score, playing, end, wave, waveTimer, money, grenades, gameTimer
