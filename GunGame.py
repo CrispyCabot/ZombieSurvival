@@ -59,9 +59,11 @@ loadScreen = LoadingScreen(win, SCREEN_WIDTH, SCREEN_HEIGHT, loadFont)
 
 #Self made classes
 from Button import Button
+from ActionOrganizer import ActionOrganizer
 from Bullet import Bullet #Loads bullets
 from Grenade import Grenade #Loads grenades
 loadScreen.text = 'Character'
+loadScreen.update(win)
 loadScreen.update(win)
 from Person import Person #Update loading screen twice - loads character
 
@@ -111,8 +113,18 @@ def shopScreenLoad():
     shopButtons = []
     healthInc = Button((SCREEN_WIDTH-150)/2-300,75,150,25,[96,165,243], '$20 - Health', shopFont, [255,255,255], shopFont2)
     shopButtons.append(healthInc)
-    grenade = Button((SCREEN_WIDTH-150)/2-120, 75, 150, 25, [45, 199, 78], '$75 - Grenade', shopFont, [255,255,255], shopFont2)
+    grenade = Button((SCREEN_WIDTH-150)/2-120, 75,150,25, [45, 199, 78], '$75 - Grenade', shopFont, [255,255,255], shopFont2)
     shopButtons.append(grenade)
+    weapons = Button((SCREEN_WIDTH-250)/2-200,150,250,50, [200, 100, 20], 'Weapons', shopFont, [255,255,255], shopFont2)
+    shopButtons.append(weapons)
+def weaponShopLoad():
+    global weaponBtns
+    weaponBtns = { 'laser':Button((SCREEN_WIDTH-250)/2-250,130,250,50,[200,200,200], '$200 - Laser Gun', shopFont, [10,10,10], shopFont2),
+    'buy':Button((SCREEN_WIDTH-100)/2+200,SCREEN_HEIGHT-50,100,30,[20,100,20], 'BUY', shopFont, [255,255,255], shopFont2),
+    'original':Button((SCREEN_WIDTH-250)/2-250,75,250,50,[200,200,200], '$50 - Original Gun', shopFont, [10,10,10], shopFont2),
+    'machine':Button((SCREEN_WIDTH-250)/2-250,185,250,50,[200,200,200], '$300 - Machine Gun', shopFont, [10,10,10], shopFont2),
+    'plasma':Button((SCREEN_WIDTH-250)/2-250,240,250,50,[200,200,200], '$600 - Plasma Rifle', shopFont, [10,10,10], shopFont2)}
+weaponShopLoad()
 shopScreenLoad()
 def gameOverScreenLoad():
     global gameOverBtns
@@ -1768,6 +1780,10 @@ def drawShopStuff():
             maxThing = True
             shopDispCounter = 255
         time.sleep(.2)
+    if shopButtons[2].clicked(): #Weapons
+        gameScreen = 'weaponShop'
+        selection = man.weapon
+        time.sleep(.2)
     if backBtn.clicked():
         gameScreen = 'betweenWave'
 
@@ -1805,6 +1821,61 @@ def drawGameOver():
         playing = False
     drawTop(man, win, score, money)
 
+def drawWeaponShop():
+    global gameScreen, weaponBtns, man, shopDispCounter, notEnoughMoney, money
+    global selection, cost
+    win.blit(background, (0,0))
+    drawTop(man, win, score, money)
+    player = Person.walkRight[0]
+    w, h = player.get_rect().size
+    player = pygame.transform.scale(player, (w*2, h*2))
+    win.blit(player, (SCREEN_WIDTH-300, 200))
+    weapon = Person.gunsR[selection]
+    w, h = weapon.get_rect().size
+    weapon = pygame.transform.scale(weapon, (w*2, h*2))
+    win.blit(weapon, (SCREEN_WIDTH-300, 200))
+    if notEnoughMoney:
+        shopDispCounter -= 2
+        text = font.render('Not Enough Money', True, (255,0,0))
+        surface = pygame.Surface(text.get_rect().size)
+        surface.fill((0,0,0))
+        surface.blit(text, (0,0))
+        surface.set_alpha(shopDispCounter)
+        win.blit(surface, (110, SCREEN_HEIGHT-50))
+    backBtn.update(win)
+    if backBtn.clicked():
+        gameScreen = 'shop'
+        time.sleep(.2)
+    for id,value in weaponBtns.items():
+        value.update(win)
+    if weaponBtns['original'].clicked():
+        selection = 'original'
+        cost = 50
+    if weaponBtns['laser'].clicked():
+        selection = 'laser'
+        cost = 200
+    if weaponBtns['machine'].clicked():
+        selection = 'machine'
+        cost = 300
+    if weaponBtns['plasma'].clicked():
+        print('clicked')
+        selection = 'plasma'
+        cost = 600
+    if weaponBtns['buy'].clicked(): #Buy button
+        if money >= cost and selection != man.weapon:
+            man.weapon = selection
+            money -= cost
+            time.sleep(.2)
+            if selection == 'machine':
+                man.shotDelay = 4
+            elif selection == 'plasma':
+                man.shotDelay = 15
+            else:
+                man.shotDelay = 10
+        else:
+            notEnoughMoney = True
+            shopDispCounter = 255
+
 def redraw():
     global gameScreen, homeButtons, playing, end, wave, waveTimer, waveText
     SCREEN_WIDTH, SCREEN_HEIGHT = pygame.display.get_surface().get_size()
@@ -1822,6 +1893,8 @@ def redraw():
         drawBetweenThings()
     elif gameScreen == 'gameOver':
         drawGameOver()
+    elif gameScreen == 'weaponShop':
+        drawWeaponShop()
     elif gameScreen == 'paused':
         resume.update(win)
         if resume.clicked():
@@ -2007,32 +2080,21 @@ class Zombie: #Can run, walk, jump, idle, attack, be hurt, die
             pygame.draw.rect(win, (0,255,0), pygame.Rect(self.x, self.y-self.height-25,self.health, 10))
             pygame.draw.rect(win, (255,0,0), pygame.Rect(self.x+self.health, self.y-self.height-25,self.maxHealth-self.health,10))
 
-class ActionOrganizer:
-    def __init__(self,actions):
-        self.actions = actions
-        self.bool = []
-        for i in actions:
-            self.bool.append(False)
-        self.initial = randint(0,1)
-        self.bool[self.initial] = True
-    def getTrue(self):
-        for i in range(0,len(self.actions)-1):
-            if self.bool[i]:
-                return self.actions[i]
-        return self.actions[-1] #Used for zombies
-
 def initV():
     global man, bullets, zombies, score, playing, end, wave, waveTimer, money, grenades, gameTimer
+    global selection, cost
     man = Person(SCREEN_WIDTH // 2 - 48/2, SCREEN_HEIGHT - 155, 96, 112)
     bullets = []
     zombies = []
     grenades = []
     score = 0
-    money = 0
+    money = 500
     playing = True
     wave = 1
     waveTimer = 255
     gameTimer = 0
+    selection = 'original' #Used in weapon shop
+    cost = 0 #Used in weapon shop
 
 def distance(p0, p1):
     return math.sqrt((p0[0] - p1[0])**2 + (p0[1] - p1[1])**2)
@@ -2106,8 +2168,19 @@ def main():
                     zombieCount = 15
                 elif gameTimer > 60*60:
                     wave, waveTimer = newWave(wave)
-            elif wave == 5:
-                print("wave 5")
+            elif wave == 50:
+                print("you win")
+            else:
+                if gameTimer < 10*60:
+                    zombieTimerEnd = 50*((50-wave)/50)
+                    zombieCount = 10+int(.7*wave)
+                elif gameTimer < 30*60:
+                    zombieTimerEnd = 40*((50-wave)/50)
+                elif gameTimer < 60*60:
+                    zombieTimerEnd = 20*((50-wave)/50)
+                    zombieCount = 15+int(.7*wave)
+                elif gameTimer > 60*60:
+                    wave, waveTimer = newWave(wave)
             if len(zombies) < zombieCount and zombieTimer >= zombieTimerEnd:
                 x = randint(1,2)
                 if x == 1:
@@ -2128,6 +2201,10 @@ def main():
                             zombie.health -= 20
                         elif bullet.type == 'laser':
                             zombie.health -= 30
+                        elif bullet.type == 'machine':
+                            zombie.health -= 12
+                        elif bullet.type == 'plasma':
+                            zombie.health -= 50
                         if randint(1,5) == 1 and not zombie.actions.bool[2]: #Makes sure not in middle of jumping
                             zombie.hurt()
                         if zombie.health <= 0 and not zombie.isDead:

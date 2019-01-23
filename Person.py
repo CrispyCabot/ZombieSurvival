@@ -3,9 +3,13 @@ import os
 from config import PATH
 class Person:
     gunsL = {'original':pygame.image.load(PATH+os.path.join('data', 'weapons','original.png')),
-    'laser':pygame.image.load(PATH+os.path.join('data', 'weapons','laser.png'))}
+    'laser':pygame.image.load(PATH+os.path.join('data', 'weapons','laser.png')),
+    'machine':pygame.image.load(PATH+os.path.join('data', 'weapons','machine.png')),
+    'plasma':pygame.image.load(PATH+os.path.join('data', 'weapons','plasma.png'))}
     gunsR = {'original':pygame.transform.flip(pygame.image.load(PATH+os.path.join('data', 'weapons','original.png')), True, False),
-    'laser':pygame.transform.flip(pygame.image.load(PATH+os.path.join('data', 'weapons','laser.png')), True, False)}
+    'laser':pygame.transform.flip(pygame.image.load(PATH+os.path.join('data', 'weapons','laser.png')), True, False),
+    'machine':pygame.transform.flip(pygame.image.load(PATH+os.path.join('data', 'weapons','machine.png')), True, False),
+    'plasma':pygame.transform.flip(pygame.image.load(PATH+os.path.join('data', 'weapons','plasma.png')), True, False)}
     walkLeft = [pygame.image.load(PATH+os.path.join('data', 'char','p0.png')), pygame.image.load(PATH+os.path.join('data', 'char','p1.png')),
                 pygame.image.load(PATH+os.path.join('data', 'char','p2.png')), pygame.image.load(PATH+os.path.join('data', 'char','p3.png')),
                 pygame.image.load(PATH+os.path.join('data', 'char','p4.png')), pygame.image.load(PATH+os.path.join('data', 'char','p5.png')),
