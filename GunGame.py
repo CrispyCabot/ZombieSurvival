@@ -2088,7 +2088,7 @@ def initV():
     zombies = []
     grenades = []
     score = 0
-    money = 500
+    money = 0
     playing = True
     wave = 1
     waveTimer = 255
