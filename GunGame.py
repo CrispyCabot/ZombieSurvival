@@ -1,4 +1,6 @@
 # Shooting game
+# Needs to be named GunGame.py or same length
+# I'm pretty sure somewhere is hardcoded to chop off the name "GunGame"
 import pygame
 import time
 import threading
