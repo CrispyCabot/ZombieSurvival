@@ -12,6 +12,12 @@ import math
 from config import SCREEN_WIDTH, SCREEN_HEIGHT, PATH
 from LoadingScreen import LoadingScreen
 
+try:
+    import gspread
+    from oauth2client.service_account import ServiceAccountCredentials
+except ModuleNotFoundError:
+    print("gspread and oauth2client not installed. online leaderboard will not work")
+
 timeStart = time.time()
 
 loading = True
