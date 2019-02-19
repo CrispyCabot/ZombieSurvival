@@ -1844,6 +1844,7 @@ def drawGameOver():
     w, h = text.get_rect().size
     win.blit(text, ((SCREEN_WIDTH-w)/2, 125))
     ycounter = 175
+<<<<<<< HEAD
     try:
         for i in scoreboard:
             name = scoreboardFont.render(i['Name'], True, (255,255,0))
@@ -1861,6 +1862,20 @@ def drawGameOver():
         loc = noScoreboard.get_rect()
         loc.center = (SCREEN_WIDTH/2,SCREEN_HEIGHT/2)
         win.blit(noScoreboard, loc)
+=======
+    for i in scoreboard:
+        name = scoreboardFont.render(i['Name'], True, (255,255,0))
+        nameLoc = name.get_rect()
+        nameLoc.right = (SCREEN_WIDTH/2)-50
+        nameLoc.y = ycounter
+        win.blit(name, nameLoc)
+        scoreText = scoreboardFont.render(str(i['Score']), True, (255,255,0))
+        loc = scoreText.get_rect()
+        loc.left = (SCREEN_WIDTH/2)+50
+        loc.y = ycounter
+        win.blit(scoreText, loc)
+        ycounter += 40
+>>>>>>> 3053470bca92c0197896f4e6ce02ce054ecef472
     for button in gameOverBtns:
         button.update(win)
     if gameOverBtns[0].clicked():
