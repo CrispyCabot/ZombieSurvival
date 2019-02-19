@@ -17,7 +17,7 @@ try:
     import gspread
     from oauth2client.service_account import ServiceAccountCredentials
 except ModuleNotFoundError:
-    print("Something went wrong! Online leaderboard will not work.")
+    print("Something went wrong. Online leaderboard will not work.")
 
 #End scoreboard/google sheets stuff
 
@@ -1679,13 +1679,16 @@ loadScreen.update(win)
 loadZombies()
 loadScreen.text = 'Leaderboard'
 loadScreen.update(win)
-scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
-credentials = ServiceAccountCredentials.from_json_keyfile_name(PATH+os.path.join('data','credentials.json'), scope)
-gc = gspread.authorize(credentials)
-wks = gc.open('ZSurvival Scoreboard').sheet1
+try:
+    scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
+    credentials = ServiceAccountCredentials.from_json_keyfile_name(PATH+os.path.join('data','credentials.json'), scope)
+    gc = gspread.authorize(credentials)
+    wks = gc.open('ZSurvival Scoreboard').sheet1
 
-global scoreboard
-scoreboard = wks.get_all_records()
+    global scoreboard
+    scoreboard = wks.get_all_records()
+except:
+    print("no scoreboard rip")
 
 print('Loading Time:', time.time()-timeStart, 'seconds')
 loading = False
@@ -1841,25 +1844,34 @@ def drawGameOver():
     w, h = text.get_rect().size
     win.blit(text, ((SCREEN_WIDTH-w)/2, 125))
     ycounter = 175
-    for i in scoreboard:
-        name = scoreboardFont.render(i['Name'], True, (255,255,0))
-        nameLoc = name.get_rect()
-        nameLoc.right = (SCREEN_WIDTH/2)-50
-        nameLoc.y = ycounter
-        win.blit(name, nameLoc)
-        scoreText = scoreboardFont.render(str(i['Score']), True, (255,255,0))
-        loc = scoreText.get_rect()
-        loc.left = (SCREEN_WIDTH/2)+50
-        win.blit(scoreText, loc)
-        ycounter += 40
+    try:
+        for i in scoreboard:
+            name = scoreboardFont.render(i['Name'], True, (255,255,0))
+            nameLoc = name.get_rect()
+            nameLoc.right = (SCREEN_WIDTH/2)-50
+            nameLoc.y = ycounter
+            win.blit(name, nameLoc)
+            scoreText = scoreboardFont.render(str(i['Score']), True, (255,255,0))
+            loc = scoreText.get_rect()
+            loc.left = (SCREEN_WIDTH/2)+50
+            win.blit(scoreText, loc)
+            ycounter += 40
+    except:
+        noScoreboard = scoreboardFont.render("Error - Scoreboard cannot be reached", True, (255,0,0))
+        loc = noScoreboard.get_rect()
+        loc.center = (SCREEN_WIDTH/2,SCREEN_HEIGHT/2)
+        win.blit(noScoreboard, loc)
     for button in gameOverBtns:
         button.update(win)
     if gameOverBtns[0].clicked():
         gameScreen = 'home'
         time.sleep(.2)
         initV()
-        wks = gc.open('ZSurvival Scoreboard').sheet1
-        scoreboard = wks.get_all_records()
+        try:
+            wks = gc.open('ZSurvival Scoreboard').sheet1
+            scoreboard = wks.get_all_records()
+        except:
+            print("no scoreboard")
     if gameOverBtns[1].clicked():
         playing = False
     drawTop(man, win, score, money)
@@ -2328,11 +2340,14 @@ def main():
             if man.health <= 0:
             #    playing = False
                 newScore = False
-                for i in range(0,len(scoreboard)):
-                    if score > scoreboard[i]['Score']:
-                        newScore = True
-                #        print("new high score")
-                        break
+                try:
+                    for i in range(0,len(scoreboard)):
+                        if score > scoreboard[i]['Score']:
+                            newScore = True
+                    #        print("new high score")
+                            break
+                except:
+                    print("no scoreboard")
                 if newScore:
                     gameScreen = 'newHi'
                 else:
