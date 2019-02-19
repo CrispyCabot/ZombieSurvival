@@ -12,11 +12,14 @@ import math
 from config import SCREEN_WIDTH, SCREEN_HEIGHT, PATH
 from LoadingScreen import LoadingScreen
 
+#Start scoreboard/google sheets stuff
 try:
     import gspread
     from oauth2client.service_account import ServiceAccountCredentials
 except ModuleNotFoundError:
-    print("gspread and oauth2client not installed. online leaderboard will not work")
+    print("Something went wrong! Online leaderboard will not work.")
+
+#End scoreboard/google sheets stuff
 
 timeStart = time.time()
 
@@ -84,11 +87,17 @@ myFont = pygame.font.Font(PATH+os.path.join('data', 'fonts','28DaysLater.ttf'), 
 font = pygame.font.Font(PATH+os.path.join('data', 'fonts','28DaysLater.ttf'), 36) #Game Over Font
 plFont = pygame.font.Font(PATH+os.path.join('data', 'fonts','28DaysLater.ttf'), 56) #play font
 plFont2 = pygame.font.Font(PATH+os.path.join('data', 'fonts','28DaysLater.ttf'), 60)
+gameOverplFont = pygame.font.Font(PATH+os.path.join('data', 'fonts','28DaysLater.ttf'), 36) #game over screen play font
+gameOverplFont2 = pygame.font.Font(PATH+os.path.join('data', 'fonts','28DaysLater.ttf'), 40)
 splFont = pygame.font.Font(PATH+os.path.join('data', 'fonts','28DaysLater.ttf'), 36) #Shop/Quit font
 splFont2 = pygame.font.Font(PATH+os.path.join('data', 'fonts','28DaysLater.ttf'), 40)
 titleFont = pygame.font.Font(PATH+os.path.join('data', 'fonts','ZombieSlayer.ttf'), 70)
 shopFont = pygame.font.Font(PATH+os.path.join('data', 'fonts','varsityteam.otf'), 20)
 shopFont2 = pygame.font.Font(PATH+os.path.join('data', 'fonts','varsityteam.otf'), 24)
+gameOverQuitFont = pygame.font.Font(PATH+os.path.join('data', 'fonts','28DaysLater.ttf'), 20) #Game over quit font
+gameOverQuitFont2 = pygame.font.Font(PATH+os.path.join('data', 'fonts','28DaysLater.ttf'), 24)
+scoreboardFont = pygame.font.Font(PATH+os.path.join('data', 'fonts','monofonto.ttf'), 24)
+scoreboardFontBig = pygame.font.Font(PATH+os.path.join('data', 'fonts','monofonto.ttf'), 30)
 
 loadScreen.text = 'Buttons'
 loadScreen.update(win)
@@ -137,9 +146,9 @@ shopScreenLoad()
 def gameOverScreenLoad():
     global gameOverBtns
     gameOverBtns = []
-    playBtn = Button((SCREEN_WIDTH - 300)/2,(SCREEN_HEIGHT-100)/2+30,300,100,[200,20,20], 'Play Again', plFont, [0,0,0], plFont2)
+    playBtn = Button((SCREEN_WIDTH - 200)/2,(SCREEN_HEIGHT-50)/2+180,200,50,[200,20,20], 'Play Again', gameOverplFont, [0,0,0], gameOverplFont2)
     gameOverBtns.append(playBtn)
-    quitBtn = Button((SCREEN_WIDTH-300)/2, (SCREEN_HEIGHT-50)/2+110,300,50, [20,20,20], 'Quit', splFont, [150,150,150], splFont2)
+    quitBtn = Button((SCREEN_WIDTH-200)/2, (SCREEN_HEIGHT-25)/2+232,200,25, [20,20,20], 'Quit', gameOverQuitFont, [150,150,150], gameOverQuitFont2)
     gameOverBtns.append(quitBtn)
 gameOverScreenLoad()
 loadScreen.update(win)
@@ -1668,6 +1677,15 @@ loadStuff()
 loadScreen.text = 'Whole lot of Zombies'
 loadScreen.update(win)
 loadZombies()
+loadScreen.text = 'Leaderboard'
+loadScreen.update(win)
+scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
+credentials = ServiceAccountCredentials.from_json_keyfile_name(PATH+os.path.join('data','credentials.json'), scope)
+gc = gspread.authorize(credentials)
+wks = gc.open('ZSurvival Scoreboard').sheet1
+
+global scoreboard
+scoreboard = wks.get_all_records()
 
 print('Loading Time:', time.time()-timeStart, 'seconds')
 loading = False
@@ -1814,17 +1832,34 @@ def drawBetweenThings():
     drawTop(man, win, score, money)
 
 def drawGameOver():
-    global gameOverBtns, gameScreen, playing, man, score, money
+    global gameOverBtns, gameScreen, playing, man, score, money, scoreboard
     win.blit(background, (0,0))
     text = titleFont.render('Game Over', True, (255,0,0))
     w, h = text.get_rect().size
     win.blit(text, ((SCREEN_WIDTH-w)/2, 50))
+    text = scoreboardFontBig.render('SCOREBOARD', True, (255,255,0))
+    w, h = text.get_rect().size
+    win.blit(text, ((SCREEN_WIDTH-w)/2, 125))
+    ycounter = 175
+    for i in scoreboard:
+        name = scoreboardFont.render(i['Name'], True, (255,255,0))
+        nameLoc = name.get_rect()
+        nameLoc.right = (SCREEN_WIDTH/2)-50
+        nameLoc.y = ycounter
+        win.blit(name, nameLoc)
+        scoreText = scoreboardFont.render(str(i['Score']), True, (255,255,0))
+        loc = scoreText.get_rect()
+        loc.left = (SCREEN_WIDTH/2)+50
+        win.blit(scoreText, loc)
+        ycounter += 40
     for button in gameOverBtns:
         button.update(win)
     if gameOverBtns[0].clicked():
         gameScreen = 'home'
         time.sleep(.2)
         initV()
+        wks = gc.open('ZSurvival Scoreboard').sheet1
+        scoreboard = wks.get_all_records()
     if gameOverBtns[1].clicked():
         playing = False
     drawTop(man, win, score, money)
@@ -1884,12 +1919,31 @@ def drawWeaponShop():
             notEnoughMoney = True
             shopDispCounter = 255
 
+playerName = ''
+def drawNewHi():
+    global playerName, man, score, money
+    win.blit(background, (0,0))
+    drawTop(man, win, score, money)
+    text = titleFont.render('New High Score', True, (255,255,0))
+    loc = text.get_rect()
+    loc.center = (SCREEN_WIDTH/2,100)
+    win.blit(text, loc)
+    enterName = scoreboardFontBig.render('Enter your name', True, (0,255,0))
+    loc = enterName.get_rect()
+    loc.center = (SCREEN_WIDTH/2, 175)
+    win.blit(enterName, loc)
+    input = scoreboardFontBig.render(playerName, True, (0,255,0))
+    loc = input.get_rect()
+    loc.center = (SCREEN_WIDTH/2, 300)
+    win.blit(input, loc)
+
+
 def redraw():
     global gameScreen, homeButtons, playing, end, wave, waveTimer, waveText
     SCREEN_WIDTH, SCREEN_HEIGHT = pygame.display.get_surface().get_size()
     if not pygame.mixer.music.get_busy():
         pygame.mixer.music.load(songs[randint(0,len(songs)-1)])
-        pygame.mixer.music.set_volume(.5)
+        pygame.mixer.music.set_volume(.2)
         pygame.mixer.music.play()
     if gameScreen == 'play':
         drawPlayStuff()
@@ -1907,6 +1961,8 @@ def redraw():
         resume.update(win)
         if resume.clicked():
             gameScreen = 'play'
+    elif gameScreen == 'newHi':
+        drawNewHi()
     pygame.display.update()
 
 class Zombie: #Can run, walk, jump, idle, attack, be hurt, die
@@ -2119,7 +2175,7 @@ def newWave(wave):
     return wave, waveTimer
 # MAIN LOOP
 def main():
-    global man, bullets, zombies, score, playing, end, wave, waveTimer, gameScreen, money, grenades, gameTimer
+    global playerName, scoreboard, man, bullets, zombies, score, playing, end, wave, waveTimer, gameScreen, money, grenades, gameTimer
     shotTimer = 0
     grenadeTimer = 0
     zombieTimer = 0
@@ -2133,6 +2189,41 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 playing = False
+
+            if event.type == pygame.KEYDOWN:
+                if gameScreen == 'newHi':
+                    if event.key == pygame.K_RETURN:
+                        gameScreen = 'gameOver'
+                        pygame.draw.rect(win, (0,0,0), pygame.Rect(0,0,SCREEN_WIDTH, SCREEN_HEIGHT))
+                        text = titleFont.render('Loading...', True, (255,255,255))
+                        loc = text.get_rect()
+                        loc.center = (SCREEN_WIDTH/2, SCREEN_HEIGHT/2)
+                        win.blit(text, loc)
+                        pygame.display.update()
+                        wks.delete_row(6)
+                        wks.delete_row(5)
+                        wks.delete_row(4)
+                        wks.delete_row(3)
+                        wks.delete_row(2)
+                        newScoreboard = []
+                        for i in scoreboard:
+                            newScoreboard.append([i['Name'], i['Score']])
+                        newScoreboard.pop(4)
+                        newScoreboard.append([playerName, score])
+                        newScoreboard = sort(newScoreboard)
+                        for i in newScoreboard:
+                            wks.append_row(i)
+                        scoreboard = []
+                        for i in newScoreboard:
+                            newDict = {
+                                'Name':i[0],
+                                'Score': i[1]
+                            }
+                            scoreboard.append(newDict)
+                    elif event.key == pygame.K_BACKSPACE:
+                        playerName = playerName[0:-1]
+                    else:
+                        playerName += event.unicode
 
         if gameScreen == 'play':
             gameTimer += 1
@@ -2236,7 +2327,16 @@ def main():
                 zombie.setAction()
             if man.health <= 0:
             #    playing = False
-                gameScreen = 'gameOver'
+                newScore = False
+                for i in range(0,len(scoreboard)):
+                    if score > scoreboard[i]['Score']:
+                        newScore = True
+                #        print("new high score")
+                        break
+                if newScore:
+                    gameScreen = 'newHi'
+                else:
+                    gameScreen = 'gameOver'
 
             keys = pygame.key.get_pressed()
 
@@ -2285,6 +2385,19 @@ def main():
                     if man.y != SCREEN_HEIGHT-155:
                         man.y = SCREEN_HEIGHT-155
         redraw()
+
+def sort(ls): #sorts a list of lists where the 2nd item in the 2nd list is a number etc. [['asd', 1], ['asdf', 4]]
+    for i in range(0,len(ls)-1):
+        if ls[i][1] >= ls[i+1][1]:
+            pass
+        else:
+            temp = ls.pop(i+1)
+            ls.insert(i, temp)
+    #        print(ls)
+    #        print('doing again')
+            ls = sort(ls)
+#    print(ls)
+    return ls
 initV()
 main()
 pygame.quit()
