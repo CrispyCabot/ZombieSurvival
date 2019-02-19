@@ -1850,6 +1850,7 @@ def drawGameOver():
         scoreText = scoreboardFont.render(str(i['Score']), True, (255,255,0))
         loc = scoreText.get_rect()
         loc.left = (SCREEN_WIDTH/2)+50
+        loc.y = ycounter
         win.blit(scoreText, loc)
         ycounter += 40
     for button in gameOverBtns:

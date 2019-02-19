@@ -1,1 +1,1 @@
-pyinstaller --onefile --windowed --icon=zombieIco.ico GunGame.spec
+pyinstaller GunGame.spec
