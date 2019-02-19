@@ -34,7 +34,7 @@ loadFont2 = pygame.font.Font(PATH+os.path.join('data', 'fonts','28DaysLater.ttf'
 
 clock = pygame.time.Clock()
 
-win = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT)) #, pygame.RESIZABLE
+win = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.FULLSCREEN) #, pygame.RESIZABLE
 
 pygame.display.set_caption('Zombie Survival')
 

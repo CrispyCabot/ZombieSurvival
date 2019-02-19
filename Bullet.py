@@ -34,6 +34,6 @@ class Bullet:
         elif self.type == 'machine':
             pygame.draw.rect(win, (100,100,100), pygame.Rect(self.x, self.y, 6, 2))
         elif self.type == 'plasma':
-            win.blit(Bullet.plasma, (self.x, self.y))
+            win.blit(Bullet.plasma, (self.x, self.y-20))
         if self.x > SCREEN_WIDTH or self.x < 0:
             return True
