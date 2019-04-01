@@ -34,7 +34,7 @@ loadFont2 = pygame.font.Font(PATH+os.path.join('data', 'fonts','28DaysLater.ttf'
 
 clock = pygame.time.Clock()
 
-win = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.FULLSCREEN) #, pygame.RESIZABLE
+win = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT)) #, pygame.RESIZABLE
 
 pygame.display.set_caption('Zombie Survival')
 
@@ -1854,6 +1854,7 @@ def drawGameOver():
             scoreText = scoreboardFont.render(str(i['Score']), True, (255,255,0))
             loc = scoreText.get_rect()
             loc.left = (SCREEN_WIDTH/2)+50
+            loc.y = ycounter
             win.blit(scoreText, loc)
             ycounter += 40
     except:
@@ -1861,18 +1862,23 @@ def drawGameOver():
         loc = noScoreboard.get_rect()
         loc.center = (SCREEN_WIDTH/2,SCREEN_HEIGHT/2)
         win.blit(noScoreboard, loc)
+    '''
     for i in scoreboard:
         name = scoreboardFont.render(i['Name'], True, (255,255,0))
         nameLoc = name.get_rect()
         nameLoc.right = (SCREEN_WIDTH/2)-50
         nameLoc.y = ycounter
+        print(i)
+        print(nameLoc)
         win.blit(name, nameLoc)
         scoreText = scoreboardFont.render(str(i['Score']), True, (255,255,0))
-        loc = scoreText.get_rect()
-        loc.left = (SCREEN_WIDTH/2)+50
-        loc.y = ycounter
-        win.blit(scoreText, loc)
+        scoreLoc = scoreText.get_rect()
+        scoreLoc.left = (SCREEN_WIDTH/2)+50
+        scoreLoc.y = ycounter
+        print(scoreLoc)
+        win.blit(scoreText, (scoreLoc.x, scoreLoc.y))
         ycounter += 40
+    '''
     for button in gameOverBtns:
         button.update(win)
     if gameOverBtns[0].clicked():
